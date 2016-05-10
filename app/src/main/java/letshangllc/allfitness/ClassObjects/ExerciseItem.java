@@ -46,4 +46,12 @@ public class ExerciseItem {
     public String toString(){
         return exerciseName;
     }
+
+    public int getMuscleId() {
+        return muscleId;
+    }
+
+    public void setMuscleId(int muscleId) {
+        this.muscleId = muscleId;
+    }
 }

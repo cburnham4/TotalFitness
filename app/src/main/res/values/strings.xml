@@ -12,9 +12,10 @@
     <string name="muscle_group">Muscle Group</string>
 
     <!-- Exercise Dialog -->
-    <string name="add_exercise">Add New Exercise:</string>
+    <string name="add_exercise">Add New Exercise</string>
     <string name="exercise_dialog_hint">Ex. Bench Press</string>
     <string name="no_muscle_groups">No Muscle Groups</string>
+    <string name="edit_exercise">Edit Exercise</string>
 
     <!-- Routine Dialog -->
     <string name="routine_dialog_title">Add Routine</string>

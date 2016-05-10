@@ -25,18 +25,22 @@ import letshangllc.allfitness.R;
  * Created by cvburnha on 5/10/2016.
  */
 public class EditExerciseDialog extends DialogFragment {
-
+    private Listener mListener;
+    private String name;
 
     public interface Listener {
         public void onDialogPositiveClick(String name, String type, MuscleGroup muscleGroup);
     }
 
+    public void setName(String name){
+        this.name = name;
+    }
 
     public void setCallback(Listener mListener) {
         this.mListener = mListener;
     }
 
-    Listener mListener;
+
 
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
@@ -46,13 +50,13 @@ public class EditExerciseDialog extends DialogFragment {
 
         // Inflate and set the layout for the dialog
         // Pass null as the parent view because its going in the dialog layout
-        View view = inflater.inflate(R.layout.dialog_add_exercise, null);
+        View view = inflater.inflate(R.layout.dialog_edit_exercise, null);
 
         final EditText et_item_name = (EditText) view.findViewById(R.id.et_newExercise);
         final Spinner spin_type = (Spinner) view.findViewById(R.id.spin_exerciseType);
         final Spinner spin_muscle = (Spinner) view.findViewById(R.id.spin_muscleGroup);
 
-
+        et_item_name.setText(name);
         ArrayList<String> exerciseTypes = new ArrayList<>();
         for(ExerciseType exerciseType: ExerciseType.values()){
             exerciseTypes.add(exerciseType.getExerciseTypeName());
@@ -105,7 +109,7 @@ public class EditExerciseDialog extends DialogFragment {
                 })
                 .setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
-                        AddExerciseDialog.this.getDialog().cancel();
+                        EditExerciseDialog.this.getDialog().cancel();
                     }
                 });
         return builder.create();

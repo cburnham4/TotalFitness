@@ -27,6 +27,7 @@ import letshangllc.allfitness.ClassObjects.MuscleGroup;
 import letshangllc.allfitness.Database.DatabaseHelper;
 import letshangllc.allfitness.Database.TableConstants;
 import letshangllc.allfitness.Dialogs.AddExerciseDialog;
+import letshangllc.allfitness.Dialogs.EditExerciseDialog;
 import letshangllc.allfitness.ListViewAdapters.ExerciseListAdapter;
 import letshangllc.allfitness.ClassObjects.ExerciseItem;
 import letshangllc.allfitness.R;
@@ -199,8 +200,40 @@ public class ExercisesFragment extends Fragment {
         exerciseListAdapter.notifyDataSetChanged();
     }
 
-    private void editItem(ExerciseItem){
+    /* Open EditDialog and edit the selected exercise Item */
+    private void editItem(final ExerciseItem exerciseItem){
+        final EditExerciseDialog editExerciseDialog = new EditExerciseDialog();
+        editExerciseDialog.setName(exerciseItem.getExerciseName());
+        editExerciseDialog.setCallback(new EditExerciseDialog.Listener() {
+            @Override
+            public void onDialogPositiveClick(String name, String type, MuscleGroup muscleGroup) {
+                if(name.isEmpty())return;
+                /* Get db*/
+                SQLiteDatabase db = databaseHelper.getWritableDatabase();
+                ContentValues values = new ContentValues();
 
+                /* Get the type */
+                ExerciseType exerciseType = ExerciseType.valueOf(type.toUpperCase());
+
+                /* Put in the new values */
+                values.put(TableConstants.ExerciseName, name);
+                values.put(TableConstants.ExerciseType, exerciseType.getExerciseTypeID());
+                values.put(TableConstants.MuscleID, muscleGroup.getMuscleGroupId());
+
+                /* Update database on exercise id */
+                db.update(TableConstants.ExerciseTableName, values,
+                        TableConstants.ExerciseId + " = " + exerciseItem.getExerciseID(), null);
+                db.close();
+
+                /* update item in fragment context*/
+                exerciseItem.setExerciseName(name);
+                exerciseItem.setExerciseType(exerciseType);
+                exerciseItem.setMuscleId(muscleGroup.getMuscleGroupId());
+
+                /* Update List view with new information */
+                exerciseListAdapter.notifyDataSetChanged();
+            }
+        });
     }
 
     /* Create context menu upon holding down listview row */
@@ -216,7 +249,7 @@ public class ExercisesFragment extends Fragment {
                 deleteFromDatabase(exerciseItems.get(info.position));
                 break;
             case R.id.edit:
-                editItem();
+                editItem(exerciseItems.get(info.position));
                 break;
 
         }
