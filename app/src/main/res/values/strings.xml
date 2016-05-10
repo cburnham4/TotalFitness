@@ -1,0 +1,46 @@
+<resources>
+    <string name="app_name">All Fitness Tracker</string>
+
+    <!-- Exercise Fragment -->
+    <string name="search_exercise">Search</string>
+
+    <!-- Dialog -->
+    <string name="cancel">CANCEL</string>
+    <string name="add">ADD</string>
+    <string name="name">Name</string>
+    <string name="type">Type</string>
+    <string name="muscle_group">Muscle Group</string>
+
+    <!-- Exercise Dialog -->
+    <string name="add_exercise">Add New Exercise:</string>
+    <string name="exercise_dialog_hint">Ex. Bench Press</string>
+    <string name="no_muscle_groups">No Muscle Groups</string>
+
+    <!-- Routine Dialog -->
+    <string name="routine_dialog_title">Add Routine</string>
+    <string name="routine_dialog_hint">Routine Name</string>
+
+    <!-- Muscle Group Dialog -->
+    <string name="muscle_group_dialog_title">Add Muscle Group:</string>
+    <string name="muscle_group_dialog_hint">Muscle Group</string>
+
+    <!-- Exercise Types -->
+    <string-array name="exercise_type_array">
+        <item>Bodyweight</item>
+        <item>Cardio</item>
+        <item>Timed</item>
+        <item>Lift</item>
+    </string-array>
+
+    <!-- todo move muscle groups to DB for dynamic use -->
+    <!-- Muscle Groups -->
+    <string-array name="muscle_group_array">
+        <item>Chest</item>
+        <item>Back</item>
+        <item>Biceps</item>
+        <item>Triceps</item>
+        <item>Abs</item>
+        <item>Legs</item>
+    </string-array>
+
+</resources>

@@ -1,0 +1,84 @@
+package letshangllc.allfitness.Database;
+
+import android.content.Context;
+import android.database.sqlite.SQLiteDatabase;
+import android.database.sqlite.SQLiteOpenHelper;
+
+/**
+ * Created by cvburnha on 5/8/2016.
+ */
+public class DatabaseHelper  extends SQLiteOpenHelper {
+    private static final int DATABASE_VERSION = 1;
+    private static final String DATABASE_NAME = "LiftsDatabase.db";
+
+    private static final String CREATE_LIFT_TABLE =
+            "CREATE TABLE " + TableConstants.LiftTableName + " ( " +
+                    TableConstants.LiftId + " integer primary key AUTOINCREMENT, " +
+                    TableConstants.LiftName + " text, " +
+                    TableConstants.LiftType + " integer, " +
+                    TableConstants.MuscleID + " integer, " +
+                    "FOREIGN KEY(" + TableConstants.MuscleID + ") " +
+                    "REFERENCES " + TableConstants.MuscleTableName + "(" + TableConstants.MuscleID + ")" +
+                    " )";
+
+    private static final String CREATE_MUSCLE_TABLE =
+            "CREATE TABLE " + TableConstants.MuscleTableName + " ( " +
+                    TableConstants.MuscleID + " integer primary key AUTOINCREMENT, " +
+                    TableConstants.MuscleName + " text " +
+                    " )";
+
+    private static final String CREATE_ROUTINE_TABLE =
+            "CREATE TABLE " + TableConstants.RoutineTableName + " (" +
+                    TableConstants.RoutineId + " integer primary key AUTOINCREMENT, " +
+                    TableConstants.RoutineName + " text " +
+                    ")";
+
+    private static final String CREATE_ROUTINES_TABLE =
+            "CREATE TABLE " + TableConstants.RoutinesTableName + " ( " +
+                    TableConstants.RoutineId+ " integer, " +
+                    TableConstants.LiftId + " integer, " +
+                    "FOREIGN KEY(" + TableConstants.RoutineId + ") " +
+                    "REFERENCES " + TableConstants.RoutineTableName + "(" + TableConstants.RoutineId + ") ," +
+                    "FOREIGN KEY(" + TableConstants.LiftId + ") " +
+                    "REFERENCES " + TableConstants.LiftTableName + "(" + TableConstants.LiftId + ") " +
+                    " )";
+
+    private static final String CREATE_DAYS_TABLE =
+            "CREATE TABLE " + TableConstants.DayTableName + " ( " +
+                    TableConstants.DayId+ " integer primary key AUTOINCREMENT, " +
+                    TableConstants.LiftId + " integer, " +
+                    TableConstants.DayDateLifted + " text, " +
+                    TableConstants.DayLiftComment + " text, " +
+                    "FOREIGN KEY(" + TableConstants.LiftId + ") " +
+                    "REFERENCES " + TableConstants.LiftTableName + "(" + TableConstants.LiftId + ") " +
+                    " )";
+
+    private static final String CREATE_SETS_TABLE =
+            "CREATE TABLE " + TableConstants.SetsTableName+ " ( " +
+                    TableConstants.SetsId+ " integer primary key AUTOINCREMENT, " +
+                    TableConstants.DayId + " integer, " +
+                    TableConstants.SetReps + " integer, " +
+                    TableConstants.SetWeight + " real, " +
+                    "FOREIGN KEY(" + TableConstants.DayId + ") " +
+                    "REFERENCES " + TableConstants.DayTableName + "(" + TableConstants.DayId + ") " +
+                    " )";
+
+    public DatabaseHelper(Context context) {
+        super(context, DATABASE_NAME, null, DATABASE_VERSION);
+    }
+
+    public void onCreate(SQLiteDatabase db) {
+        //if(checkDataBase()){
+        db.execSQL(CREATE_LIFT_TABLE);
+        db.execSQL(CREATE_MUSCLE_TABLE);
+        db.execSQL(CREATE_ROUTINE_TABLE);
+        db.execSQL(CREATE_ROUTINES_TABLE);
+        db.execSQL(CREATE_DAYS_TABLE);
+        db.execSQL(CREATE_SETS_TABLE);
+        //
+    }
+    @Override
+    public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
+
+    }
+}

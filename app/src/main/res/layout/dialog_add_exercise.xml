@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    >
+
+    <!-- Linear layout to set margin for all items -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:layout_margin="@dimen/dialog_margin">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/add_exercise"
+            android:textSize="@dimen/dialog_title_size"
+            android:textColor="@android:color/black"
+            android:layout_marginBottom="@dimen/dialog_margin_between_items"
+            />
+
+        <!-- Editext for Search -->
+        <android.support.design.widget.TextInputLayout
+            android:id="@+id/input_layout_newExercise"
+            android:layout_width="match_parent"
+            android:layout_marginBottom="@dimen/dialog_margin_between_items"
+            android:layout_height="wrap_content">
+
+            <EditText
+                android:id="@+id/et_newExercise"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/exercise_dialog_hint" />
+
+        </android.support.design.widget.TextInputLayout>
+
+        <Spinner
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/spin_exerciseType"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginBottom="@dimen/dialog_margin_between_items"
+            />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <Spinner
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:id="@+id/spin_muscleGroup"
+                android:layout_gravity="center_horizontal"
+                android:layout_weight="5"/>
+
+            <!-- todo add an add muscle group button
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="+"
+                android:textSize="44sp"
+                android:textColor="@android:color/black"
+                android:gravity="center" />-->
+
+        </LinearLayout>
+    </LinearLayout>
+
+
+</LinearLayout>
