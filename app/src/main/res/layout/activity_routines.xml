@@ -1,24 +1,31 @@
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".ActivitiesAndFragments.MainFragments.RoutinesFragment">
 
+    <!-- Toolbar -->
+    <include layout="@layout/toolbar"
+        ></include>
+
     <!-- List View -->
     <ListView
-        android:id="@+id/lv_routines"
+        android:id="@+id/lv_routine_exercises"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/toolbar"/>
 
-    <!-- todo move to each individual tab -->
+
     <android.support.design.widget.FloatingActionButton
-        android:id="@+id/fab_routine"
+        android:id="@+id/fab_add_exercise_routine"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom|end"
         android:layout_margin="@dimen/fab_margin"
         android:src="@drawable/ic_add_white_36dp"
         android:layout_alignParentBottom="true"
-        android:layout_alignParentRight="true" />
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"/>
 
-</FrameLayout>
+</RelativeLayout>
+

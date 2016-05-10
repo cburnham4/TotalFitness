@@ -16,7 +16,7 @@ import java.util.List;
 import letshangllc.allfitness.R;
 import letshangllc.allfitness.ActivitiesAndFragments.MainFragments.MuscleGroupFragment;
 import letshangllc.allfitness.ActivitiesAndFragments.MainFragments.ExercisesFragment;
-import letshangllc.allfitness.ActivitiesAndFragments.MainFragments.RoutineFragment;
+import letshangllc.allfitness.ActivitiesAndFragments.MainFragments.RoutinesFragment;
 
 public class MainTabbedActivity extends AppCompatActivity {
     private Toolbar toolbar;
@@ -45,7 +45,7 @@ public class MainTabbedActivity extends AppCompatActivity {
         ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager());
         adapter.addFragment(new ExercisesFragment(), "Exercises");
         adapter.addFragment(new MuscleGroupFragment(), "Muscle Groups");
-        adapter.addFragment(new RoutineFragment(), "Routines");
+        adapter.addFragment(new RoutinesFragment(), "Routines");
         viewPager.setAdapter(adapter);
     }
 

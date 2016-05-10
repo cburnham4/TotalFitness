@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    >
+
+    <!-- Linear layout to set margin for all items -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:layout_margin="@dimen/dialog_margin">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/add_exercise"
+            android:textSize="@dimen/dialog_title_size"
+            android:textColor="@android:color/black"
+            android:layout_marginBottom="@dimen/dialog_margin_between_items"
+            />
+
+
+        <Spinner
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/spin_exercises"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginBottom="@dimen/dialog_margin_between_items"
+            />
+
+    </LinearLayout>
+
+
+</LinearLayout>

@@ -81,6 +81,8 @@ public class ExercisesFragment extends Fragment {
         /* set the adapter for the listview */
         lv_exercises.setAdapter(exerciseListAdapter);
 
+        /* Attach context menu to listview */
+        registerForContextMenu(lv_exercises);
         return view;
     }
 
@@ -138,7 +140,7 @@ public class ExercisesFragment extends Fragment {
                   }
               }
         );
-        addExerciseDialog.show(getFragmentManager(), "Add_Muscle");
+        addExerciseDialog.show(getFragmentManager(), "Add_Exercise");
     }
 
     /* Get the id of the last inputted exercise */
@@ -234,6 +236,8 @@ public class ExercisesFragment extends Fragment {
                 exerciseListAdapter.notifyDataSetChanged();
             }
         });
+
+        editExerciseDialog.show(getFragmentManager(), "Edit_Exercise");
     }
 
     /* Create context menu upon holding down listview row */

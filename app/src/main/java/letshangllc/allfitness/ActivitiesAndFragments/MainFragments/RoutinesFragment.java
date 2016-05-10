@@ -2,6 +2,7 @@ package letshangllc.allfitness.ActivitiesAndFragments.MainFragments;
 
 
 import android.content.ContentValues;
+import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
@@ -10,10 +11,13 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ListView;
 
 import java.util.ArrayList;
 
+import letshangllc.allfitness.ActivitiesAndFragments.Activities.RoutineActivity;
+import letshangllc.allfitness.ClassObjects.ExerciseItem;
 import letshangllc.allfitness.ClassObjects.Routine;
 import letshangllc.allfitness.Database.DatabaseHelper;
 import letshangllc.allfitness.Database.TableConstants;
@@ -24,8 +28,8 @@ import letshangllc.allfitness.R;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class RoutineFragment extends Fragment {
-    private String TAG = RoutineFragment.class.getSimpleName();
+public class RoutinesFragment extends Fragment {
+    private String TAG = RoutinesFragment.class.getSimpleName();
 
     /* Listview Adapter */
     RoutineListAdapter routineListAdapter;
@@ -40,7 +44,7 @@ public class RoutineFragment extends Fragment {
     /* Database Helper */
     private DatabaseHelper databaseHelper;
 
-    public RoutineFragment() {
+    public RoutinesFragment() {
         // Required empty public constructor
     }
 
@@ -67,9 +71,22 @@ public class RoutineFragment extends Fragment {
         routineListAdapter = new RoutineListAdapter(getContext(), routines);
         lv_routines.setAdapter(routineListAdapter);
 
+        /* Create click listener for list view to go to routine activity */
+        lv_routines.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                /* Pass routine activity the id for the selected routine */
+                Intent intent = new Intent(RoutinesFragment.this.getActivity(), RoutineActivity.class);
+                Routine routine = routineListAdapter.getItem(position);
+                int routineId= routine.getRoutineId();
+                intent.putExtra(getString(R.string.routine_id), routineId);
+                startActivity(intent);
+            }
+        });
         return view;
     }
-    /* Find Views */
+
+    /* Find Views and add listeners */
     private void findViews(View view){
         lv_routines = (ListView) view.findViewById(R.id.lv_routines);
         fab_addRoutine = (FloatingActionButton) view.findViewById(R.id.fab_routine);
