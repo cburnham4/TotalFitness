@@ -11,11 +11,11 @@ public class DatabaseHelper  extends SQLiteOpenHelper {
     private static final int DATABASE_VERSION = 1;
     private static final String DATABASE_NAME = "LiftsDatabase.db";
 
-    private static final String CREATE_LIFT_TABLE =
-            "CREATE TABLE " + TableConstants.LiftTableName + " ( " +
-                    TableConstants.LiftId + " integer primary key AUTOINCREMENT, " +
-                    TableConstants.LiftName + " text, " +
-                    TableConstants.LiftType + " integer, " +
+    private static final String CREATE_EXERCISE_TABLE =
+            "CREATE TABLE " + TableConstants.ExerciseTableName + " ( " +
+                    TableConstants.ExerciseId + " integer primary key AUTOINCREMENT, " +
+                    TableConstants.ExerciseName + " text, " +
+                    TableConstants.ExerciseType + " integer, " +
                     TableConstants.MuscleID + " integer, " +
                     "FOREIGN KEY(" + TableConstants.MuscleID + ") " +
                     "REFERENCES " + TableConstants.MuscleTableName + "(" + TableConstants.MuscleID + ")" +
@@ -36,21 +36,21 @@ public class DatabaseHelper  extends SQLiteOpenHelper {
     private static final String CREATE_ROUTINES_TABLE =
             "CREATE TABLE " + TableConstants.RoutinesTableName + " ( " +
                     TableConstants.RoutineId+ " integer, " +
-                    TableConstants.LiftId + " integer, " +
+                    TableConstants.ExerciseId + " integer, " +
                     "FOREIGN KEY(" + TableConstants.RoutineId + ") " +
                     "REFERENCES " + TableConstants.RoutineTableName + "(" + TableConstants.RoutineId + ") ," +
-                    "FOREIGN KEY(" + TableConstants.LiftId + ") " +
-                    "REFERENCES " + TableConstants.LiftTableName + "(" + TableConstants.LiftId + ") " +
+                    "FOREIGN KEY(" + TableConstants.ExerciseId + ") " +
+                    "REFERENCES " + TableConstants.ExerciseTableName + "(" + TableConstants.ExerciseId + ") " +
                     " )";
 
     private static final String CREATE_DAYS_TABLE =
             "CREATE TABLE " + TableConstants.DayTableName + " ( " +
                     TableConstants.DayId+ " integer primary key AUTOINCREMENT, " +
-                    TableConstants.LiftId + " integer, " +
+                    TableConstants.ExerciseId + " integer, " +
                     TableConstants.DayDateLifted + " text, " +
                     TableConstants.DayLiftComment + " text, " +
-                    "FOREIGN KEY(" + TableConstants.LiftId + ") " +
-                    "REFERENCES " + TableConstants.LiftTableName + "(" + TableConstants.LiftId + ") " +
+                    "FOREIGN KEY(" + TableConstants.ExerciseId + ") " +
+                    "REFERENCES " + TableConstants.ExerciseTableName + "(" + TableConstants.ExerciseId + ") " +
                     " )";
 
     private static final String CREATE_SETS_TABLE =
@@ -69,7 +69,7 @@ public class DatabaseHelper  extends SQLiteOpenHelper {
 
     public void onCreate(SQLiteDatabase db) {
         //if(checkDataBase()){
-        db.execSQL(CREATE_LIFT_TABLE);
+        db.execSQL(CREATE_EXERCISE_TABLE);
         db.execSQL(CREATE_MUSCLE_TABLE);
         db.execSQL(CREATE_ROUTINE_TABLE);
         db.execSQL(CREATE_ROUTINES_TABLE);

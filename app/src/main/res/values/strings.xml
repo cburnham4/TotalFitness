@@ -24,23 +24,9 @@
     <string name="muscle_group_dialog_title">Add Muscle Group:</string>
     <string name="muscle_group_dialog_hint">Muscle Group</string>
 
-    <!-- Exercise Types -->
-    <string-array name="exercise_type_array">
-        <item>Bodyweight</item>
-        <item>Cardio</item>
-        <item>Timed</item>
-        <item>Lift</item>
-    </string-array>
+    <!-- Delete and Edit Menu-->
+    <string name="menu_edit">Edit</string>
+    <string name="menu_delete">Delete</string>
 
-    <!-- todo move muscle groups to DB for dynamic use -->
-    <!-- Muscle Groups -->
-    <string-array name="muscle_group_array">
-        <item>Chest</item>
-        <item>Back</item>
-        <item>Biceps</item>
-        <item>Triceps</item>
-        <item>Abs</item>
-        <item>Legs</item>
-    </string-array>
 
 </resources>

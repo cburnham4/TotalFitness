@@ -14,14 +14,11 @@ import android.widget.ListView;
 
 import java.util.ArrayList;
 
-import letshangllc.allfitness.ClassObjects.MuscleGroup;
 import letshangllc.allfitness.ClassObjects.Routine;
 import letshangllc.allfitness.Database.DatabaseHelper;
 import letshangllc.allfitness.Database.TableConstants;
-import letshangllc.allfitness.Dialogs.AddMuscleGroupDialog;
 import letshangllc.allfitness.Dialogs.AddRoutineDialog;
 import letshangllc.allfitness.ListViewAdapters.RoutineListAdapter;
-import letshangllc.allfitness.MockData.MockedRoutines;
 import letshangllc.allfitness.R;
 
 /**
@@ -80,7 +77,7 @@ public class RoutineFragment extends Fragment {
         fab_addRoutine.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                openDialog();
+                openAddDialog();
             }
         });
     }
@@ -102,7 +99,7 @@ public class RoutineFragment extends Fragment {
         db.close();
     }
 
-    private void openDialog(){
+    private void openAddDialog(){
         final AddRoutineDialog addRoutineDialog = new AddRoutineDialog();
         addRoutineDialog.setCallback(new AddRoutineDialog.Listener() {
              @Override

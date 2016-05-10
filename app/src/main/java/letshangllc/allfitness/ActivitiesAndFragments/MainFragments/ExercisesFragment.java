@@ -6,13 +6,17 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
+import android.view.ContextMenu;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.ListView;
 
@@ -34,7 +38,7 @@ public class ExercisesFragment extends Fragment {
     private static String TAG = ExercisesFragment.class.getSimpleName();
 
     /* List of all the user's exercises */
-    private ArrayList<ExerciseItem> listOfExercises;
+    private ArrayList<ExerciseItem> exerciseItems;
 
     /* Listview adaoter to display the exercises */
     private ExerciseListAdapter exerciseListAdapter;
@@ -59,7 +63,7 @@ public class ExercisesFragment extends Fragment {
         databaseHelper =  new DatabaseHelper(getContext());
 
         /* Create initial Array list and get data from DB */
-        listOfExercises = new ArrayList<>();
+        exerciseItems = new ArrayList<>();
         getExistingData();
     }
 
@@ -72,7 +76,7 @@ public class ExercisesFragment extends Fragment {
         findViews(view);
 
         /*Instantiate array Adapter */
-        exerciseListAdapter = new ExerciseListAdapter(getContext(), listOfExercises);
+        exerciseListAdapter = new ExerciseListAdapter(getContext(), exerciseItems);
         /* set the adapter for the listview */
         lv_exercises.setAdapter(exerciseListAdapter);
 
@@ -89,14 +93,14 @@ public class ExercisesFragment extends Fragment {
     /* Read in the existing exercised from the database and insert into the arraylist */
     private void getExistingData(){
         SQLiteDatabase db = databaseHelper.getReadableDatabase();
-        String[] projection = {TableConstants.LiftId, TableConstants.LiftName, TableConstants.LiftType,
+        String[] projection = {TableConstants.ExerciseId, TableConstants.ExerciseName, TableConstants.ExerciseType,
             TableConstants.MuscleID};
-        Cursor c = db.query(TableConstants.LiftTableName, projection, null, null, null, null, null);
+        Cursor c = db.query(TableConstants.ExerciseTableName, projection, null, null, null, null, null);
         c.moveToFirst();
 
         while (c!= null && !c.isAfterLast()) {
             ExerciseType exerciseType = ExerciseType.getType(c.getInt(2));
-            listOfExercises.add(new ExerciseItem(c.getInt(0), c.getString(1), exerciseType, c.getInt(3)));
+            exerciseItems.add(new ExerciseItem(c.getInt(0), c.getString(1), exerciseType, c.getInt(3)));
             c.moveToNext();
         }
         c.close();
@@ -118,16 +122,16 @@ public class ExercisesFragment extends Fragment {
 
                       /* Create the values to be inserted into the Database */
                       ContentValues contentValues =  new ContentValues();
-                      contentValues.put(TableConstants.LiftName, name);
-                      contentValues.put(TableConstants.LiftType, exerciseType.getExerciseTypeID());
+                      contentValues.put(TableConstants.ExerciseName, name);
+                      contentValues.put(TableConstants.ExerciseType, exerciseType.getExerciseTypeID());
                       contentValues.put(TableConstants.MuscleID, muscleGroup.getMuscleGroupId());
 
                       /* Insert into and close the Database */
-                      db.insert(TableConstants.LiftTableName, null, contentValues);
+                      db.insert(TableConstants.ExerciseTableName, null, contentValues);
                       db.close();
 
                       /* Add exercise to arraylist and update listview */
-                      listOfExercises.add(new ExerciseItem(getMaxExerciseId(),
+                      exerciseItems.add(new ExerciseItem(getMaxExerciseId(),
                               name, exerciseType, muscleGroup.getMuscleGroupId()));
                       exerciseListAdapter.notifyDataSetChanged();
                   }
@@ -139,7 +143,7 @@ public class ExercisesFragment extends Fragment {
     /* Get the id of the last inputted exercise */
     private int getMaxExerciseId(){
         SQLiteDatabase db = databaseHelper.getReadableDatabase();
-        String sql = "SELECT Max("+ TableConstants.LiftId +") FROM "+ TableConstants.LiftTableName;
+        String sql = "SELECT Max("+ TableConstants.ExerciseId +") FROM "+ TableConstants.ExerciseTableName;
         Cursor c = db.rawQuery(sql, null);
         c.moveToFirst();
         int max = c.getInt(0);
@@ -179,5 +183,44 @@ public class ExercisesFragment extends Fragment {
         });
     }
 
+    /* Delete exercise Item from DB */
+    private void deleteFromDatabase(ExerciseItem exerciseItem){
+        SQLiteDatabase db = databaseHelper.getWritableDatabase();
+        int exersiceID = exerciseItem.getExerciseID();
+
+        /* Delete from Exercise table and routines table by using exercise id */
+        db.delete(TableConstants.ExerciseTableName, TableConstants.ExerciseId + " = " +exersiceID, null);
+        db.delete(TableConstants.RoutinesTableName, TableConstants.ExerciseId + " = " +exersiceID, null);
+
+        db.close();
+
+        /* Remove item from list and update list view */
+        exerciseItems.remove(exerciseItem);
+        exerciseListAdapter.notifyDataSetChanged();
+    }
+
+    private void editItem(ExerciseItem){
+
+    }
+
+    /* Create context menu upon holding down listview row */
+    public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
+        super.onCreateContextMenu(menu, v, menuInfo);
+        getActivity().getMenuInflater().inflate(R.menu.menu_context_edit_delete, menu);
+    }
+
+    public boolean onContextItemSelected(MenuItem item) {
+        AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
+        switch(item.getItemId()){
+            case R.id.delete:
+                deleteFromDatabase(exerciseItems.get(info.position));
+                break;
+            case R.id.edit:
+                editItem();
+                break;
+
+        }
+        return true;
+    }
 
 }

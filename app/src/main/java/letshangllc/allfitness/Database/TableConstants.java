@@ -5,10 +5,10 @@ package letshangllc.allfitness.Database;
  */
 public class TableConstants {
     /* Lift Table values */
-    public static final String LiftTableName = "LIFTS_TABLE";
-    public static final String LiftName = "LIFT_NAME";
-    public static final String LiftId = "LIFT_ID";
-    public static final String LiftType = "LIFT_TYPE";
+    public static final String ExerciseTableName = "EXERCISE_TABLE";
+    public static final String ExerciseName = "EXERCISE_NAME";
+    public static final String ExerciseId = "EXERCISE_ID";
+    public static final String ExerciseType = "EXERCISE_TYPE";
 
     /*Muscle Group Table Values */
     public static final String MuscleTableName = "MUSCLE_GROUP_TABLE";
