@@ -80,6 +80,7 @@ public class RoutinesFragment extends Fragment {
                 Routine routine = routineListAdapter.getItem(position);
                 int routineId= routine.getRoutineId();
                 intent.putExtra(getString(R.string.routine_id), routineId);
+                intent.putExtra(getString(R.string.intent_value_name), routine.getRoutineName());
                 startActivity(intent);
             }
         });

@@ -28,6 +28,7 @@
     <!-- Delete and Edit Menu-->
     <string name="menu_edit">Edit</string>
     <string name="menu_delete">Delete</string>
+    <string name="menu_remove_exercise">Remove Exercise</string>
 
     <!-- Intent Strings -->
     <string name="routine_id">ROUTINE_ID</string>

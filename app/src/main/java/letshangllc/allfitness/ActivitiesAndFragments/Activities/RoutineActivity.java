@@ -7,7 +7,10 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.view.ContextMenu;
+import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ListView;
 
 import java.util.ArrayList;
@@ -45,9 +48,12 @@ public class RoutineActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_routines);
 
-        /* Retrieve routineId from caller intent */
+        this.findViews();
+        /* Retrieve values from caller intent */
         routineId = getIntent().getIntExtra(getString(R.string.routine_id), 0);
+        String routineName = getIntent().getStringExtra(getString(R.string.intent_value_name));
 
+        setTitle(routineName);
         /* Initialize DB Helper */
         databaseHelper = new DatabaseHelper(this);
 
@@ -55,18 +61,22 @@ public class RoutineActivity extends AppCompatActivity {
         /* Get Extisting Data */
         getExistingData();
 
-        this.findViews();
-
+        /* setup list view */
         exerciseListAdapter = new ExerciseListAdapter(this, exerciseItems);
         lv_routineExercises.setAdapter(exerciseListAdapter);
+        registerForContextMenu(lv_routineExercises);
     }
 
     /* Get Existing Data */
     public void getExistingData(){
         /* Select the exercises that are in the current routine */
-        String SQL = "SELECT " + TableConstants.ExerciseId + //", " + TableConstants.ExerciseName + ", "
-                //+ TableConstants.ExerciseType +" , " + TableConstants.MuscleID +
-                " FROM " /*+ TableConstants.ExerciseTableName +" , " */+ TableConstants.RoutinesTableName
+        String SQL = "SELECT " + TableConstants.ExerciseTableName+ "."+TableConstants.ExerciseId
+                + ", " + TableConstants.ExerciseName + ", "
+                + TableConstants.ExerciseType +" , " + TableConstants.MuscleID
+                + " FROM " + TableConstants.ExerciseTableName
+                + " INNER JOIN " + TableConstants.RoutinesTableName + " ON "
+                + TableConstants.ExerciseTableName+ "."+TableConstants.ExerciseId + " = "
+                + TableConstants.RoutinesTableName + "." + TableConstants.ExerciseId
                 + " WHERE " + TableConstants.RoutineId + " = " + routineId +"";
 
         SQLiteDatabase db = databaseHelper.getReadableDatabase();
@@ -88,8 +98,17 @@ public class RoutineActivity extends AppCompatActivity {
     private void findViews(){
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+
+        /* Go back to previous state of activity */
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setDisplayShowHomeEnabled(true);
+        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
+
+
         lv_routineExercises = (ListView) findViewById(R.id.lv_routine_exercises);
         fab_addExercise = (FloatingActionButton) findViewById(R.id.fab_add_exercise_routine);
 
@@ -144,5 +163,36 @@ public class RoutineActivity extends AppCompatActivity {
         db.close();
         /* Return item */
         return exerciseItem;
+    }
+
+    /* Create context menu upon holding down listview row */
+    public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
+        super.onCreateContextMenu(menu, v, menuInfo);
+        getMenuInflater().inflate(R.menu.menu_context_routine_exercise, menu);
+    }
+
+    public boolean onContextItemSelected(MenuItem item) {
+        AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
+        switch(item.getItemId()){
+            case R.id.remove:
+                removeFromRoutine(exerciseItems.get(info.position));
+                break;
+        }
+        return true;
+    }
+
+    /* Remove the exercise passed in from the current routine */
+    public void removeFromRoutine(ExerciseItem exerciseItem){
+        SQLiteDatabase db = databaseHelper.getWritableDatabase();
+        int exersiceID = exerciseItem.getExerciseID();
+
+        /* Delete from Exercise table and routines table by using exercise id */
+        db.delete(TableConstants.RoutinesTableName, TableConstants.ExerciseId + " = " +exersiceID
+                + "  AND " + TableConstants.RoutineId + " = " + routineId, null);
+        db.close();
+
+        /* Remove item from list and update list view */
+        exerciseItems.remove(exerciseItem);
+        exerciseListAdapter.notifyDataSetChanged();
     }
 }
