@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">All Fitness Tracker</string>
+    <string name="app_name">Complete Fitness</string>
 
     <!-- Exercise Fragment -->
     <string name="search_exercise">Search</string>

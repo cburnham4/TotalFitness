@@ -12,8 +12,10 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 
 import letshangllc.allfitness.ClassObjects.ExerciseItem;
 import letshangllc.allfitness.ClassObjects.ExerciseType;
@@ -126,6 +128,12 @@ public class RoutineActivity extends AppCompatActivity {
         addExerciseToGroupDialog.setCallback(new AddExerciseToGroupDialog.Listener() {
             @Override
             public void onDialogPositiveClick(ExerciseItem exerciseItem) {
+                /* If the exercise is already a part of the routine then do not add it */
+                if(routineContainsExercise(exerciseItem)){
+                    Toast.makeText(RoutineActivity.this, exerciseItem.getExerciseName()
+                            + " already exist in this routine.", Toast.LENGTH_SHORT).show();
+                    return;
+                }
                 SQLiteDatabase db = databaseHelper.getWritableDatabase();
 
                 /* Create values to put into database */
@@ -195,4 +203,15 @@ public class RoutineActivity extends AppCompatActivity {
         exerciseItems.remove(exerciseItem);
         exerciseListAdapter.notifyDataSetChanged();
     }
+
+    /* Return true if the exercise already exist for this routine */
+    public boolean routineContainsExercise(ExerciseItem exerciseItem){
+        /* Iterate through each item in the exerciseItems list */
+        for(ExerciseItem item: exerciseItems){
+            if(item.getExerciseID() == exerciseItem.getExerciseID()){
+                return true;
+            }
+        }
+        return false;
+    }/* Note: ArrayList.contains does not work for this */
 }

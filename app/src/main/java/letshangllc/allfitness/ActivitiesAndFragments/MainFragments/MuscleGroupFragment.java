@@ -2,6 +2,7 @@ package letshangllc.allfitness.ActivitiesAndFragments.MainFragments;
 
 
 import android.content.ContentValues;
+import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
@@ -10,11 +11,14 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ListView;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 
+import letshangllc.allfitness.ActivitiesAndFragments.Activities.MuscleGroupActivity;
+import letshangllc.allfitness.ActivitiesAndFragments.Activities.RoutineActivity;
 import letshangllc.allfitness.ClassObjects.ExerciseItem;
 import letshangllc.allfitness.ClassObjects.ExerciseType;
 import letshangllc.allfitness.ClassObjects.MuscleGroup;
@@ -74,6 +78,20 @@ public class MuscleGroupFragment extends Fragment {
 
         /* Set adapter */
         lv_groups.setAdapter(muscleGroupListAdapter);
+
+                /* Create click listener for list view to go to routine activity */
+        lv_groups.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                /* Pass routine activity the id for the selected routine */
+                Intent intent = new Intent(MuscleGroupFragment.this.getActivity(), MuscleGroupActivity.class);
+                MuscleGroup muscleGroup = muscleGroupListAdapter.getItem(position);
+                int muscleGroupId = muscleGroup.getMuscleGroupId();
+                intent.putExtra(getString(R.string.muscle_group_id), muscleGroupId);
+                intent.putExtra(getString(R.string.intent_value_name), muscleGroup.getMuscleGroupName());
+                startActivity(intent);
+            }
+        });
         return view;
     }
 
