@@ -23,9 +23,6 @@ public class TableConstants {
     /*Routines Table Values */
     public static final String RoutinesTableName = "ROUTINES_TABLE";
 
-    /* Muscle Group Table Values */
-    public static final String MuscleGroupsTableName = "MUSCLE_GROUPS_TABLE";
-
     /* Day Table Values */
     public static final String DayTableName = "DAT_TABLE";
     public static final String DayId = "DAY_ID";

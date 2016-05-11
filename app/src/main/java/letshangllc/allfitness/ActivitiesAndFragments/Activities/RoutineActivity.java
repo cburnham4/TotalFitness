@@ -72,7 +72,7 @@ public class RoutineActivity extends AppCompatActivity {
         /* Select the exercises that are in the current routine */
         String SQL = "SELECT " + TableConstants.ExerciseTableName+ "."+TableConstants.ExerciseId
                 + ", " + TableConstants.ExerciseName + ", "
-                + TableConstants.ExerciseType //+" , " + TableConstants.MuscleID
+                + TableConstants.ExerciseType +" , " + TableConstants.MuscleID
                 + " FROM " + TableConstants.ExerciseTableName
                 + " INNER JOIN " + TableConstants.RoutinesTableName + " ON "
                 + TableConstants.ExerciseTableName+ "."+TableConstants.ExerciseId + " = "
@@ -86,7 +86,7 @@ public class RoutineActivity extends AppCompatActivity {
 
         while (!c.isAfterLast()) {
             ExerciseType exerciseType = ExerciseType.getType(c.getInt(2));
-            exerciseItems.add(new ExerciseItem(c.getInt(0), c.getString(1), exerciseType));//c.getInt(3)
+            exerciseItems.add(new ExerciseItem(c.getInt(0), c.getString(1), exerciseType, c.getInt(3)));
             c.moveToNext();
         }
         c.close();
@@ -100,7 +100,7 @@ public class RoutineActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
 
         /* Go back to previous state of activity */
-        if(getSupportActionBar() != null){getSupportActionBar().setDisplayHomeAsUpEnabled(true);}
+        if(toolbar != null){getSupportActionBar().setDisplayHomeAsUpEnabled(true);}
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

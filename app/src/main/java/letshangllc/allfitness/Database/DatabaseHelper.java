@@ -15,10 +15,10 @@ public class DatabaseHelper  extends SQLiteOpenHelper {
             "CREATE TABLE " + TableConstants.ExerciseTableName + " ( " +
                     TableConstants.ExerciseId + " integer primary key AUTOINCREMENT, " +
                     TableConstants.ExerciseName + " text, " +
-                    TableConstants.ExerciseType + " integer " +
-//                    TableConstants.MuscleID + " integer, " +
-//                    "FOREIGN KEY(" + TableConstants.MuscleID + ") " +
-//                    "REFERENCES " + TableConstants.MuscleTableName + "(" + TableConstants.MuscleID + ")" +
+                    TableConstants.ExerciseType + " integer, " +
+                    TableConstants.MuscleID + " integer, " +
+                    "FOREIGN KEY(" + TableConstants.MuscleID + ") " +
+                    "REFERENCES " + TableConstants.MuscleTableName + "(" + TableConstants.MuscleID + ")" +
                     " )";
 
     private static final String CREATE_MUSCLE_TABLE =
@@ -39,16 +39,6 @@ public class DatabaseHelper  extends SQLiteOpenHelper {
                     TableConstants.ExerciseId + " integer, " +
                     "FOREIGN KEY(" + TableConstants.RoutineId + ") " +
                     "REFERENCES " + TableConstants.RoutineTableName + "(" + TableConstants.RoutineId + ") ," +
-                    "FOREIGN KEY(" + TableConstants.ExerciseId + ") " +
-                    "REFERENCES " + TableConstants.ExerciseTableName + "(" + TableConstants.ExerciseId + ") " +
-                    " )";
-
-    private static final String CREATE_MUSCLES_TABLE =
-            "CREATE TABLE " + TableConstants.MuscleGroupsTableName + " ( " +
-                    TableConstants.MuscleID + " integer, " +
-                    TableConstants.ExerciseId + " integer, " +
-                    "FOREIGN KEY(" + TableConstants.MuscleID + ") " +
-                    "REFERENCES " + TableConstants.MuscleTableName + "(" + TableConstants.MuscleID + ") ," +
                     "FOREIGN KEY(" + TableConstants.ExerciseId + ") " +
                     "REFERENCES " + TableConstants.ExerciseTableName + "(" + TableConstants.ExerciseId + ") " +
                     " )";
@@ -83,7 +73,6 @@ public class DatabaseHelper  extends SQLiteOpenHelper {
         db.execSQL(CREATE_MUSCLE_TABLE);
         db.execSQL(CREATE_ROUTINE_TABLE);
         db.execSQL(CREATE_ROUTINES_TABLE);
-        db.execSQL(CREATE_MUSCLES_TABLE);
         db.execSQL(CREATE_DAYS_TABLE);
         db.execSQL(CREATE_SETS_TABLE);
         //
