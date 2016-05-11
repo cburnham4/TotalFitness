@@ -57,8 +57,8 @@ public class MuscleGroupActivity extends AppCompatActivity {
 
         /* setup list view */
         exerciseListAdapter = new ExerciseListAdapter(this, exerciseItems);
-        lv_routineExercises.setAdapter(exerciseListAdapter);
-        registerForContextMenu(lv_routineExercises);
+        lv_muscleGroupExercises.setAdapter(exerciseListAdapter);
+        registerForContextMenu(lv_muscleGroupExercises);
     }
 
     /* find and initialize views with listeners */
@@ -94,10 +94,10 @@ public class MuscleGroupActivity extends AppCompatActivity {
                 + ", " + TableConstants.ExerciseName + ", "
                 + TableConstants.ExerciseType +" , " + TableConstants.MuscleID
                 + " FROM " + TableConstants.ExerciseTableName
-                + " INNER JOIN " + TableConstants.RoutinesTableName + " ON "
+                + " INNER JOIN " + TableConstants.MuscleGroupsTableName + " ON "
                 + TableConstants.ExerciseTableName+ "."+TableConstants.ExerciseId + " = "
-                + TableConstants.RoutinesTableName + "." + TableConstants.ExerciseId
-                + " WHERE " + TableConstants.RoutineId + " = " + routineId +"";
+                + TableConstants.MuscleGroupsTableName + "." + TableConstants.ExerciseId
+                + " WHERE " + TableConstants.RoutineId + " = " + muscleGroupId +"";
 
         SQLiteDatabase db = databaseHelper.getReadableDatabase();
         /* Run the query */
@@ -106,7 +106,7 @@ public class MuscleGroupActivity extends AppCompatActivity {
 
         while (!c.isAfterLast()) {
             ExerciseType exerciseType = ExerciseType.getType(c.getInt(2));
-            exerciseItems.add(new ExerciseItem(c.getInt(0), c.getString(1), exerciseType, c.getInt(3)));
+            exerciseItems.add(new ExerciseItem(c.getInt(0), c.getString(1), exerciseType));//, c.getInt(3)
             c.moveToNext();
         }
         c.close();
@@ -151,7 +151,7 @@ public class MuscleGroupActivity extends AppCompatActivity {
 
         /* Create a new exercise based on the data */
         ExerciseType exerciseType = ExerciseType.getType(c.getInt(2));
-        ExerciseItem exerciseItem= new ExerciseItem(c.getInt(0), c.getString(1), exerciseType, c.getInt(3));
+        ExerciseItem exerciseItem= new ExerciseItem(c.getInt(0), c.getString(1), exerciseType);//, c.getInt(3)
 
         c.close();
         db.close();

@@ -15,10 +15,10 @@ public class DatabaseHelper  extends SQLiteOpenHelper {
             "CREATE TABLE " + TableConstants.ExerciseTableName + " ( " +
                     TableConstants.ExerciseId + " integer primary key AUTOINCREMENT, " +
                     TableConstants.ExerciseName + " text, " +
-                    TableConstants.ExerciseType + " integer, " +
-                    TableConstants.MuscleID + " integer, " +
-                    "FOREIGN KEY(" + TableConstants.MuscleID + ") " +
-                    "REFERENCES " + TableConstants.MuscleTableName + "(" + TableConstants.MuscleID + ")" +
+                    TableConstants.ExerciseType + " integer " +
+//                    TableConstants.MuscleID + " integer, " +
+//                    "FOREIGN KEY(" + TableConstants.MuscleID + ") " +
+//                    "REFERENCES " + TableConstants.MuscleTableName + "(" + TableConstants.MuscleID + ")" +
                     " )";
 
     private static final String CREATE_MUSCLE_TABLE =
