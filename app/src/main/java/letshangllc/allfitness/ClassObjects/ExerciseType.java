@@ -40,4 +40,8 @@ public enum ExerciseType {
         }
         return TIMED;
     }
+
+    public String toString(){
+        return exerciseTypeName;
+    }
 }

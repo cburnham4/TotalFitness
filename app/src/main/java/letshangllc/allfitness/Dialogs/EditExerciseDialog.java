@@ -15,6 +15,7 @@ import android.widget.Spinner;
 
 import java.util.ArrayList;
 
+import letshangllc.allfitness.ClassObjects.ExerciseItem;
 import letshangllc.allfitness.ClassObjects.ExerciseType;
 import letshangllc.allfitness.ClassObjects.MuscleGroup;
 import letshangllc.allfitness.Database.DatabaseHelper;
@@ -26,14 +27,14 @@ import letshangllc.allfitness.R;
  */
 public class EditExerciseDialog extends DialogFragment {
     private Listener mListener;
-    private String name;
+    private ExerciseItem exerciseItem;
 
     public interface Listener {
-        public void onDialogPositiveClick(String name, String type, MuscleGroup muscleGroup);
+        public void onDialogPositiveClick(String name, ExerciseType exerciseType, MuscleGroup muscleGroup);
     }
 
-    public void setName(String name){
-        this.name = name;
+    public void setExercise(ExerciseItem exerciseItem){
+        this.exerciseItem = exerciseItem;
     }
 
     public void setCallback(Listener mListener) {
@@ -56,18 +57,30 @@ public class EditExerciseDialog extends DialogFragment {
         final Spinner spin_type = (Spinner) view.findViewById(R.id.spin_exerciseType);
         final Spinner spin_muscle = (Spinner) view.findViewById(R.id.spin_muscleGroup);
 
-        et_item_name.setText(name);
-        ArrayList<String> exerciseTypes = new ArrayList<>();
+        et_item_name.setText(exerciseItem.getExerciseName());
+//        ArrayList<String> exerciseTypes = new ArrayList<>();
+//        for(ExerciseType exerciseType: ExerciseType.values()){
+//            exerciseTypes.add(exerciseType.getExerciseTypeName());
+//        }
+//        // Create an ArrayAdapter using a string array and a default spinner layout
+//        ArrayAdapter<String> adapterType = new ArrayAdapter<String>(getContext(),
+//                android.R.layout.simple_spinner_dropdown_item, exerciseTypes);
+
+        ArrayList<ExerciseType> exerciseTypes = new ArrayList<>();
         for(ExerciseType exerciseType: ExerciseType.values()){
-            exerciseTypes.add(exerciseType.getExerciseTypeName());
+            exerciseTypes.add(exerciseType);
         }
         // Create an ArrayAdapter using a string array and a default spinner layout
-        ArrayAdapter<String> adapterType = new ArrayAdapter<String>(getContext(),
+        ArrayAdapter<ExerciseType> adapterType = new ArrayAdapter<ExerciseType>(getContext(),
                 android.R.layout.simple_spinner_dropdown_item, exerciseTypes);
+
+
         // Specify the layout to use when the list of choices appears
         adapterType.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         // Apply the adapter to the spinner
         spin_type.setAdapter(adapterType);
+
+        spin_type.setSelection(exerciseTypes.indexOf(exerciseItem.getExerciseType()));
 
         DatabaseHelper databaseHelper = new DatabaseHelper(getContext());
         SQLiteDatabase db = databaseHelper.getReadableDatabase();
@@ -78,8 +91,16 @@ public class EditExerciseDialog extends DialogFragment {
                 null, null, null, null);
         c.moveToFirst();
 
-        while (c.isAfterLast() == false){
+        /* Keep and index of the current muscle to setSection for the correct muscleGroup */
+        int currentMuscleIndex = -1;
+
+        while (!c.isAfterLast()){
             muscleGroups.add(new MuscleGroup(c.getInt(0), c.getString(1)));
+
+            /* if that muscle group is the current one then grab its index */
+            if(exerciseItem.getMuscleId() == c.getInt(0)){
+                currentMuscleIndex = muscleGroups.size()-1;
+            }
             c.moveToNext();
         }
         if(muscleGroups.size() == 0){
@@ -93,6 +114,10 @@ public class EditExerciseDialog extends DialogFragment {
 
         adapterMuscle.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spin_muscle.setAdapter(adapterMuscle);
+        spin_muscle.setSelection(currentMuscleIndex);
+
+        c.close();
+        db.close();
 
         builder.setView(view)
                 // Add action buttons
@@ -101,7 +126,7 @@ public class EditExerciseDialog extends DialogFragment {
                     public void onClick(DialogInterface dialog, int id) {
                         /* Get Dialog items and send back to Exercise Fragment */
                         String name = et_item_name.getText().toString();
-                        String type = spin_type.getSelectedItem().toString();
+                        ExerciseType type = (ExerciseType) spin_type.getSelectedItem();
                         MuscleGroup muscleGroup = (MuscleGroup) spin_muscle.getSelectedItem();
 
                         mListener.onDialogPositiveClick(name, type, muscleGroup);

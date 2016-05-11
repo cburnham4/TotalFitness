@@ -205,17 +205,17 @@ public class ExercisesFragment extends Fragment {
     /* Open EditDialog and edit the selected exercise Item */
     private void editItem(final ExerciseItem exerciseItem){
         final EditExerciseDialog editExerciseDialog = new EditExerciseDialog();
-        editExerciseDialog.setName(exerciseItem.getExerciseName());
+        editExerciseDialog.setExercise(exerciseItem);
         editExerciseDialog.setCallback(new EditExerciseDialog.Listener() {
             @Override
-            public void onDialogPositiveClick(String name, String type, MuscleGroup muscleGroup) {
+            public void onDialogPositiveClick(String name, ExerciseType exerciseType, MuscleGroup muscleGroup) {
                 if(name.isEmpty())return;
                 /* Get db*/
                 SQLiteDatabase db = databaseHelper.getWritableDatabase();
                 ContentValues values = new ContentValues();
 
                 /* Get the type */
-                ExerciseType exerciseType = ExerciseType.valueOf(type.toUpperCase());
+                //ExerciseType exerciseType = ExerciseType.valueOf(type.toUpperCase());
 
                 /* Put in the new values */
                 values.put(TableConstants.ExerciseName, name);
