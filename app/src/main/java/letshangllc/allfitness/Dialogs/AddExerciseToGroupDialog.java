@@ -10,14 +10,12 @@ import android.support.v4.app.DialogFragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ArrayAdapter;
-import android.widget.EditText;
 import android.widget.Spinner;
 
 import java.util.ArrayList;
 
 import letshangllc.allfitness.ClassObjects.ExerciseItem;
 import letshangllc.allfitness.ClassObjects.ExerciseType;
-import letshangllc.allfitness.ClassObjects.MuscleGroup;
 import letshangllc.allfitness.Database.DatabaseHelper;
 import letshangllc.allfitness.Database.TableConstants;
 import letshangllc.allfitness.R;
@@ -25,7 +23,7 @@ import letshangllc.allfitness.R;
 /**
  * Created by cvburnha on 5/10/2016.
  */
-public class AddExerciseToRoutineDialog extends DialogFragment {
+public class AddExerciseToGroupDialog extends DialogFragment {
 
 
     public interface Listener {
@@ -47,7 +45,7 @@ public class AddExerciseToRoutineDialog extends DialogFragment {
 
         // Inflate and set the layout for the dialog
         // Pass null as the parent view because its going in the dialog layout
-        View view = inflater.inflate(R.layout.dialog_add_exercise_to_routine, null);
+        View view = inflater.inflate(R.layout.dialog_add_exercise_to_group, null);
 
         final Spinner spin_exercises = (Spinner) view.findViewById(R.id.spin_exercises);
 
@@ -74,7 +72,7 @@ public class AddExerciseToRoutineDialog extends DialogFragment {
                 })
                 .setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
-                        AddExerciseToRoutineDialog.this.getDialog().cancel();
+                        AddExerciseToGroupDialog.this.getDialog().cancel();
                     }
                 });
         return builder.create();

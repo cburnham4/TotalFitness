@@ -43,6 +43,16 @@ public class DatabaseHelper  extends SQLiteOpenHelper {
                     "REFERENCES " + TableConstants.ExerciseTableName + "(" + TableConstants.ExerciseId + ") " +
                     " )";
 
+    private static final String CREATE_MUSCLES_TABLE =
+            "CREATE TABLE " + TableConstants.MuscleGroupsTableName + " ( " +
+                    TableConstants.MuscleID + " integer, " +
+                    TableConstants.ExerciseId + " integer, " +
+                    "FOREIGN KEY(" + TableConstants.MuscleID + ") " +
+                    "REFERENCES " + TableConstants.MuscleTableName + "(" + TableConstants.MuscleID + ") ," +
+                    "FOREIGN KEY(" + TableConstants.ExerciseId + ") " +
+                    "REFERENCES " + TableConstants.ExerciseTableName + "(" + TableConstants.ExerciseId + ") " +
+                    " )";
+
     private static final String CREATE_DAYS_TABLE =
             "CREATE TABLE " + TableConstants.DayTableName + " ( " +
                     TableConstants.DayId+ " integer primary key AUTOINCREMENT, " +
@@ -73,6 +83,7 @@ public class DatabaseHelper  extends SQLiteOpenHelper {
         db.execSQL(CREATE_MUSCLE_TABLE);
         db.execSQL(CREATE_ROUTINE_TABLE);
         db.execSQL(CREATE_ROUTINES_TABLE);
+        db.execSQL(CREATE_MUSCLES_TABLE);
         db.execSQL(CREATE_DAYS_TABLE);
         db.execSQL(CREATE_SETS_TABLE);
         //

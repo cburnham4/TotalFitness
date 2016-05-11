@@ -20,7 +20,7 @@ import letshangllc.allfitness.ClassObjects.ExerciseType;
 
 import letshangllc.allfitness.Database.DatabaseHelper;
 import letshangllc.allfitness.Database.TableConstants;
-import letshangllc.allfitness.Dialogs.AddExerciseToRoutineDialog;
+import letshangllc.allfitness.Dialogs.AddExerciseToGroupDialog;
 import letshangllc.allfitness.ListViewAdapters.ExerciseListAdapter;
 import letshangllc.allfitness.R;
 
@@ -72,7 +72,7 @@ public class RoutineActivity extends AppCompatActivity {
         /* Select the exercises that are in the current routine */
         String SQL = "SELECT " + TableConstants.ExerciseTableName+ "."+TableConstants.ExerciseId
                 + ", " + TableConstants.ExerciseName + ", "
-                + TableConstants.ExerciseType +" , " + TableConstants.MuscleID
+                + TableConstants.ExerciseType //+" , " + TableConstants.MuscleID
                 + " FROM " + TableConstants.ExerciseTableName
                 + " INNER JOIN " + TableConstants.RoutinesTableName + " ON "
                 + TableConstants.ExerciseTableName+ "."+TableConstants.ExerciseId + " = "
@@ -122,8 +122,8 @@ public class RoutineActivity extends AppCompatActivity {
 
     /* todo change to listview item select */
     private void openAddDialog(){
-        AddExerciseToRoutineDialog addExerciseToRoutineDialog = new AddExerciseToRoutineDialog();
-        addExerciseToRoutineDialog.setCallback(new AddExerciseToRoutineDialog.Listener() {
+        AddExerciseToGroupDialog addExerciseToGroupDialog = new AddExerciseToGroupDialog();
+        addExerciseToGroupDialog.setCallback(new AddExerciseToGroupDialog.Listener() {
             @Override
             public void onDialogPositiveClick(ExerciseItem exerciseItem) {
                 SQLiteDatabase db = databaseHelper.getWritableDatabase();
@@ -141,7 +141,7 @@ public class RoutineActivity extends AppCompatActivity {
                 exerciseListAdapter.notifyDataSetChanged();
             }
         });
-        addExerciseToRoutineDialog.show(getSupportFragmentManager(), "ADD_EXERCISE_ROUTINE");
+        addExerciseToGroupDialog.show(getSupportFragmentManager(), "ADD_EXERCISE_ROUTINE");
     }
 
     /* Get Exercise via its id */
