@@ -16,8 +16,10 @@
             </intent-filter>
         </activity>
         <activity android:name=".ActivitiesAndFragments.Activities.LiftActivity" />
-        <activity android:name=".ActivitiesAndFragments.Activities.RoutineActivity"
-            android:parentActivityName=".ActivitiesAndFragments.Activities.MainTabbedActivity"></activity>
+        <activity
+            android:name=".ActivitiesAndFragments.Activities.RoutineActivity"
+            android:parentActivityName=".ActivitiesAndFragments.Activities.MainTabbedActivity" />
+        <activity android:name=".ActivitiesAndFragments.Activities.MuscleGroupActivity"></activity>
     </application>
 
 </manifest>
