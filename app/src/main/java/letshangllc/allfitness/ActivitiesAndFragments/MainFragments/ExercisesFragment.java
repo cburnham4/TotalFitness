@@ -250,18 +250,23 @@ public class ExercisesFragment extends Fragment {
     }
 
     public boolean onContextItemSelected(MenuItem item) {
-        AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
-        switch(item.getItemId()){
-            case R.id.delete:
+        if (getUserVisibleHint()) {
+            // context menu logic
+            AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
+            switch(item.getItemId()){
+                case R.id.delete:
                 /* todo confirm that the user wants to delete item */
-                deleteFromDatabase(exerciseItems.get(info.position));
-                break;
-            case R.id.edit:
-                editItem(exerciseItems.get(info.position));
-                break;
+                    deleteFromDatabase(exerciseItems.get(info.position));
+                    break;
+                case R.id.edit:
+                    editItem(exerciseItems.get(info.position));
+                    break;
 
+            }
+            return true;
         }
-        return true;
+
+        return false;
     }
 
 }

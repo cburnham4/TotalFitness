@@ -19,14 +19,15 @@ import letshangllc.allfitness.ActivitiesAndFragments.MainFragments.ExercisesFrag
 import letshangllc.allfitness.ActivitiesAndFragments.MainFragments.RoutinesFragment;
 
 public class MainTabbedActivity extends AppCompatActivity {
-    private Toolbar toolbar;
-    private TabLayout tabLayout;
-    private ViewPager viewPager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main_tabbed);
+
+        Toolbar toolbar;
+        TabLayout tabLayout;
+        ViewPager viewPager;
 
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);

@@ -182,18 +182,23 @@ public class MuscleGroupFragment extends Fragment {
     }
 
     public boolean onContextItemSelected(MenuItem item) {
-        AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
-        switch(item.getItemId()){
-            case R.id.delete:
+        if (getUserVisibleHint()) {
+            // context menu logic
+            AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
+            switch(item.getItemId()){
+                case R.id.delete:
                 /* todo confirm that the user wants to delete item */
-                deleteFromDatabase(muscleGroups.get(info.position));
-                break;
-            case R.id.edit:
-                editItem(muscleGroups.get(info.position));
-                break;
+                    deleteFromDatabase(muscleGroups.get(info.position));
+                    break;
+                case R.id.edit:
+                    editItem(muscleGroups.get(info.position));
+                    break;
 
+            }
+            return true;
         }
-        return true;
+
+        return false;
     }
 
     /* Delete musclegroup Item from DB */
@@ -253,4 +258,6 @@ public class MuscleGroupFragment extends Fragment {
 
         editMuscleNameDialog.show(getFragmentManager(), "Edit_MuscleGroup");
     }
+
+
 }
