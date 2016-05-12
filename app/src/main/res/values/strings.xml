@@ -36,7 +36,11 @@
     <!-- Intent Strings -->
     <string name="routine_id">ROUTINE_ID</string>
     <string name="intent_value_name">INTENT_VALUE_NAME</string>
-    <string name="lift_id">LIFT_ID</string>
+    <string name="exercise_id">EXERCISE_ID</string>
+    <string name="type_id">TYPE_ID</string>
     <string name="muscle_group_id">MUSCLE_GROUP_ID</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 
 </resources>

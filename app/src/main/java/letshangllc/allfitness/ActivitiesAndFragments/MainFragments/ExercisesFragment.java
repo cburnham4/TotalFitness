@@ -2,6 +2,7 @@ package letshangllc.allfitness.ActivitiesAndFragments.MainFragments;
 
 
 import android.content.ContentValues;
+import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
@@ -22,6 +23,8 @@ import android.widget.ListView;
 
 import java.util.ArrayList;
 
+import letshangllc.allfitness.ActivitiesAndFragments.Activities.ExerciseActivity;
+import letshangllc.allfitness.ActivitiesAndFragments.Activities.MuscleGroupActivity;
 import letshangllc.allfitness.ClassObjects.ExerciseType;
 import letshangllc.allfitness.ClassObjects.MuscleGroup;
 import letshangllc.allfitness.Database.DatabaseHelper;
@@ -80,6 +83,24 @@ public class ExercisesFragment extends Fragment {
         exerciseListAdapter = new ExerciseListAdapter(getContext(), exerciseItems);
         /* set the adapter for the listview */
         lv_exercises.setAdapter(exerciseListAdapter);
+
+        /* Create click listener for list view to go to exercise activity */
+        lv_exercises.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                /* Pass routine activity the id for the selected routine */
+                Intent intent = new Intent(ExercisesFragment.this.getActivity(), ExerciseActivity.class);
+                ExerciseItem exerciseItem = exerciseListAdapter.getItem(position);
+
+                /* Put extras in the intent */
+                intent.putExtra(getString(R.string.exercise_id), exerciseItem.getExerciseID());
+                intent.putExtra(getString(R.string.intent_value_name), exerciseItem.getExerciseName());
+                intent.putExtra(getString(R.string.type_id), exerciseItem.getExerciseType());
+
+                startActivity(intent);
+            }
+        });
+
 
         /* Attach context menu to listview */
         registerForContextMenu(lv_exercises);
