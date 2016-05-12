@@ -15,7 +15,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".ActivitiesAndFragments.Activities.LiftActivity" />
+        <activity android:name=".ActivitiesAndFragments.Activities.ExerciseActivity" />
         <activity
             android:name=".ActivitiesAndFragments.Activities.RoutineActivity"
             android:parentActivityName=".ActivitiesAndFragments.Activities.MainTabbedActivity" />

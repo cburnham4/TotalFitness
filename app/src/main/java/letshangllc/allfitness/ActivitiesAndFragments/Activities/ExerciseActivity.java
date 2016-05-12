@@ -5,7 +5,7 @@ import android.os.Bundle;
 
 import letshangllc.allfitness.R;
 
-public class LiftActivity extends AppCompatActivity {
+public class ExerciseActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

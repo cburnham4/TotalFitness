@@ -15,7 +15,7 @@ import letshangllc.allfitness.R;
 /**
  * Created by cvburnha on 5/12/2016.
  */
-public class EditMuscleNameDialog extends DialogFragment {
+public class EditItemNameDialog extends DialogFragment {
     /* Callback for when user presses Add */
     Listener mListener;
     private String title;
@@ -68,7 +68,7 @@ public class EditMuscleNameDialog extends DialogFragment {
                 })
                 .setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
-                        EditMuscleNameDialog.this.getDialog().cancel();
+                        EditItemNameDialog.this.getDialog().cancel();
                     }
                 });
         return builder.create();

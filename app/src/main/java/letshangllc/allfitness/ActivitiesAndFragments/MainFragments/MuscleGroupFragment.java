@@ -17,22 +17,14 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 
 import letshangllc.allfitness.ActivitiesAndFragments.Activities.MuscleGroupActivity;
-import letshangllc.allfitness.ActivitiesAndFragments.Activities.RoutineActivity;
-import letshangllc.allfitness.ClassObjects.ExerciseItem;
-import letshangllc.allfitness.ClassObjects.ExerciseType;
 import letshangllc.allfitness.ClassObjects.MuscleGroup;
-import letshangllc.allfitness.ClassObjects.Routine;
 import letshangllc.allfitness.Database.DatabaseHelper;
 import letshangllc.allfitness.Database.TableConstants;
-import letshangllc.allfitness.Dialogs.AddExerciseDialog;
 import letshangllc.allfitness.Dialogs.AddMuscleGroupDialog;
-import letshangllc.allfitness.Dialogs.EditExerciseDialog;
-import letshangllc.allfitness.Dialogs.EditMuscleNameDialog;
+import letshangllc.allfitness.Dialogs.EditItemNameDialog;
 import letshangllc.allfitness.ListViewAdapters.MuscleGroupListAdapter;
-import letshangllc.allfitness.MockData.MockedGroups;
 import letshangllc.allfitness.R;
 
 /**
@@ -181,6 +173,7 @@ public class MuscleGroupFragment extends Fragment {
         }
     }
 
+    /* Perform instructions based on the clicked item */
     public boolean onContextItemSelected(MenuItem item) {
         if (getUserVisibleHint()) {
             // context menu logic
@@ -220,8 +213,6 @@ public class MuscleGroupFragment extends Fragment {
                 TableConstants.MuscleID + " = " + muscleID, null);
         db.close();
 
-        db.close();
-
         /* Remove item from list and update list view */
         muscleGroups.remove(muscleGroup);
         muscleGroupListAdapter.notifyDataSetChanged();
@@ -229,10 +220,10 @@ public class MuscleGroupFragment extends Fragment {
 
     /* Open EditDialog and edit the selected muscleGroup Item */
     private void editItem(final MuscleGroup muscleGroup){
-        final EditMuscleNameDialog editMuscleNameDialog = new EditMuscleNameDialog();
-        editMuscleNameDialog.setDialogTitle(getString(R.string.muscle_group_edit_title));
-        editMuscleNameDialog.setItemName(muscleGroup.getMuscleGroupName());
-        editMuscleNameDialog.setCallback(new EditMuscleNameDialog.Listener() {
+        final EditItemNameDialog editItemNameDialog = new EditItemNameDialog();
+        editItemNameDialog.setDialogTitle(getString(R.string.muscle_group_edit_title));
+        editItemNameDialog.setItemName(muscleGroup.getMuscleGroupName());
+        editItemNameDialog.setCallback(new EditItemNameDialog.Listener() {
             @Override
             public void onDialogPositiveClick(String name) {
                 if(name.isEmpty())return;
@@ -256,7 +247,7 @@ public class MuscleGroupFragment extends Fragment {
             }
         });
 
-        editMuscleNameDialog.show(getFragmentManager(), "Edit_MuscleGroup");
+        editItemNameDialog.show(getFragmentManager(), "Edit_MuscleGroup");
     }
 
 

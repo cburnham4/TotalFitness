@@ -8,7 +8,9 @@ import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
+import android.view.ContextMenu;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
@@ -17,11 +19,11 @@ import android.widget.ListView;
 import java.util.ArrayList;
 
 import letshangllc.allfitness.ActivitiesAndFragments.Activities.RoutineActivity;
-import letshangllc.allfitness.ClassObjects.ExerciseItem;
 import letshangllc.allfitness.ClassObjects.Routine;
 import letshangllc.allfitness.Database.DatabaseHelper;
 import letshangllc.allfitness.Database.TableConstants;
 import letshangllc.allfitness.Dialogs.AddRoutineDialog;
+import letshangllc.allfitness.Dialogs.EditItemNameDialog;
 import letshangllc.allfitness.ListViewAdapters.RoutineListAdapter;
 import letshangllc.allfitness.R;
 
@@ -84,6 +86,8 @@ public class RoutinesFragment extends Fragment {
                 startActivity(intent);
             }
         });
+
+        registerForContextMenu(lv_routines);
         return view;
     }
 
@@ -155,5 +159,85 @@ public class RoutinesFragment extends Fragment {
         return max;
     }
 
+    /* Create context menu upon holding down listview row */
+    public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
+        super.onCreateContextMenu(menu, v, menuInfo);
+        if(getUserVisibleHint()){
+            getActivity().getMenuInflater().inflate(R.menu.menu_context_edit_delete, menu);
+        }
+    }
+
+    /* Perform instructions based on the clicked item */
+    public boolean onContextItemSelected(MenuItem item) {
+        /* Check if the current fragment is visible. If so then show its context menu */
+        if (getUserVisibleHint()) {
+            // context menu logic
+            AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
+            switch(item.getItemId()){
+                case R.id.delete:
+                /* todo confirm that the user wants to delete item */
+                    deleteFromDatabase(routines.get(info.position));
+                    break;
+                case R.id.edit:
+                    editItem(routines.get(info.position));
+                    break;
+
+            }
+            return true;
+        }
+
+        return false;
+    }
+
+    /* Delete routine Item from DB */
+    private void deleteFromDatabase(Routine routine){
+        SQLiteDatabase db = databaseHelper.getWritableDatabase();
+        int routineId = routine.getRoutineId();
+
+        /* Delete from Exercise table and routines table by using exercise id */
+        db.delete(TableConstants.RoutineTableName, TableConstants.RoutineId + " = " + routineId, null);
+        db.delete(TableConstants.RoutinesTableName, TableConstants.RoutineId + " = " + routineId, null);
+
+        /* Update the exercises that were in this muscle group  */
+        ContentValues values = new ContentValues();
+
+        db.close();
+
+        /* Remove item from list and update list view */
+        routines.remove(routine);
+        routineListAdapter.notifyDataSetChanged();
+    }
+
+    /* Open EditDialog and edit the selected routine Item */
+    private void editItem(final Routine routine){
+        final EditItemNameDialog editItemNameDialog = new EditItemNameDialog();
+        editItemNameDialog.setDialogTitle(getString(R.string.routine_dialog_edit_title));
+        editItemNameDialog.setItemName(routine.getRoutineName());
+        editItemNameDialog.setCallback(new EditItemNameDialog.Listener() {
+            @Override
+            public void onDialogPositiveClick(String name) {
+                if(name.isEmpty())return;
+                /* Get db*/
+                SQLiteDatabase db = databaseHelper.getWritableDatabase();
+                ContentValues values = new ContentValues();
+
+                /* Put in the new values */
+                values.put(TableConstants.RoutineName, name);
+
+                /* Update database on routine id */
+                db.update(TableConstants.RoutineTableName, values,
+                        TableConstants.RoutineId + " = " +  routine.getRoutineId(), null);
+                db.close();
+
+                /* update item in fragment context*/
+                routine.setRoutineName(name);
+
+                /* Update List view with new information */
+                routineListAdapter.notifyDataSetChanged();
+            }
+        });
+
+        editItemNameDialog.show(getFragmentManager(), "Edit_MuscleGroup");
+    }
 
 }

@@ -7,6 +7,7 @@
     <!-- Dialog -->
     <string name="cancel">CANCEL</string>
     <string name="add">ADD</string>
+    <string name="confirm">CONFIRM</string>
     <string name="name">Name</string>
     <string name="type">Type</string>
     <string name="muscle_group">Muscle Group</string>
@@ -20,6 +21,7 @@
     <!-- Routine Dialog -->
     <string name="routine_dialog_title">Add Routine</string>
     <string name="routine_dialog_hint">Routine Name</string>
+    <string name="routine_dialog_edit_title">Edit Routine Name</string>
 
     <!-- Muscle Group Dialogs -->
     <string name="muscle_group_dialog_title">Add Muscle Group:</string>
