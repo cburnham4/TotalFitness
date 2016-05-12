@@ -21,9 +21,10 @@
     <string name="routine_dialog_title">Add Routine</string>
     <string name="routine_dialog_hint">Routine Name</string>
 
-    <!-- Muscle Group Dialog -->
+    <!-- Muscle Group Dialogs -->
     <string name="muscle_group_dialog_title">Add Muscle Group:</string>
     <string name="muscle_group_dialog_hint">Muscle Group</string>
+    <string name="muscle_group_edit_title">Edit Muscle Group Name</string>
 
     <!-- Delete and Edit Menu-->
     <string name="menu_edit">Edit</string>

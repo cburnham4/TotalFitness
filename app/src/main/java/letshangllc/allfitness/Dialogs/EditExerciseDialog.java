@@ -53,19 +53,14 @@ public class EditExerciseDialog extends DialogFragment {
         // Pass null as the parent view because its going in the dialog layout
         View view = inflater.inflate(R.layout.dialog_edit_exercise, null);
 
+        /* find Views */
         final EditText et_item_name = (EditText) view.findViewById(R.id.et_newExercise);
         final Spinner spin_type = (Spinner) view.findViewById(R.id.spin_exerciseType);
         final Spinner spin_muscle = (Spinner) view.findViewById(R.id.spin_muscleGroup);
 
         et_item_name.setText(exerciseItem.getExerciseName());
-//        ArrayList<String> exerciseTypes = new ArrayList<>();
-//        for(ExerciseType exerciseType: ExerciseType.values()){
-//            exerciseTypes.add(exerciseType.getExerciseTypeName());
-//        }
-//        // Create an ArrayAdapter using a string array and a default spinner layout
-//        ArrayAdapter<String> adapterType = new ArrayAdapter<String>(getContext(),
-//                android.R.layout.simple_spinner_dropdown_item, exerciseTypes);
 
+        /* Create a list of the exercise type names */
         ArrayList<ExerciseType> exerciseTypes = new ArrayList<>();
         for(ExerciseType exerciseType: ExerciseType.values()){
             exerciseTypes.add(exerciseType);
@@ -114,7 +109,12 @@ public class EditExerciseDialog extends DialogFragment {
 
         adapterMuscle.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spin_muscle.setAdapter(adapterMuscle);
-        spin_muscle.setSelection(currentMuscleIndex);
+
+        /* If the exercise has a muscle group then set the spinner to that muscle */
+        if(currentMuscleIndex != -1){
+            spin_muscle.setSelection(currentMuscleIndex);
+        }
+
 
         c.close();
         db.close();

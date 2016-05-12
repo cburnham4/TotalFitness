@@ -8,7 +8,9 @@ import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
+import android.view.ContextMenu;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
@@ -27,6 +29,8 @@ import letshangllc.allfitness.Database.DatabaseHelper;
 import letshangllc.allfitness.Database.TableConstants;
 import letshangllc.allfitness.Dialogs.AddExerciseDialog;
 import letshangllc.allfitness.Dialogs.AddMuscleGroupDialog;
+import letshangllc.allfitness.Dialogs.EditExerciseDialog;
+import letshangllc.allfitness.Dialogs.EditMuscleNameDialog;
 import letshangllc.allfitness.ListViewAdapters.MuscleGroupListAdapter;
 import letshangllc.allfitness.MockData.MockedGroups;
 import letshangllc.allfitness.R;
@@ -79,7 +83,10 @@ public class MuscleGroupFragment extends Fragment {
         /* Set adapter */
         lv_groups.setAdapter(muscleGroupListAdapter);
 
-                /* Create click listener for list view to go to routine activity */
+        /* Register listview to allow for context menu */
+        registerForContextMenu(lv_groups);
+
+        /* Create click listener for list view to go to routine activity */
         lv_groups.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -92,6 +99,8 @@ public class MuscleGroupFragment extends Fragment {
                 startActivity(intent);
             }
         });
+
+        registerForContextMenu(lv_groups);
         return view;
     }
 
@@ -164,5 +173,84 @@ public class MuscleGroupFragment extends Fragment {
         return max;
     }
 
+    /* Create context menu upon holding down listview row */
+    public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
+        super.onCreateContextMenu(menu, v, menuInfo);
+        if(getUserVisibleHint()){
+            getActivity().getMenuInflater().inflate(R.menu.menu_context_edit_delete, menu);
+        }
+    }
 
+    public boolean onContextItemSelected(MenuItem item) {
+        AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
+        switch(item.getItemId()){
+            case R.id.delete:
+                /* todo confirm that the user wants to delete item */
+                deleteFromDatabase(muscleGroups.get(info.position));
+                break;
+            case R.id.edit:
+                editItem(muscleGroups.get(info.position));
+                break;
+
+        }
+        return true;
+    }
+
+    /* Delete musclegroup Item from DB */
+    private void deleteFromDatabase(MuscleGroup muscleGroup){
+        SQLiteDatabase db = databaseHelper.getWritableDatabase();
+        int muscleID = muscleGroup.getMuscleGroupId();
+
+        /* Delete from Exercise table and routines table by using exercise id */
+        db.delete(TableConstants.MuscleTableName, TableConstants.MuscleID + " = " + muscleID, null);
+
+        /* Update the exercises that were in this muscle group  */
+        ContentValues values = new ContentValues();
+
+       /* Put the fake muscle id for the group for the exercise that now has no musclegroup */
+        values.put(TableConstants.MuscleID, getResources().getInteger(R.integer.fake_muscle_group_id));
+
+        /* Update database on muscle id */
+        db.update(TableConstants.ExerciseTableName, values,
+                TableConstants.MuscleID + " = " + muscleID, null);
+        db.close();
+
+        db.close();
+
+        /* Remove item from list and update list view */
+        muscleGroups.remove(muscleGroup);
+        muscleGroupListAdapter.notifyDataSetChanged();
+    }
+
+    /* Open EditDialog and edit the selected muscleGroup Item */
+    private void editItem(final MuscleGroup muscleGroup){
+        final EditMuscleNameDialog editMuscleNameDialog = new EditMuscleNameDialog();
+        editMuscleNameDialog.setDialogTitle(getString(R.string.muscle_group_edit_title));
+        editMuscleNameDialog.setItemName(muscleGroup.getMuscleGroupName());
+        editMuscleNameDialog.setCallback(new EditMuscleNameDialog.Listener() {
+            @Override
+            public void onDialogPositiveClick(String name) {
+                if(name.isEmpty())return;
+                /* Get db*/
+                SQLiteDatabase db = databaseHelper.getWritableDatabase();
+                ContentValues values = new ContentValues();
+
+                /* Put in the new values */
+                values.put(TableConstants.MuscleName, name);
+
+                /* Update database on exercise id */
+                db.update(TableConstants.MuscleTableName, values,
+                        TableConstants.MuscleID+ " = " + muscleGroup.getMuscleGroupId(), null);
+                db.close();
+
+                /* update item in fragment context*/
+                muscleGroup.setMuscleGroupName(name);
+
+                /* Update List view with new information */
+                muscleGroupListAdapter.notifyDataSetChanged();
+            }
+        });
+
+        editMuscleNameDialog.show(getFragmentManager(), "Edit_MuscleGroup");
+    }
 }

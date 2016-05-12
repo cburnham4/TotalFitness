@@ -159,6 +159,8 @@ public class ExercisesFragment extends Fragment {
         fab_addExercise.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                /* Set search text to "" or else it will cause a bug */
+                et_searchExercises.setText("");
                 Log.e(TAG, "Fab clicked");
                 openAddDialog();
             }
@@ -244,12 +246,14 @@ public class ExercisesFragment extends Fragment {
     public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
         super.onCreateContextMenu(menu, v, menuInfo);
         getActivity().getMenuInflater().inflate(R.menu.menu_context_edit_delete, menu);
+
     }
 
     public boolean onContextItemSelected(MenuItem item) {
         AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
         switch(item.getItemId()){
             case R.id.delete:
+                /* todo confirm that the user wants to delete item */
                 deleteFromDatabase(exerciseItems.get(info.position));
                 break;
             case R.id.edit:
