@@ -8,6 +8,8 @@ import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
+import android.view.View;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -21,21 +23,34 @@ import letshangllc.allfitness.ActivitiesAndFragments.types.fragments.lift.PastLi
 import letshangllc.allfitness.R;
 
 public class ExerciseActivity extends AppCompatActivity {
+    private final static String TAG  = ExerciseActivity.class.getSimpleName();
 
+    /* todo change to bundle arg */
+    public static int exerciseId;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main_tabbed);
 
         /* Retrieve values from caller intent */
-        int exerciseID = getIntent().getIntExtra(getString(R.string.exercise_id), 0);
-        String routineName = getIntent().getStringExtra(getString(R.string.intent_value_name));
-        int typeId = getIntent().getIntExtra(getString(R.string.type_id), 0);
+        exerciseId = getIntent().getIntExtra(getString(R.string.exercise_id), 0);
+        String exerciseName = getIntent().getStringExtra(getString(R.string.intent_value_name));
+        int typeId = getIntent().getIntExtra(getString(R.string.type_id), 5);
+
+        Log.i(TAG, "Type id = " + typeId);
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        //getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        setTitle(exerciseName);
+
+        if(toolbar != null){getSupportActionBar().setDisplayHomeAsUpEnabled(true);}
+        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
 
         ViewPager viewPager = (ViewPager) findViewById(R.id.vp_main_activity);
         setupViewPager(viewPager, typeId);

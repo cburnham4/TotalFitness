@@ -95,7 +95,7 @@ public class ExercisesFragment extends Fragment {
                 /* Put extras in the intent */
                 intent.putExtra(getString(R.string.exercise_id), exerciseItem.getExerciseID());
                 intent.putExtra(getString(R.string.intent_value_name), exerciseItem.getExerciseName());
-                intent.putExtra(getString(R.string.type_id), exerciseItem.getExerciseType());
+                intent.putExtra(getString(R.string.type_id), exerciseItem.getExerciseType().getExerciseTypeID());
 
                 startActivity(intent);
             }

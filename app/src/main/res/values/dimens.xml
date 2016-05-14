@@ -26,4 +26,10 @@
     <dimen name="dialog_title_size">20sp</dimen>
     <dimen name="dialog_margin_between_items">20dp</dimen>
 
+    <!-- Add set -->
+    <dimen name="margin_lr_addsublayouts">50dp</dimen>
+    <dimen name="txtsz_addset_labels">16sp</dimen>
+    <dimen name="add_set_padding">16dp</dimen>
+
+
 </resources>

@@ -40,7 +40,14 @@
     <string name="type_id">TYPE_ID</string>
     <string name="muscle_group_id">MUSCLE_GROUP_ID</string>
 
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
-
+    <!-- Fragment add workout set -->
+    <string name="add_set">Add</string>
+    <string name="clear">CLEAR</string>
+    <string name="reps">REPS:</string>
+    <string name="weight">WEIGHT:</string>
+    <string name="sub_five">-5</string>
+    <string name="add_five">5</string>
+    <string name="sub_one">-1</string>
+    <string name="add_one">1</string>
+    <string name="zero">0</string>
 </resources>
