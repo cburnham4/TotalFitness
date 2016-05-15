@@ -8,12 +8,14 @@ import android.os.Bundle;
 import android.provider.SyncStateContract;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -31,6 +33,7 @@ import letshangllc.allfitness.R;
  * A simple {@link Fragment} subclass.
  */
 public class AddLiftSetFragment extends Fragment {
+    private static final String TAG = AddLiftSetFragment.class.getSimpleName();
     /* Passed in lift variables */
     private int exerciseId;
     private int typeId;
@@ -88,6 +91,7 @@ public class AddLiftSetFragment extends Fragment {
 
         /* Set listview Adapter */
         setListAdapter =  new SetListAdapter(this.getContext(), liftSets);
+        lv_setList.setAdapter(setListAdapter);
         return view;
     }
 
@@ -145,10 +149,15 @@ public class AddLiftSetFragment extends Fragment {
 
         addSet.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                if(weightCount.getText().toString()!= "" && repCount.getText().toString()!= ""){
+                if(!weightCount.getText().toString().isEmpty() && !repCount.getText().toString().isEmpty()){
                     double weight = Double.parseDouble(weightCount.getText().toString());
                     int reps = Integer.parseInt(repCount.getText().toString());
-                    addToDB(weight, reps);
+                    if(weight == 0 || reps == 0){
+                        Toast.makeText(getContext(), "Atleast one attribute is 0", Toast.LENGTH_SHORT).show();
+                    }else{
+                        addToDB(weight, reps);
+                    }
+
                 }
             }
         });
@@ -195,13 +204,18 @@ public class AddLiftSetFragment extends Fragment {
 
         /* Query the exercise table based on the muscle id to get all the associated exercises */
         Cursor c = db.query(TableConstants.DayTableName, projection, TableConstants.DayDateLifted
-                + " = " + currentDate +" AND " + TableConstants.ExerciseId +" = "+ exerciseId, null, null, null, null);
+                + " = '" + currentDate + "' AND " + TableConstants.ExerciseId +" = "+ exerciseId, null, null, null, null);
+
         c.moveToFirst();
         /* If there already exists a dayId for today then return it */
         if(!c.isAfterLast()){
+            Log.e(TAG, "Day exists");
+            int dayId = c.getInt(0);
             c.close();
-            return c.getInt(0);
+            return dayId;
         }
+
+        Log.e(TAG, "Day does not exist");
 
          /* Else insert in a new day */
         ContentValues values = new ContentValues();
