@@ -63,7 +63,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:text="@string/add_five"
-                android:id="@+id/addWeight" />
+                android:id="@+id/btn_addWeight" />
         </LinearLayout>
 
         <TextView
@@ -94,7 +94,7 @@
                 android:layout_height="wrap_content"
                 android:text="@string/sub_one"
                 android:layout_weight="1"
-                android:id="@+id/subRep" />
+                android:id="@+id/btn_subRep" />
 
             <EditText
                 android:layout_width="wrap_content"
@@ -113,7 +113,7 @@
                 android:layout_height="wrap_content"
                 android:text="@string/add_one"
                 android:layout_weight="1"
-                android:id="@+id/addRep" />
+                android:id="@+id/btn_addRep" />
         </LinearLayout>
 
         <LinearLayout
@@ -134,7 +134,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:layout_margin="3dp"
-                android:id="@+id/btn_clear_values"
+                android:id="@+id/btn_clearValues"
                 android:text="@string/clear" />
 
         </LinearLayout>

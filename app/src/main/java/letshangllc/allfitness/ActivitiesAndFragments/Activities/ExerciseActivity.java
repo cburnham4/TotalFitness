@@ -25,17 +25,23 @@ import letshangllc.allfitness.R;
 public class ExerciseActivity extends AppCompatActivity {
     private final static String TAG  = ExerciseActivity.class.getSimpleName();
 
-    /* todo change to bundle arg */
-    public static int exerciseId;
+    /* Bundle to pass to each of the fragments */
+    Bundle args;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main_tabbed);
 
         /* Retrieve values from caller intent */
-        exerciseId = getIntent().getIntExtra(getString(R.string.exercise_id), 0);
+        int exerciseId = getIntent().getIntExtra(getString(R.string.exercise_id), 0);
         String exerciseName = getIntent().getStringExtra(getString(R.string.intent_value_name));
         int typeId = getIntent().getIntExtra(getString(R.string.type_id), 5);
+
+        args = new Bundle();
+        args.putInt(getString(R.string.exercise_id), exerciseId);
+        args.putInt(getString(R.string.type_id), typeId);
+        args.putString(getString(R.string.intent_value_name), exerciseName);
 
         Log.i(TAG, "Type id = " + typeId);
 
@@ -68,9 +74,15 @@ public class ExerciseActivity extends AppCompatActivity {
             case 1: // CARDIO
                 break;
             case 2: // LIFT
-                adapter.addFragment(new AddLiftSetFragment(), "Add Set");
-                adapter.addFragment(new PastLiftsFragment(), "Past Lifts");
-                adapter.addFragment(new LiftGraphFragment(), "Graph");
+                Fragment frag1  = new AddLiftSetFragment();
+                frag1.setArguments(args);
+                Fragment frag2 = new PastLiftsFragment();
+                frag2.setArguments(args);
+                Fragment frag3 = new LiftGraphFragment();
+                frag3.setArguments(args);
+                adapter.addFragment(frag1, "Add Set");
+                adapter.addFragment(frag2, "Past Lifts");
+                adapter.addFragment(frag3, "Graph");
                 break;
             case 3: // TIMED
                 break;
