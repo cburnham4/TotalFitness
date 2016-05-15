@@ -31,5 +31,11 @@
     <dimen name="txtsz_addset_labels">16sp</dimen>
     <dimen name="add_set_padding">16dp</dimen>
 
+    <!-- Past Sets -->
+    <dimen name="rv_past_sets_margin">5dp</dimen>
+    <dimen name="card_past_date_text_size">18sp</dimen>
+    <dimen name="card_past_text_margin">3dp</dimen>
+    <dimen name="card_past_date_text_padding">3dp</dimen>
+
 
 </resources>

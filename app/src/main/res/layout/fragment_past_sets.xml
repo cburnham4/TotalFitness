@@ -4,4 +4,12 @@
     android:layout_height="match_parent"
     tools:context="letshangllc.allfitness.ActivitiesAndFragments.types.fragments.lift.PastLiftsFragment">
 
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/my_recycler_view"
+        android:scrollbars="vertical"
+        android:layout_width="match_parent"
+        android:layout_margin="@dimen/rv_past_sets_margin"
+        android:layout_height="match_parent"
+
+        />
 </FrameLayout>

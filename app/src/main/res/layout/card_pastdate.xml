@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v7.widget.CardView xmlns:card_view="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/card_view"
+    android:layout_gravity="center"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="horizontal"
+    android:padding="3dp"
+    card_view:cardCornerRadius="0dp"
+    card_view:cardUseCompatPadding="true">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        >
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:id="@+id/tv_cardview_date"
+            android:textSize="@dimen/card_past_date_text_size"
+            android:padding="@dimen/card_past_date_text_padding"/>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/accent"
+            android:layout_below="@id/tv_cardview_date"
+            android:id="@+id/tv_seperator"
+            />
+        <TextView
+            android:id="@+id/info_text"
+            android:layout_width="match_parent"
+            android:layout_margin="@dimen/card_past_text_margin"
+            android:layout_height="match_parent"
+            android:textColor="@android:color/black"
+            android:layout_below="@id/tv_seperator"
+            android:layout_gravity="bottom" />
+    </RelativeLayout>
+
+
+</android.support.v7.widget.CardView>
