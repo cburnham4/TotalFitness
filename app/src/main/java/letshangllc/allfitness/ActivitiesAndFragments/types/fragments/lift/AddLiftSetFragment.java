@@ -5,8 +5,7 @@ import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
-import android.provider.SyncStateContract;
-import android.support.annotation.Nullable;
+
 import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -62,7 +61,7 @@ public class AddLiftSetFragment extends Fragment {
     }
 
     @Override
-    public void onCreate(@Nullable Bundle savedInstanceState) {
+    public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Bundle args = getArguments();
 
@@ -163,6 +162,7 @@ public class AddLiftSetFragment extends Fragment {
         });
     }
 
+    /* todo add edit option */
     public void getExistingData(){
         SQLiteDatabase db = databaseHelper.getReadableDatabase();
          /* Query the db to get the muscle data */
@@ -191,6 +191,7 @@ public class AddLiftSetFragment extends Fragment {
 
         /* Add new set into the listview */
         int sid = getMaxSetId();
+        Log.e(TAG, "Insert DAYID= "+dayId);
         liftSets.add(new LiftSet(dayId, sid, reps, weight));
 
         setListAdapter.notifyDataSetChanged();

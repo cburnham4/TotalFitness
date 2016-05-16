@@ -5,7 +5,7 @@
     tools:context="letshangllc.allfitness.ActivitiesAndFragments.types.fragments.lift.PastLiftsFragment">
 
     <android.support.v7.widget.RecyclerView
-        android:id="@+id/my_recycler_view"
+        android:id="@+id/rv_past_sets"
         android:scrollbars="vertical"
         android:layout_width="match_parent"
         android:layout_margin="@dimen/rv_past_sets_margin"
