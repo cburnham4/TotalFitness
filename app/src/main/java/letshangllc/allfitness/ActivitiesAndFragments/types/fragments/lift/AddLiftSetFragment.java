@@ -32,11 +32,10 @@ import letshangllc.allfitness.R;
  * A simple {@link Fragment} subclass.
  */
 public class AddLiftSetFragment extends Fragment {
+    /* Instance variables */
     private static final String TAG = AddLiftSetFragment.class.getSimpleName();
     /* Passed in lift variables */
     private int exerciseId;
-    private int typeId;
-    private String exerciseName;
 
     /* Current Date variable */
     String currentDate;
@@ -94,6 +93,7 @@ public class AddLiftSetFragment extends Fragment {
         return view;
     }
 
+    /* find view and set their listeners */
     private void setupViews(View view){
         /* Find Views */
         Button addSet =(Button) view.findViewById(R.id.btn_addSet);
@@ -179,6 +179,7 @@ public class AddLiftSetFragment extends Fragment {
         db.close();
     }
 
+    /* Add the current set to the db */
     public void addToDB(double weight, int reps){
         SQLiteDatabase db = databaseHelper.getWritableDatabase();
         //PUT SET INTO SETS

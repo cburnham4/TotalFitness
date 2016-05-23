@@ -24,7 +24,7 @@ public class TableConstants {
     public static final String RoutinesTableName = "ROUTINES_TABLE";
 
     /* Day Table Values */
-    public static final String DayTableName = "DAT_TABLE";
+    public static final String DayTableName = "DAY_TABLE";
     public static final String DayId = "DAY_ID";
     public static final String DayDateLifted = "DAY_DATE_LIFTED";
     public static final String DayLiftComment = "DAY_LIFT_COMMENT";
