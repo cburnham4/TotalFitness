@@ -63,6 +63,18 @@ public class DatabaseHelper  extends SQLiteOpenHelper {
                     "REFERENCES " + TableConstants.DayTableName + "(" + TableConstants.DayId + ") " +
                     " )";
 
+    private static final String CREATE_MAX_TABLE=
+            "CREATE TABLE " + TableConstants.MaxTableName+ " ( " +
+                    TableConstants.MaxId +" integer primary key AUTOINCREMENT, " +
+                    TableConstants.DayId +" integer, " +
+                    TableConstants.ExerciseId + " integer, " +
+                    TableConstants.MaxWeight +" REAL, " +
+                    "FOREIGN KEY(" + TableConstants.DayId + ") " +
+                    "REFERENCES " + TableConstants.DayTableName + "(" + TableConstants.DayId + ") " +
+                    "FOREIGN KEY(" + TableConstants.ExerciseId + ") " +
+                    "REFERENCES " + TableConstants.ExerciseTableName + "(" + TableConstants.ExerciseId + ") " +
+                    " )";
+
     public DatabaseHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
     }
@@ -75,6 +87,7 @@ public class DatabaseHelper  extends SQLiteOpenHelper {
         db.execSQL(CREATE_ROUTINES_TABLE);
         db.execSQL(CREATE_DAYS_TABLE);
         db.execSQL(CREATE_SETS_TABLE);
+        db.execSQL(CREATE_MAX_TABLE);
         //
     }
     @Override

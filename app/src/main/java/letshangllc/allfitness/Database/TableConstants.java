@@ -35,4 +35,9 @@ public class TableConstants {
     public static final String SetReps = "SETS_REPS";
     public static final String SetWeight = "SET_WEIGHTS";
 
+    /* Max Table Values */
+    public static final String MaxTableName = "MAXES_TABLE";
+    public static final String MaxId = "MAX_ID";
+    public static final String MaxWeight = "MAX_WEIGHT";
+
 }

@@ -161,7 +161,7 @@ public class AddLiftSetFragment extends Fragment {
             }
         });
     }
-
+    /* todo add delete optiotn */
     /* todo add edit option */
     public void getExistingData(){
         SQLiteDatabase db = databaseHelper.getReadableDatabase();
@@ -195,6 +195,9 @@ public class AddLiftSetFragment extends Fragment {
         liftSets.add(new LiftSet(dayId, sid, reps, weight));
 
         setListAdapter.notifyDataSetChanged();
+
+        /* Add recent lift to Maxes */
+        inputCalculatedMAX(weight, reps);
     }
 
     /* Add date to db id it does not already exist */
@@ -254,6 +257,57 @@ public class AddLiftSetFragment extends Fragment {
         c.close();
         db.close();
         return max;
+    }
+
+    private void inputCalculatedMAX(double weight, int reps){
+        /*
+            max calculations taken from http://www.weightrainer.net/training/coefficients.html
+         */
+        SQLiteDatabase db = databaseHelper.getWritableDatabase();
+        double max;
+
+        /* set the max baed on the number of reps */
+        switch(reps){
+            case 1:
+                max = weight;
+                break;
+            case 2:
+                max = weight*1.042;
+                break;
+            case 3:
+                max = weight*1.072;
+                break;
+            case 4:
+                max = weight*1.104;
+                break;
+            case 5:
+                max = weight*1.137;
+                break;
+            case 6:
+                max = weight *1.173;
+                break;
+            case 7:
+                max = weight * 1.211;
+                break;
+            case 8:
+                max = weight * 1.251;
+                break;
+            case 9:
+                max = weight * 1.294;
+                break;
+            default:
+                max = weight*1.341;
+        }
+
+        /* Prepare the values to be inserted */
+        ContentValues values = new ContentValues();
+
+        values.put(TableConstants.DayId, dayId);
+        values.put(TableConstants.ExerciseId, exerciseId);
+        values.put(TableConstants.MaxWeight, max);
+
+        /* Insert the values into the DB */
+        db.insert(TableConstants.MaxTableName ,null , values);
     }
 
 }
