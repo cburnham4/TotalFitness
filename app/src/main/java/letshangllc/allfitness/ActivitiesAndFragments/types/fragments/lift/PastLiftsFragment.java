@@ -7,6 +7,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -45,8 +46,6 @@ public class PastLiftsFragment extends Fragment {
     /* Database Helper */
     DatabaseHelper databaseHelper;
 
-
-
     public PastLiftsFragment() {
         // Required empty public constructor
     }
@@ -65,6 +64,8 @@ public class PastLiftsFragment extends Fragment {
         SimpleDateFormat dateFormat = new SimpleDateFormat(getString(R.string.date_format), Locale.US);
 
         getExistingData();
+
+
     }
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -79,6 +80,8 @@ public class PastLiftsFragment extends Fragment {
 
         mAdapter = new PastCardViewAdapter(pastLiftSets);
         rv_pastdates.setAdapter(mAdapter);
+
+
         return view;
     }
 
@@ -137,5 +140,16 @@ public class PastLiftsFragment extends Fragment {
             c.close();
         }
         db.close();
+    }
+
+    public void updateNewLiftSet(LiftSet liftSet) {
+        /* If the set set is not empty add on the new item */
+
+        if(pastLiftSets.size()!=0){
+                    /* Add the inserted item to the first recycleview item */
+            PastLiftSet pastLiftSet = pastLiftSets.get(0);
+            pastLiftSet.getLiftSets().add(liftSet);
+            mAdapter.notifyItemChanged(0);
+        }
     }
 }

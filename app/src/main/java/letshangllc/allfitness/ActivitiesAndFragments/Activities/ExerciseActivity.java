@@ -20,10 +20,14 @@ import letshangllc.allfitness.ActivitiesAndFragments.MainFragments.RoutinesFragm
 import letshangllc.allfitness.ActivitiesAndFragments.types.fragments.lift.AddLiftSetFragment;
 import letshangllc.allfitness.ActivitiesAndFragments.types.fragments.lift.LiftGraphFragment;
 import letshangllc.allfitness.ActivitiesAndFragments.types.fragments.lift.PastLiftsFragment;
+import letshangllc.allfitness.ClassObjects.LiftSet;
+import letshangllc.allfitness.Dialogs.AddExerciseDialog;
 import letshangllc.allfitness.R;
 
-public class ExerciseActivity extends AppCompatActivity {
+public class ExerciseActivity extends AppCompatActivity implements AddLiftSetFragment.AddLiftSetListener{
     private final static String TAG  = ExerciseActivity.class.getSimpleName();
+
+    private int frag2Id;
 
     /* Bundle to pass to each of the fragments */
     Bundle args;
@@ -77,6 +81,8 @@ public class ExerciseActivity extends AppCompatActivity {
                 Fragment frag1  = new AddLiftSetFragment();
                 frag1.setArguments(args);
                 Fragment frag2 = new PastLiftsFragment();
+                frag2Id = frag2.getId();
+
                 frag2.setArguments(args);
                 Fragment frag3 = new LiftGraphFragment();
                 frag3.setArguments(args);
@@ -89,6 +95,14 @@ public class ExerciseActivity extends AppCompatActivity {
         }
 
         viewPager.setAdapter(adapter);
+    }
+
+    @Override
+    public void addNewLiftSet(LiftSet liftSet) {
+        Log.e(TAG, "FRAGMENTS: "+ 0);
+        PastLiftsFragment pastLiftsFragment = (PastLiftsFragment)getSupportFragmentManager().getFragments().get(0);
+
+        pastLiftsFragment.updateNewLiftSet(liftSet);
     }
 
     class ViewPagerAdapter extends FragmentPagerAdapter {

@@ -1,7 +1,9 @@
 package letshangllc.allfitness.ActivitiesAndFragments.types.fragments.lift;
 
 
+import android.app.Activity;
 import android.content.ContentValues;
+import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
@@ -54,6 +56,9 @@ public class AddLiftSetFragment extends Fragment {
 
     /* ListView Adapter */
     SetListAdapter setListAdapter;
+
+    /* Add set listener */
+    AddLiftSetListener addLiftSetListener;
 
     public AddLiftSetFragment() {
         // Required empty public constructor
@@ -193,9 +198,14 @@ public class AddLiftSetFragment extends Fragment {
         /* Add new set into the listview */
         int sid = getMaxSetId();
         Log.e(TAG, "Insert DAYID= "+dayId);
-        liftSets.add(new LiftSet(dayId, sid, reps, weight));
+
+        LiftSet liftSet = new LiftSet(dayId, sid, reps, weight);
+        liftSets.add(liftSet);
 
         setListAdapter.notifyDataSetChanged();
+
+        /* Call the callback with the new listSet */
+        addLiftSetListener.addNewLiftSet(liftSet);
 
         /* Add recent lift to Maxes */
         inputCalculatedMAX(weight, reps);
@@ -309,6 +319,28 @@ public class AddLiftSetFragment extends Fragment {
 
         /* Insert the values into the DB */
         db.insert(TableConstants.MaxTableName ,null , values);
+    }
+
+    public interface AddLiftSetListener{
+        public void addNewLiftSet(LiftSet liftSet);
+    }
+
+    public void setListener(AddLiftSetListener addLiftSetListener){
+        this.addLiftSetListener = addLiftSetListener;
+    }
+
+    @Override
+    public void onAttach(Context activity) {
+        super.onAttach(activity);
+
+        // This makes sure that the container activity has implemented
+        // the callback interface. If not, it throws an exception
+        try {
+            addLiftSetListener = (AddLiftSetListener) activity;
+        } catch (ClassCastException e) {
+            throw new ClassCastException(activity.toString()
+                    + " must implement OnHeadlineSelectedListener");
+        }
     }
 
 }

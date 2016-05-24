@@ -107,6 +107,7 @@ public class ExercisesFragment extends Fragment {
         return view;
     }
 
+    /* Find the layout views */
     private void findViews(View view){
         lv_exercises = (ListView) view.findViewById(R.id.lv_exercises);
         et_searchExercises = (EditText) view.findViewById(R.id.et_searchExercise);

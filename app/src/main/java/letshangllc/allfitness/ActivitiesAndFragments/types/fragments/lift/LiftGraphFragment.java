@@ -6,6 +6,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -32,6 +33,8 @@ import letshangllc.allfitness.R;
  * A simple {@link Fragment} subclass.
  */
 public class LiftGraphFragment extends Fragment {
+    private static final String TAG= LiftGraphFragment.class.getSimpleName();
+
     private GraphView graph;
 
     /* DataPoints and series */
@@ -105,8 +108,8 @@ public class LiftGraphFragment extends Fragment {
                 graph.getViewport().setMaxY(dataPoint.getY() + 10);
                 graph.setTitle("Max Weight Over Time");
             }else{
-                graph.getViewport().setMinX(series.getLowestValueX()-.5*24*60*60*1000);
-                graph.getViewport().setMaxX(series.getHighestValueX());
+                graph.getViewport().setMinX(series.getLowestValueX()-.25*24*60*60*1000);
+                graph.getViewport().setMaxX(series.getHighestValueX()+.25*24*60*60*1000);
                 graph.setTitle("Max Weight Over Time");
 
                 series.setDrawDataPoints(true);
@@ -134,11 +137,14 @@ public class LiftGraphFragment extends Fragment {
                 " ON " + TableConstants.DayTableName +"." +TableConstants.DayId +" = " +
                 TableConstants.MaxTableName + "." +TableConstants.DayId +
                 " WHERE " +TableConstants.MaxTableName + "." +TableConstants.ExerciseId
-                + " = " + exerciseId , null);
+                + " = " + exerciseId +
+                " GROUP BY " + TableConstants.DayDateLifted, null);
         c.moveToFirst();
 
         /* Get date formatter */
         DateFormat dateFormat = new SimpleDateFormat(getString(R.string.date_format), Locale.US);
+
+        Log.e(TAG, "Max Count: " + c.getCount());
 
         /* Add the maxes to the line series */
         while(!c.isAfterLast()){
@@ -152,7 +158,7 @@ public class LiftGraphFragment extends Fragment {
 
 
         /* close cursor and db */
-                c.close();
+        c.close();
         db.close();
     }
 }
