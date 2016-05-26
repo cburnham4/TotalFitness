@@ -10,9 +10,12 @@ import android.os.Bundle;
 
 import android.support.v4.app.Fragment;
 import android.util.Log;
+import android.view.ContextMenu;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
@@ -51,7 +54,9 @@ public class AddLiftSetFragment extends Fragment {
     /* ArrayList of sets */
     ArrayList<LiftSet> liftSets;
 
-    /* Listview */
+    /* Views */
+    EditText repCount;
+    EditText weightCount;
     ListView lv_setList;
 
     /* ListView Adapter */
@@ -59,6 +64,12 @@ public class AddLiftSetFragment extends Fragment {
 
     /* Add set listener */
     AddLiftSetListener addLiftSetListener;
+    DeleteLiftSetListner deleteLiftSetListner;
+
+    /* Boolean  and id for if the liftSet is being editted */
+    boolean editing;
+    int editId;
+    LiftSet editLiftSet;
 
     public AddLiftSetFragment() {
         // Required empty public constructor
@@ -68,6 +79,8 @@ public class AddLiftSetFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Bundle args = getArguments();
+
+        editing = false;
 
         liftSets = new ArrayList<>();
 
@@ -95,6 +108,8 @@ public class AddLiftSetFragment extends Fragment {
         /* Set listview Adapter */
         setListAdapter =  new SetListAdapter(this.getContext(), liftSets);
         lv_setList.setAdapter(setListAdapter);
+
+        registerForContextMenu(lv_setList);
         return view;
     }
 
@@ -107,8 +122,8 @@ public class AddLiftSetFragment extends Fragment {
         Button subWeight = (Button) view.findViewById(R.id.btn_subWeight);
         Button btn_cancel = (Button) view.findViewById(R.id.btn_clearValues);
         final Button addWeight = (Button) view.findViewById(R.id.btn_addWeight);
-        final EditText repCount = (EditText) view.findViewById(R.id.et_reps);
-        final EditText weightCount = (EditText) view.findViewById(R.id.et_weight);
+        repCount = (EditText) view.findViewById(R.id.et_reps);
+        weightCount = (EditText) view.findViewById(R.id.et_weight);
 
         lv_setList = (ListView) view.findViewById(R.id.lv_setsList);
 
@@ -137,15 +152,15 @@ public class AddLiftSetFragment extends Fragment {
         });
         addWeight.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                int weight = Integer.parseInt(weightCount.getText().toString());
-                weightCount.setText(weight+5 +"");
+                double weight = Double.parseDouble(weightCount.getText().toString());
+                weightCount.setText(String.format(Locale.US, "%.1f", weight+5));
             }
         });
         subWeight.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                int weight = Integer.parseInt(weightCount.getText().toString());
-                if(weight > 4){
-                    weightCount.setText(weight - 5 + "");
+                double weight = Double.parseDouble(weightCount.getText().toString());
+                if(weight >= 5){
+                    weightCount.setText(String.format(Locale.US, "%.1f", weight-5));
                 }
 
             }
@@ -154,12 +169,21 @@ public class AddLiftSetFragment extends Fragment {
         addSet.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 if(!weightCount.getText().toString().isEmpty() && !repCount.getText().toString().isEmpty()){
+
                     double weight = Double.parseDouble(weightCount.getText().toString());
                     int reps = Integer.parseInt(repCount.getText().toString());
                     if(weight == 0 || reps == 0){
                         Toast.makeText(getContext(), "Atleast one attribute is 0", Toast.LENGTH_SHORT).show();
-                    }else{
+                        if (editing){
+                            editing = false;
+                            Toast.makeText(getContext(), "You are no longer in edit mode", Toast.LENGTH_SHORT).show();
+                        }
+                    }else if (!editing){
+                        /* if not editing than add to db (*/
                         addToDB(weight, reps);
+                    }else{ /* If editing then add to db */
+                        updateLiftSet(weight, reps);
+                        editing = false;
                     }
 
                 }
@@ -208,7 +232,7 @@ public class AddLiftSetFragment extends Fragment {
         addLiftSetListener.addNewLiftSet(liftSet);
 
         /* Add recent lift to Maxes */
-        inputCalculatedMAX(weight, reps);
+        inputCalculatedMAX(weight, reps, sid);
     }
 
     /* Add date to db id it does not already exist */
@@ -270,7 +294,7 @@ public class AddLiftSetFragment extends Fragment {
         return max;
     }
 
-    private void inputCalculatedMAX(double weight, int reps){
+    private void inputCalculatedMAX(double weight, int reps, int sid){
         /*
             max calculations taken from http://www.weightrainer.net/training/coefficients.html
          */
@@ -315,6 +339,7 @@ public class AddLiftSetFragment extends Fragment {
 
         values.put(TableConstants.DayId, dayId);
         values.put(TableConstants.ExerciseId, exerciseId);
+        values.put(TableConstants.SetsId, sid);
         values.put(TableConstants.MaxWeight, max);
 
         /* Insert the values into the DB */
@@ -322,11 +347,11 @@ public class AddLiftSetFragment extends Fragment {
     }
 
     public interface AddLiftSetListener{
-        public void addNewLiftSet(LiftSet liftSet);
+        void addNewLiftSet(LiftSet liftSet);
     }
 
-    public void setListener(AddLiftSetListener addLiftSetListener){
-        this.addLiftSetListener = addLiftSetListener;
+    public interface DeleteLiftSetListner{
+        void deleteNewLiftSet(LiftSet liftSet);
     }
 
     @Override
@@ -337,10 +362,83 @@ public class AddLiftSetFragment extends Fragment {
         // the callback interface. If not, it throws an exception
         try {
             addLiftSetListener = (AddLiftSetListener) activity;
+            deleteLiftSetListner = (DeleteLiftSetListner) activity;
         } catch (ClassCastException e) {
             throw new ClassCastException(activity.toString()
                     + " must implement OnHeadlineSelectedListener");
         }
+    }
+
+    /* Create context menu upon holding down listview row */
+    public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
+        super.onCreateContextMenu(menu, v, menuInfo);
+        getActivity().getMenuInflater().inflate(R.menu.menu_context_edit_delete, menu);
+
+    }
+
+    public boolean onContextItemSelected(MenuItem item) {
+        if (getUserVisibleHint()) {
+            // context menu logic
+            AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
+            switch(item.getItemId()){
+                case R.id.delete:
+                /* todo confirm that the user wants to delete item */
+                    deleteItem(liftSets.get(info.position));
+                    break;
+                case R.id.edit:
+                    editItem(liftSets.get(info.position));
+                    break;
+
+            }
+            return true;
+        }
+
+        return false;
+    }
+
+    public void deleteItem(LiftSet liftSet){
+        SQLiteDatabase db = databaseHelper.getWritableDatabase();
+
+        /* Delete from Exercise table and routines table by using exercise id */
+        db.delete(TableConstants.SetsTableName, TableConstants.SetsId + " = " + liftSet.getSetId(), null);
+        db.delete(TableConstants.MaxTableName, TableConstants.SetsId + " = " + liftSet.getSetId(), null);
+
+        db.close();
+
+        /* Remove item from list and update list view */
+        liftSets.remove(liftSet);
+        setListAdapter.notifyDataSetChanged();
+        /* Todo add callback */
+
+        deleteLiftSetListner.deleteNewLiftSet(liftSet);
+    }
+    public void editItem(LiftSet liftSet){
+        editing = true;
+        repCount.setText(""+liftSet.getReps());
+        weightCount.setText(String.format(Locale.US, "%.1f", liftSet.getWeight()));
+        editLiftSet = liftSet;
+    }
+
+    public void updateLiftSet(double weight, int reps){
+        SQLiteDatabase db = databaseHelper.getWritableDatabase();
+        ContentValues values = new ContentValues();
+
+        /* Put in the new values */
+        values.put(TableConstants.SetReps, reps);
+        values.put(TableConstants.SetWeight, weight);
+
+        /* Update database on set id */
+        db.update(TableConstants.SetsTableName, values,
+                TableConstants.SetsId + " = " + editLiftSet.getSetId(), null);
+        db.close();
+
+        /* update item in fragment context*/
+        editLiftSet.setReps(reps);
+        editLiftSet.setWeight(weight);
+
+
+        /* Update List view with new information */
+        setListAdapter.notifyDataSetChanged();
     }
 
 }

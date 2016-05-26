@@ -67,12 +67,15 @@ public class DatabaseHelper  extends SQLiteOpenHelper {
             "CREATE TABLE " + TableConstants.MaxTableName+ " ( " +
                     TableConstants.MaxId +" integer primary key AUTOINCREMENT, " +
                     TableConstants.DayId +" integer, " +
+                    TableConstants.SetsId+ " integer, " +
                     TableConstants.ExerciseId + " integer, " +
                     TableConstants.MaxWeight +" REAL, " +
                     "FOREIGN KEY(" + TableConstants.DayId + ") " +
                     "REFERENCES " + TableConstants.DayTableName + "(" + TableConstants.DayId + ") " +
                     "FOREIGN KEY(" + TableConstants.ExerciseId + ") " +
                     "REFERENCES " + TableConstants.ExerciseTableName + "(" + TableConstants.ExerciseId + ") " +
+                    "FOREIGN KEY(" + TableConstants.SetsId + ") " +
+                    "REFERENCES " + TableConstants.SetsTableName + "(" + TableConstants.SetsId + ") " +
                     " )";
 
     public DatabaseHelper(Context context) {

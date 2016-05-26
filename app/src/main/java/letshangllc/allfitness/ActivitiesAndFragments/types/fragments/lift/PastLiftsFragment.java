@@ -142,14 +142,37 @@ public class PastLiftsFragment extends Fragment {
         db.close();
     }
 
+    /* Add new liftset to most current when set it added */
+    /* todo check the day */
     public void updateNewLiftSet(LiftSet liftSet) {
         /* If the set set is not empty add on the new item */
-
         if(pastLiftSets.size()!=0){
                     /* Add the inserted item to the first recycleview item */
             PastLiftSet pastLiftSet = pastLiftSets.get(0);
             pastLiftSet.getLiftSets().add(liftSet);
             mAdapter.notifyItemChanged(0);
+        }
+    }
+
+    public void deleteLiftSet(LiftSet liftSet){
+        Log.i(TAG, "Deleting Liftset");
+        /* If the set set is not empty add on the new item */
+        if(pastLiftSets.size()!=0){
+            /* Remove the liftset from the first recycleview item */
+            PastLiftSet pastLiftSet = pastLiftSets.get(0);
+            /* Find the liftset to be deleted and remove it */
+            Log.i(TAG, "Liftset Id: " + liftSet.getSetId());
+            for(LiftSet item: pastLiftSet.getLiftSets()){
+                Log.i(TAG, "Item Id: " + item.getSetId());
+                if(item.getSetId() == liftSet.getSetId()){
+                    pastLiftSet.getLiftSets().remove(item);
+                    mAdapter.notifyItemChanged(0);
+                    break;
+                }
+            }
+
+
+
         }
     }
 }

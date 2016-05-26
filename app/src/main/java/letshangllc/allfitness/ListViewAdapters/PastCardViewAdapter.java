@@ -48,6 +48,9 @@ public class PastCardViewAdapter extends RecyclerView.Adapter<PastCardViewAdapte
         // - replace the contents of the view with that itemsData
         String sets = "";
         PastLiftSet itemSet = items.get(position);
+
+        /* If there are no lifts then display nothing */
+
         for(LiftSet item: itemSet.getLiftSets()){
             sets += (String.format(Locale.US,"REPS: %2d  |  WEIGHT: %.1f\n", item.getReps(), item.getWeight()));
         }

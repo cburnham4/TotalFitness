@@ -25,6 +25,8 @@ import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
+import letshangllc.allfitness.ClassObjects.LiftSet;
+import letshangllc.allfitness.ClassObjects.PastLiftSet;
 import letshangllc.allfitness.Database.DatabaseHelper;
 import letshangllc.allfitness.Database.TableConstants;
 import letshangllc.allfitness.R;
@@ -61,7 +63,7 @@ public class LiftGraphFragment extends Fragment {
         graph = (GraphView) view.findViewById(R.id.graph);
 
         /* createGraph */
-        createGraph(lineGraphSeries, 0);
+        createGraph();
         return view;
     }
 
@@ -86,9 +88,9 @@ public class LiftGraphFragment extends Fragment {
     }
 
     /* todo just change the x min and x max for times */
-    private void createGraph(LineGraphSeries<DataPoint> series, int maxIfOne){
+    private void createGraph(){
         graph.getGridLabelRenderer().setLabelFormatter(new DateAsXAxisLabelFormatter(this.getContext()));
-        if(!series.isEmpty()){
+        if(!lineGraphSeries.isEmpty()){
             graph.getGridLabelRenderer().setNumHorizontalLabels(3);
             graph.getViewport().setXAxisBoundsManual(true);
 
@@ -108,17 +110,17 @@ public class LiftGraphFragment extends Fragment {
                 graph.getViewport().setMaxY(dataPoint.getY() + 10);
                 graph.setTitle("Max Weight Over Time");
             }else{
-                graph.getViewport().setMinX(series.getLowestValueX()-.25*24*60*60*1000);
-                graph.getViewport().setMaxX(series.getHighestValueX()+.25*24*60*60*1000);
+                graph.getViewport().setMinX(lineGraphSeries.getLowestValueX()-.25*24*60*60*1000);
+                graph.getViewport().setMaxX(lineGraphSeries.getHighestValueX()+.25*24*60*60*1000);
                 graph.setTitle("Max Weight Over Time");
 
-                series.setDrawDataPoints(true);
-                series.setDataPointsRadius(10);
-                series.setThickness(4);
+                lineGraphSeries.setDrawDataPoints(true);
+                lineGraphSeries.setDataPointsRadius(10);
+                lineGraphSeries.setThickness(4);
 
                 graph.getViewport().setScalable(true);
                 graph.getViewport().setScrollable(true);
-                graph.addSeries(series);
+                graph.addSeries(lineGraphSeries);
             }
 
 
@@ -160,5 +162,10 @@ public class LiftGraphFragment extends Fragment {
         /* close cursor and db */
         c.close();
         db.close();
+    }
+
+    public void updateNewLiftSet() throws ParseException {
+        getExistingData();
+        createGraph();
     }
 }

@@ -11,6 +11,7 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
 
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -24,7 +25,7 @@ import letshangllc.allfitness.ClassObjects.LiftSet;
 import letshangllc.allfitness.Dialogs.AddExerciseDialog;
 import letshangllc.allfitness.R;
 
-public class ExerciseActivity extends AppCompatActivity implements AddLiftSetFragment.AddLiftSetListener{
+public class ExerciseActivity extends AppCompatActivity implements AddLiftSetFragment.AddLiftSetListener, AddLiftSetFragment.DeleteLiftSetListner{
     private final static String TAG  = ExerciseActivity.class.getSimpleName();
 
     private int frag2Id;
@@ -102,8 +103,32 @@ public class ExerciseActivity extends AppCompatActivity implements AddLiftSetFra
         Log.e(TAG, "FRAGMENTS: "+ 0);
         PastLiftsFragment pastLiftsFragment = (PastLiftsFragment)getSupportFragmentManager().getFragments().get(0);
 
+        /* Get update the graph if it has already been created */
+        try{
+            LiftGraphFragment liftGraphFragment = (LiftGraphFragment) getSupportFragmentManager().getFragments().get(2);
+            liftGraphFragment.updateNewLiftSet();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
         pastLiftsFragment.updateNewLiftSet(liftSet);
     }
+
+    @Override
+    public void deleteNewLiftSet(LiftSet liftSet) {
+        PastLiftsFragment pastLiftsFragment = (PastLiftsFragment)getSupportFragmentManager().getFragments().get(0);
+
+        /* Get update the graph if it has already been created */
+        try{
+            LiftGraphFragment liftGraphFragment = (LiftGraphFragment) getSupportFragmentManager().getFragments().get(2);
+            liftGraphFragment.updateNewLiftSet();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        Log.i(TAG, "Deleting Liftset");
+        pastLiftsFragment.deleteLiftSet(liftSet);
+    }
+
 
     class ViewPagerAdapter extends FragmentPagerAdapter {
         private final List<Fragment> mFragmentList = new ArrayList<>();
