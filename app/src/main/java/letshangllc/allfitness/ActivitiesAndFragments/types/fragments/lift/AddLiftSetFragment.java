@@ -62,9 +62,10 @@ public class AddLiftSetFragment extends Fragment {
     /* ListView Adapter */
     SetListAdapter setListAdapter;
 
-    /* Add set listener */
+    /* Add set listeners */
     AddLiftSetListener addLiftSetListener;
     DeleteLiftSetListner deleteLiftSetListner;
+    EditLiftSetListner editLiftSetListner;
 
     /* Boolean  and id for if the liftSet is being editted */
     boolean editing;
@@ -190,8 +191,7 @@ public class AddLiftSetFragment extends Fragment {
             }
         });
     }
-    /* todo add delete optiotn */
-    /* todo add edit option */
+
     public void getExistingData(){
         SQLiteDatabase db = databaseHelper.getReadableDatabase();
          /* Query the db to get the muscle data */
@@ -354,6 +354,10 @@ public class AddLiftSetFragment extends Fragment {
         void deleteNewLiftSet(LiftSet liftSet);
     }
 
+    public interface EditLiftSetListner{
+        void editNewLiftSet(LiftSet liftSet);
+    }
+
     @Override
     public void onAttach(Context activity) {
         super.onAttach(activity);
@@ -363,6 +367,7 @@ public class AddLiftSetFragment extends Fragment {
         try {
             addLiftSetListener = (AddLiftSetListener) activity;
             deleteLiftSetListner = (DeleteLiftSetListner) activity;
+            editLiftSetListner = (EditLiftSetListner) activity;
         } catch (ClassCastException e) {
             throw new ClassCastException(activity.toString()
                     + " must implement OnHeadlineSelectedListener");
@@ -412,6 +417,7 @@ public class AddLiftSetFragment extends Fragment {
 
         deleteLiftSetListner.deleteNewLiftSet(liftSet);
     }
+
     public void editItem(LiftSet liftSet){
         editing = true;
         repCount.setText(""+liftSet.getReps());
@@ -430,12 +436,56 @@ public class AddLiftSetFragment extends Fragment {
         /* Update database on set id */
         db.update(TableConstants.SetsTableName, values,
                 TableConstants.SetsId + " = " + editLiftSet.getSetId(), null);
-        db.close();
+
 
         /* update item in fragment context*/
         editLiftSet.setReps(reps);
         editLiftSet.setWeight(weight);
 
+        double max;
+
+        /* set the max baed on the number of reps */
+        switch(reps){
+            case 1:
+                max = weight;
+                break;
+            case 2:
+                max = weight*1.042;
+                break;
+            case 3:
+                max = weight*1.072;
+                break;
+            case 4:
+                max = weight*1.104;
+                break;
+            case 5:
+                max = weight*1.137;
+                break;
+            case 6:
+                max = weight *1.173;
+                break;
+            case 7:
+                max = weight * 1.211;
+                break;
+            case 8:
+                max = weight * 1.251;
+                break;
+            case 9:
+                max = weight * 1.294;
+                break;
+            default:
+                max = weight*1.341;
+        }
+
+        /* Prepare the values to be inserted */
+        ContentValues updateValues =  new ContentValues();
+        updateValues.put(TableConstants.MaxWeight, max);
+
+        /* Update database on set id */
+        db.update(TableConstants.MaxTableName, updateValues,
+                TableConstants.SetsId + " = " + editLiftSet.getSetId(), null);
+
+        editLiftSetListner.editNewLiftSet(editLiftSet);
 
         /* Update List view with new information */
         setListAdapter.notifyDataSetChanged();

@@ -25,7 +25,8 @@ import letshangllc.allfitness.ClassObjects.LiftSet;
 import letshangllc.allfitness.Dialogs.AddExerciseDialog;
 import letshangllc.allfitness.R;
 
-public class ExerciseActivity extends AppCompatActivity implements AddLiftSetFragment.AddLiftSetListener, AddLiftSetFragment.DeleteLiftSetListner{
+public class ExerciseActivity extends AppCompatActivity implements AddLiftSetFragment.AddLiftSetListener,
+        AddLiftSetFragment.DeleteLiftSetListner, AddLiftSetFragment.EditLiftSetListner{
     private final static String TAG  = ExerciseActivity.class.getSimpleName();
 
     private int frag2Id;
@@ -129,6 +130,21 @@ public class ExerciseActivity extends AppCompatActivity implements AddLiftSetFra
         pastLiftsFragment.deleteLiftSet(liftSet);
     }
 
+    @Override
+    public void editNewLiftSet(LiftSet liftSet) {
+        Log.e(TAG, "FRAGMENTS: "+ 0);
+        PastLiftsFragment pastLiftsFragment = (PastLiftsFragment)getSupportFragmentManager().getFragments().get(0);
+
+        /* Get update the graph if it has already been created */
+        try{
+            LiftGraphFragment liftGraphFragment = (LiftGraphFragment) getSupportFragmentManager().getFragments().get(2);
+            liftGraphFragment.updateNewLiftSet();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        pastLiftsFragment.editLiftSet(liftSet);
+    }
 
     class ViewPagerAdapter extends FragmentPagerAdapter {
         private final List<Fragment> mFragmentList = new ArrayList<>();
