@@ -88,7 +88,7 @@ public class ExercisesFragment extends Fragment {
         lv_exercises.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                /* Pass routine activity the id for the selected routine */
+                /* Pass exercise data to exercise activity */
                 Intent intent = new Intent(ExercisesFragment.this.getActivity(), ExerciseActivity.class);
                 ExerciseItem exerciseItem = exerciseListAdapter.getItem(position);
 

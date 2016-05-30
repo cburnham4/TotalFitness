@@ -10,6 +10,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import com.jjoe64.graphview.GraphView;
 import com.jjoe64.graphview.helper.DateAsXAxisLabelFormatter;
@@ -39,6 +40,8 @@ public class LiftGraphFragment extends Fragment {
 
     private GraphView graph;
 
+    private TextView tvNoData;
+
     /* DataPoints and series */
     private LineGraphSeries<DataPoint> lineGraphSeries;
     private ArrayList<DataPoint> dataPoints;
@@ -61,6 +64,14 @@ public class LiftGraphFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_lift_graph, container, false);
 
         graph = (GraphView) view.findViewById(R.id.graph);
+        tvNoData = (TextView) view.findViewById(R.id.tv_noData);
+
+        /* Attempt to get the existing data */
+        try {
+            getExistingData();
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
 
         /* createGraph */
         createGraph();
@@ -76,12 +87,7 @@ public class LiftGraphFragment extends Fragment {
 
         databaseHelper = new DatabaseHelper(this.getContext());
 
-        /* Attempt to get the existing data */
-        try {
-            getExistingData();
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
+
 
 
 
@@ -158,6 +164,13 @@ public class LiftGraphFragment extends Fragment {
             c.moveToNext();
         }
 
+        if(dataPoints.size() == 0){
+            tvNoData.setVisibility(View.VISIBLE);
+            graph.setVisibility(View.GONE);
+        }else{
+            tvNoData.setVisibility(View.GONE);
+            graph.setVisibility(View.VISIBLE);
+        }
 
         /* close cursor and db */
         c.close();

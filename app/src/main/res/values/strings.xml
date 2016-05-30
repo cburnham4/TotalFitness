@@ -15,7 +15,7 @@
     <!-- Exercise Dialog -->
     <string name="add_exercise">Add New Exercise</string>
     <string name="exercise_dialog_hint">Ex. Bench Press</string>
-    <string name="no_muscle_groups">No Muscle Groups</string>
+    <string name="no_muscle_group">No Muscle Group</string>
     <string name="edit_exercise">Edit Exercise</string>
 
     <!-- Routine Dialog -->
@@ -50,6 +50,9 @@
     <string name="sub_one">-1</string>
     <string name="add_one">1</string>
     <string name="zero">0</string>
+
+    <!-- Fragment Graph -->
+    <string name="no_data_available">No Data Available</string>
 
     <!-- Formatting -->
     <string name="date_format">dd-MM-yyyy</string>

@@ -82,10 +82,10 @@ public class AddExerciseDialog  extends DialogFragment {
             muscleGroups.add(new MuscleGroup(c.getInt(0), c.getString(1)));
             c.moveToNext();
         }
-        if(muscleGroups.size() == 0){
+
             muscleGroups.add(new MuscleGroup(getResources().getInteger(R.integer.fake_muscle_group_id),
-                    getString(R.string.no_muscle_groups)));
-        }
+                    getString(R.string.no_muscle_group)));
+
 
         // Create an ArrayAdapter using the string array and a default spinner layout
         ArrayAdapter<MuscleGroup> adapterMuscle = new ArrayAdapter<MuscleGroup>(getContext(),

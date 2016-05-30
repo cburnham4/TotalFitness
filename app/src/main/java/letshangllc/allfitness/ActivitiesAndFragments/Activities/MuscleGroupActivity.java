@@ -1,6 +1,7 @@
 package letshangllc.allfitness.ActivitiesAndFragments.Activities;
 
 import android.content.ContentValues;
+import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.support.design.widget.FloatingActionButton;
@@ -8,10 +9,12 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ListView;
 
 import java.util.ArrayList;
 
+import letshangllc.allfitness.ActivitiesAndFragments.MainFragments.ExercisesFragment;
 import letshangllc.allfitness.ClassObjects.ExerciseItem;
 import letshangllc.allfitness.ClassObjects.ExerciseType;
 import letshangllc.allfitness.Database.DatabaseHelper;
@@ -77,6 +80,23 @@ public class MuscleGroupActivity extends AppCompatActivity {
 
 
         lv_muscleGroupExercises = (ListView) findViewById(R.id.lv_muscle_exercises);
+
+        /* Create click listener for list view to go to exercise activity */
+        lv_muscleGroupExercises.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                /* Pass exercise data to exercise activity */
+                Intent intent = new Intent(MuscleGroupActivity.this, ExerciseActivity.class);
+                ExerciseItem exerciseItem = exerciseListAdapter.getItem(position);
+
+                /* Put extras in the intent */
+                intent.putExtra(getString(R.string.exercise_id), exerciseItem.getExerciseID());
+                intent.putExtra(getString(R.string.intent_value_name), exerciseItem.getExerciseName());
+                intent.putExtra(getString(R.string.type_id), exerciseItem.getExerciseType().getExerciseTypeID());
+
+                startActivity(intent);
+            }
+        });
     }
 
     /* Get Existing Data */
