@@ -100,7 +100,7 @@ public class EditExerciseDialog extends DialogFragment {
         }
         if(muscleGroups.size() == 0){
             muscleGroups.add(new MuscleGroup(getResources().getInteger(R.integer.fake_muscle_group_id),
-                    getString(R.string.no_muscle_groups)));
+                    getString(R.string.no_muscle_group)));
         }
 
         // Create an ArrayAdapter using the string array and a default spinner layout

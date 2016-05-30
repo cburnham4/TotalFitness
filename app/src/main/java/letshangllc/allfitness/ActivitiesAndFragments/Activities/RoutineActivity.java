@@ -1,6 +1,7 @@
 package letshangllc.allfitness.ActivitiesAndFragments.Activities;
 
 import android.content.ContentValues;
+import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.support.design.widget.FloatingActionButton;
@@ -67,6 +68,23 @@ public class RoutineActivity extends AppCompatActivity {
         exerciseListAdapter = new ExerciseListAdapter(this, exerciseItems);
         lv_routineExercises.setAdapter(exerciseListAdapter);
         registerForContextMenu(lv_routineExercises);
+
+        /* Create click listener for list view to go to exercise activity */
+        lv_routineExercises.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                /* Pass exercise data to exercise activity */
+                Intent intent = new Intent(RoutineActivity.this, ExerciseActivity.class);
+                ExerciseItem exerciseItem = exerciseListAdapter.getItem(position);
+
+                /* Put extras in the intent */
+                intent.putExtra(getString(R.string.exercise_id), exerciseItem.getExerciseID());
+                intent.putExtra(getString(R.string.intent_value_name), exerciseItem.getExerciseName());
+                intent.putExtra(getString(R.string.type_id), exerciseItem.getExerciseType().getExerciseTypeID());
+
+                startActivity(intent);
+            }
+        });
     }
 
     /* Get Existing Data */

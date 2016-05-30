@@ -5,10 +5,25 @@
     tools:context="letshangllc.allfitness.ActivitiesAndFragments.types.fragments.lift.LiftGraphFragment">
     <!-- Chart to view attendence -->
 
-    <com.jjoe64.graphview.GraphView
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="300dp"
-        android:id="@+id/graph"/>
+        android:layout_height="match_parent"
+        android:id="@+id/rel_graph">
+        <com.jjoe64.graphview.GraphView
+            android:layout_width="match_parent"
+            android:layout_height="300dp"
+            android:id="@+id/graph"/>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/graph">
+
+
+        </RelativeLayout>
+    </RelativeLayout>
+
+
 
     <TextView
         android:layout_width="wrap_content"

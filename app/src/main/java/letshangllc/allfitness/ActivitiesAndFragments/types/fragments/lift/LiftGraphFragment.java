@@ -10,6 +10,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.jjoe64.graphview.GraphView;
@@ -38,8 +39,9 @@ import letshangllc.allfitness.R;
 public class LiftGraphFragment extends Fragment {
     private static final String TAG= LiftGraphFragment.class.getSimpleName();
 
+    /* Views */
     private GraphView graph;
-
+    private RelativeLayout rel_graph;
     private TextView tvNoData;
 
     /* DataPoints and series */
@@ -64,7 +66,9 @@ public class LiftGraphFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_lift_graph, container, false);
 
         graph = (GraphView) view.findViewById(R.id.graph);
+        rel_graph = (RelativeLayout) view.findViewById(R.id.rel_graph);
         tvNoData = (TextView) view.findViewById(R.id.tv_noData);
+
 
         /* Attempt to get the existing data */
         try {
@@ -166,10 +170,10 @@ public class LiftGraphFragment extends Fragment {
 
         if(dataPoints.size() == 0){
             tvNoData.setVisibility(View.VISIBLE);
-            graph.setVisibility(View.GONE);
+            rel_graph.setVisibility(View.GONE);
         }else{
             tvNoData.setVisibility(View.GONE);
-            graph.setVisibility(View.VISIBLE);
+            rel_graph.setVisibility(View.VISIBLE);
         }
 
         /* close cursor and db */
