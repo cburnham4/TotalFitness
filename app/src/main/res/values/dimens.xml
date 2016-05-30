@@ -37,5 +37,10 @@
     <dimen name="card_past_text_margin">3dp</dimen>
     <dimen name="card_past_date_text_padding">3dp</dimen>
 
+    <!-- Graph Fragment -->
+    <dimen name="margin_between_dates">8dp</dimen>
+    <dimen name="graph_dateSelection_textsz">18sp</dimen>
+    <dimen name="margin_top_graph">8dp</dimen>
+
 
 </resources>

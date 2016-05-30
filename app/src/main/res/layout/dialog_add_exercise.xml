@@ -55,16 +55,6 @@
                 android:layout_gravity="center_horizontal"
                 android:layout_weight="5"/>
 
-            <!-- todo add an add muscle group button
-            <TextView
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="+"
-                android:textSize="44sp"
-                android:textColor="@android:color/black"
-                android:gravity="center" />-->
-
         </LinearLayout>
     </LinearLayout>
 

@@ -2,6 +2,7 @@ package letshangllc.allfitness.ActivitiesAndFragments.MainFragments;
 
 
 import android.content.ContentValues;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
@@ -9,6 +10,7 @@ import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
+import android.support.v7.app.AlertDialog;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
@@ -20,6 +22,7 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 
@@ -199,13 +202,13 @@ public class ExercisesFragment extends Fragment {
             @Override
             public void beforeTextChanged(CharSequence arg0, int arg1, int arg2,
                                           int arg3) {
-                // TODO Auto-generated method stub
+
 
             }
 
             @Override
             public void afterTextChanged(Editable arg0) {
-                // TODO Auto-generated method stub
+
             }
         });
     }
@@ -278,7 +281,8 @@ public class ExercisesFragment extends Fragment {
             switch(item.getItemId()){
                 case R.id.delete:
                 /* todo confirm that the user wants to delete item */
-                    deleteFromDatabase(exerciseItems.get(info.position));
+                    confirmDelete(exerciseItems.get(info.position));
+
                     break;
                 case R.id.edit:
                     editItem(exerciseItems.get(info.position));
@@ -289,6 +293,25 @@ public class ExercisesFragment extends Fragment {
         }
 
         return false;
+    }
+
+    public void confirmDelete(final ExerciseItem exerciseItem){
+        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+        builder.setTitle(getString(R.string.confirm_delete));
+
+        builder.setPositiveButton(getString(R.string.confirm), new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                deleteFromDatabase(exerciseItem);
+            }
+        }).setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.cancel();
+            }
+        });
+        AlertDialog alertDialog = builder.create();
+        alertDialog.show();
     }
 
 }
