@@ -2,12 +2,14 @@ package letshangllc.allfitness.ActivitiesAndFragments.MainFragments;
 
 
 import android.content.ContentValues;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
+import android.support.v7.app.AlertDialog;
 import android.view.ContextMenu;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
@@ -19,6 +21,7 @@ import android.widget.ListView;
 import java.util.ArrayList;
 
 import letshangllc.allfitness.ActivitiesAndFragments.Activities.RoutineActivity;
+import letshangllc.allfitness.ClassObjects.MuscleGroup;
 import letshangllc.allfitness.ClassObjects.Routine;
 import letshangllc.allfitness.Database.DatabaseHelper;
 import letshangllc.allfitness.Database.TableConstants;
@@ -175,8 +178,7 @@ public class RoutinesFragment extends Fragment {
             AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
             switch(item.getItemId()){
                 case R.id.delete:
-                /* todo confirm that the user wants to delete item */
-                    deleteFromDatabase(routines.get(info.position));
+                    confirmDelete(routines.get(info.position));
                     break;
                 case R.id.edit:
                     editItem(routines.get(info.position));
@@ -187,6 +189,25 @@ public class RoutinesFragment extends Fragment {
         }
 
         return false;
+    }
+
+    public void confirmDelete(final Routine routine){
+        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+        builder.setTitle(getString(R.string.confirm_delete));
+
+        builder.setPositiveButton(getString(R.string.confirm), new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                deleteFromDatabase(routine);
+            }
+        }).setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.cancel();
+            }
+        });
+        AlertDialog alertDialog = builder.create();
+        alertDialog.show();
     }
 
     /* Delete routine Item from DB */

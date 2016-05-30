@@ -48,9 +48,9 @@
     <string name="reps">REPS:</string>
     <string name="weight">WEIGHT:</string>
     <string name="sub_five">-5</string>
-    <string name="add_five">5</string>
+    <string name="add_five">+5</string>
     <string name="sub_one">-1</string>
-    <string name="add_one">1</string>
+    <string name="add_one">+1</string>
     <string name="zero">0</string>
 
     <!-- Fragment Graph -->

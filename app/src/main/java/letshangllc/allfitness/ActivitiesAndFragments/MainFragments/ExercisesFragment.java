@@ -280,14 +280,11 @@ public class ExercisesFragment extends Fragment {
             AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
             switch(item.getItemId()){
                 case R.id.delete:
-                /* todo confirm that the user wants to delete item */
                     confirmDelete(exerciseItems.get(info.position));
-
                     break;
                 case R.id.edit:
                     editItem(exerciseItems.get(info.position));
                     break;
-
             }
             return true;
         }
