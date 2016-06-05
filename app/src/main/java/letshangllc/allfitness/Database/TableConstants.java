@@ -26,18 +26,23 @@ public class TableConstants {
     /* Day Table Values */
     public static final String DayTableName = "DAY_TABLE";
     public static final String DayId = "DAY_ID";
-    public static final String DayDateLifted = "DAY_DATE_LIFTED";
-    public static final String DayLiftComment = "DAY_LIFT_COMMENT";
+    public static final String DayDate = "DAY_DATE";
+    public static final String DayComment = "DAY_COMMENT";
 
-    /* Set Table Values */
-    public static final String SetsTableName = "SETS_TABLE";
-    public static final String SetsId= "SETS_ID";
-    public static final String SetReps = "SETS_REPS";
-    public static final String SetWeight = "SET_WEIGHTS";
+    /* Lift Set Table Values */
+    public static final String LiftSetsTableName = "LIFT_SETS_TABLE";
+    public static final String LiftSetsId = "LIFT_SETS_ID";
+    public static final String LiftSetReps = "LIFT_SETS_REPS";
+    public static final String LiftSetWeight = "LIFT_SET_WEIGHTS";
 
-    /* Max Table Values */
+    /* Max Lift Table Values */
     public static final String MaxTableName = "MAXES_TABLE";
     public static final String MaxId = "MAX_ID";
     public static final String MaxWeight = "MAX_WEIGHT";
 
+    /* Cardio Set Table Values */
+    public static final String CardioSetsTableName = "CARDIO_SETS_TABLE";
+    public static final String CardioSetsId = "CARDIO_SETS_ID";
+    public static final String CardioSetDistance = "CARDIO_SET_DISTANCE";
+    public static final String CardioSetTime = "CARDIO_SET_TIME";
 }

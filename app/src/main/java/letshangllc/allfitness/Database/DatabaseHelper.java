@@ -47,35 +47,45 @@ public class DatabaseHelper  extends SQLiteOpenHelper {
             "CREATE TABLE " + TableConstants.DayTableName + " ( " +
                     TableConstants.DayId+ " integer primary key AUTOINCREMENT, " +
                     TableConstants.ExerciseId + " integer, " +
-                    TableConstants.DayDateLifted + " text, " +
-                    TableConstants.DayLiftComment + " text, " +
+                    TableConstants.DayDate + " text, " +
+                    TableConstants.DayComment + " text, " +
                     "FOREIGN KEY(" + TableConstants.ExerciseId + ") " +
                     "REFERENCES " + TableConstants.ExerciseTableName + "(" + TableConstants.ExerciseId + ") " +
                     " )";
 
-    private static final String CREATE_SETS_TABLE =
-            "CREATE TABLE " + TableConstants.SetsTableName+ " ( " +
-                    TableConstants.SetsId+ " integer primary key AUTOINCREMENT, " +
+    private static final String CREATE_LIFT_SET_TABLE =
+            "CREATE TABLE " + TableConstants.LiftSetsTableName + " ( " +
+                    TableConstants.LiftSetsId + " integer primary key AUTOINCREMENT, " +
                     TableConstants.DayId + " integer, " +
-                    TableConstants.SetReps + " integer, " +
-                    TableConstants.SetWeight + " real, " +
+                    TableConstants.LiftSetReps + " integer, " +
+                    TableConstants.LiftSetWeight + " real, " +
                     "FOREIGN KEY(" + TableConstants.DayId + ") " +
                     "REFERENCES " + TableConstants.DayTableName + "(" + TableConstants.DayId + ") " +
                     " )";
 
-    private static final String CREATE_MAX_TABLE=
+    private static final String CREATE_MAX_TABLE =
             "CREATE TABLE " + TableConstants.MaxTableName+ " ( " +
                     TableConstants.MaxId +" integer primary key AUTOINCREMENT, " +
                     TableConstants.DayId +" integer, " +
-                    TableConstants.SetsId+ " integer, " +
+                    TableConstants.LiftSetsId + " integer, " +
                     TableConstants.ExerciseId + " integer, " +
                     TableConstants.MaxWeight +" REAL, " +
                     "FOREIGN KEY(" + TableConstants.DayId + ") " +
                     "REFERENCES " + TableConstants.DayTableName + "(" + TableConstants.DayId + ") " +
                     "FOREIGN KEY(" + TableConstants.ExerciseId + ") " +
                     "REFERENCES " + TableConstants.ExerciseTableName + "(" + TableConstants.ExerciseId + ") " +
-                    "FOREIGN KEY(" + TableConstants.SetsId + ") " +
-                    "REFERENCES " + TableConstants.SetsTableName + "(" + TableConstants.SetsId + ") " +
+                    "FOREIGN KEY(" + TableConstants.LiftSetsId + ") " +
+                    "REFERENCES " + TableConstants.LiftSetsTableName + "(" + TableConstants.LiftSetsId + ") " +
+                    " )";
+
+    private static final String CREATE_CARDIO_SETS_TABLE =
+            "CREATE TABLE " + TableConstants.CardioSetsTableName + " ( " +
+                    TableConstants.CardioSetsId + " integer primary key AUTOINCREMENT, " +
+                    TableConstants.CardioSetDistance + " REAL, " +
+                    TableConstants.CardioSetTime + " REAL, " +
+                    TableConstants.DayId + " integer, " +
+                    "FOREIGN KEY(" + TableConstants.DayId + ") " +
+                    "REFERENCES " + TableConstants.DayTableName + "(" + TableConstants.DayId + ") " +
                     " )";
 
     public DatabaseHelper(Context context) {
@@ -89,8 +99,9 @@ public class DatabaseHelper  extends SQLiteOpenHelper {
         db.execSQL(CREATE_ROUTINE_TABLE);
         db.execSQL(CREATE_ROUTINES_TABLE);
         db.execSQL(CREATE_DAYS_TABLE);
-        db.execSQL(CREATE_SETS_TABLE);
+        db.execSQL(CREATE_LIFT_SET_TABLE);
         db.execSQL(CREATE_MAX_TABLE);
+        db.execSQL(CREATE_CARDIO_SETS_TABLE);
         //
     }
     @Override

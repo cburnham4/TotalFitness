@@ -195,8 +195,8 @@ public class AddLiftSetFragment extends Fragment {
     public void getExistingData(){
         SQLiteDatabase db = databaseHelper.getReadableDatabase();
          /* Query the db to get the muscle data */
-        String[] projection = {TableConstants.SetsId, TableConstants.SetReps,  TableConstants.SetWeight};
-        Cursor c = db.query(TableConstants.SetsTableName, projection, TableConstants.DayId +" = "+ dayId,
+        String[] projection = {TableConstants.LiftSetsId, TableConstants.LiftSetReps,  TableConstants.LiftSetWeight};
+        Cursor c = db.query(TableConstants.LiftSetsTableName, projection, TableConstants.DayId +" = "+ dayId,
                 null, null, null, null);
         c.moveToFirst();
 
@@ -214,10 +214,10 @@ public class AddLiftSetFragment extends Fragment {
         //PUT SET INTO SETS
         ContentValues values = new ContentValues();
         values.put(TableConstants.DayId, dayId);
-        values.put(TableConstants.SetReps, reps);
-        values.put(TableConstants.SetWeight, weight);
+        values.put(TableConstants.LiftSetReps, reps);
+        values.put(TableConstants.LiftSetWeight, weight);
 
-        db.insert(TableConstants.SetsTableName, null,values);
+        db.insert(TableConstants.LiftSetsTableName, null,values);
 
         /* Add new set into the listview */
         int sid = getMaxSetId();
@@ -242,7 +242,7 @@ public class AddLiftSetFragment extends Fragment {
         String[] projection = {TableConstants.DayId};
 
         /* Query the exercise table based on the muscle id to get all the associated exercises */
-        Cursor c = db.query(TableConstants.DayTableName, projection, TableConstants.DayDateLifted
+        Cursor c = db.query(TableConstants.DayTableName, projection, TableConstants.DayDate
                 + " = '" + currentDate + "' AND " + TableConstants.ExerciseId +" = "+ exerciseId, null, null, null, null);
 
         c.moveToFirst();
@@ -259,7 +259,7 @@ public class AddLiftSetFragment extends Fragment {
          /* Else insert in a new day */
         ContentValues values = new ContentValues();
         values.put(TableConstants.ExerciseId, exerciseId);
-        values.put(TableConstants.DayDateLifted, currentDate);
+        values.put(TableConstants.DayDate, currentDate);
 
          /* Insert values into db */
         db.insert(TableConstants.DayTableName, null, values);
@@ -285,7 +285,7 @@ public class AddLiftSetFragment extends Fragment {
     /* Get the id of the last Day Id */
     private int getMaxSetId(){
         SQLiteDatabase db = databaseHelper.getReadableDatabase();
-        String sql = "SELECT Max("+ TableConstants.SetsId +") FROM "+ TableConstants.SetsTableName;
+        String sql = "SELECT Max("+ TableConstants.LiftSetsId +") FROM "+ TableConstants.LiftSetsTableName;
         Cursor c = db.rawQuery(sql, null);
         c.moveToFirst();
         int max = c.getInt(0);
@@ -339,7 +339,7 @@ public class AddLiftSetFragment extends Fragment {
 
         values.put(TableConstants.DayId, dayId);
         values.put(TableConstants.ExerciseId, exerciseId);
-        values.put(TableConstants.SetsId, sid);
+        values.put(TableConstants.LiftSetsId, sid);
         values.put(TableConstants.MaxWeight, max);
 
         /* Insert the values into the DB */
@@ -423,8 +423,8 @@ public class AddLiftSetFragment extends Fragment {
         SQLiteDatabase db = databaseHelper.getWritableDatabase();
 
         /* Delete from Exercise table and routines table by using exercise id */
-        db.delete(TableConstants.SetsTableName, TableConstants.SetsId + " = " + liftSet.getSetId(), null);
-        db.delete(TableConstants.MaxTableName, TableConstants.SetsId + " = " + liftSet.getSetId(), null);
+        db.delete(TableConstants.LiftSetsTableName, TableConstants.LiftSetsId + " = " + liftSet.getSetId(), null);
+        db.delete(TableConstants.MaxTableName, TableConstants.LiftSetsId + " = " + liftSet.getSetId(), null);
 
         db.close();
 
@@ -448,12 +448,12 @@ public class AddLiftSetFragment extends Fragment {
         ContentValues values = new ContentValues();
 
         /* Put in the new values */
-        values.put(TableConstants.SetReps, reps);
-        values.put(TableConstants.SetWeight, weight);
+        values.put(TableConstants.LiftSetReps, reps);
+        values.put(TableConstants.LiftSetWeight, weight);
 
         /* Update database on set id */
-        db.update(TableConstants.SetsTableName, values,
-                TableConstants.SetsId + " = " + editLiftSet.getSetId(), null);
+        db.update(TableConstants.LiftSetsTableName, values,
+                TableConstants.LiftSetsId + " = " + editLiftSet.getSetId(), null);
 
 
         /* update item in fragment context*/
@@ -501,7 +501,7 @@ public class AddLiftSetFragment extends Fragment {
 
         /* Update database on set id */
         db.update(TableConstants.MaxTableName, updateValues,
-                TableConstants.SetsId + " = " + editLiftSet.getSetId(), null);
+                TableConstants.LiftSetsId + " = " + editLiftSet.getSetId(), null);
 
         editLiftSetListner.editNewLiftSet(editLiftSet);
 

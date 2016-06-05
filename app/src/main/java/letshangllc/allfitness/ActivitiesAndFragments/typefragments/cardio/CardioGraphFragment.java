@@ -219,13 +219,13 @@ public class CardioGraphFragment extends Fragment {
         /* Get db and query data */
         SQLiteDatabase db = databaseHelper.getReadableDatabase();
         Cursor c = db.rawQuery("SELECT MAX("+ TableConstants.MaxWeight +") " +
-                ", " + TableConstants.DayDateLifted + " " +
+                ", " + TableConstants.DayDate + " " +
                 "FROM "+ TableConstants.DayTableName +" INNER JOIN " +TableConstants.MaxTableName +
                 " ON " + TableConstants.DayTableName +"." +TableConstants.DayId +" = " +
                 TableConstants.MaxTableName + "." +TableConstants.DayId +
                 " WHERE " +TableConstants.MaxTableName + "." +TableConstants.ExerciseId
                 + " = " + exerciseId +
-                " GROUP BY " + TableConstants.DayDateLifted +
+                " GROUP BY " + TableConstants.DayDate +
                 " ORDER BY " + TableConstants.MaxTableName + "." +TableConstants.DayId +" ASC", null);
         c.moveToFirst();
 

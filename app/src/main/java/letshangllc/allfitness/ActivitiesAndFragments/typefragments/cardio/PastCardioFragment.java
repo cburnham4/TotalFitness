@@ -89,7 +89,7 @@ public class PastCardioFragment extends Fragment {
         SQLiteDatabase db = databaseHelper.getReadableDatabase();
 
         /* Get day ids and dates */
-        String[] projection = {TableConstants.DayId, TableConstants.DayDateLifted};
+        String[] projection = {TableConstants.DayId, TableConstants.DayDate};
 
         /* Create an arraylist of the dates and Dayid*/
         ArrayList<String> dates = new ArrayList<>();
@@ -117,8 +117,8 @@ public class PastCardioFragment extends Fragment {
         int i = 0;
         for (Integer dayId : dayIds) {
             /* Query the sets table based on dayId */
-            String[] projection2 = {TableConstants.SetsId, TableConstants.SetReps, TableConstants.SetWeight};
-            c = db.query(TableConstants.SetsTableName, projection2, TableConstants.DayId + " = "
+            String[] projection2 = {TableConstants.LiftSetsId, TableConstants.LiftSetReps, TableConstants.LiftSetWeight};
+            c = db.query(TableConstants.LiftSetsTableName, projection2, TableConstants.DayId + " = "
                     + dayId, null, null, null, null);
 
 
