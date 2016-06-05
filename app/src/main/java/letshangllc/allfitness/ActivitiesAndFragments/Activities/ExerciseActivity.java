@@ -14,6 +14,9 @@ import android.view.View;
 import java.util.ArrayList;
 import java.util.List;
 
+import letshangllc.allfitness.ActivitiesAndFragments.typefragments.cardio.AddCardioSetFragment;
+import letshangllc.allfitness.ActivitiesAndFragments.typefragments.cardio.CardioGraphFragment;
+import letshangllc.allfitness.ActivitiesAndFragments.typefragments.cardio.PastCardioFragment;
 import letshangllc.allfitness.ActivitiesAndFragments.typefragments.lift.AddLiftSetFragment;
 import letshangllc.allfitness.ActivitiesAndFragments.typefragments.lift.LiftGraphFragment;
 import letshangllc.allfitness.ActivitiesAndFragments.typefragments.lift.PastLiftsFragment;
@@ -23,8 +26,6 @@ import letshangllc.allfitness.R;
 public class ExerciseActivity extends AppCompatActivity implements AddLiftSetFragment.AddLiftSetListener,
         AddLiftSetFragment.DeleteLiftSetListner, AddLiftSetFragment.EditLiftSetListner{
     private final static String TAG  = ExerciseActivity.class.getSimpleName();
-
-    private int frag2Id;
 
     /* Bundle to pass to each of the fragments */
     Bundle args;
@@ -73,13 +74,20 @@ public class ExerciseActivity extends AppCompatActivity implements AddLiftSetFra
             case 0: // BODYWEIGHT
                 break;
             case 1: // CARDIO
+                Fragment frag1Cardio  = new AddCardioSetFragment();
+                frag1Cardio.setArguments(args);
+                Fragment frag2Cardio  = new PastCardioFragment();
+                frag2Cardio.setArguments(args);
+                Fragment frag3Cardio = new CardioGraphFragment();
+                frag3Cardio.setArguments(args);
+                adapter.addFragment(frag1Cardio, "Add Set");
+                adapter.addFragment(frag2Cardio, "Past Lifts");
+                adapter.addFragment(frag3Cardio, "Graph");
                 break;
             case 2: // LIFT
                 Fragment frag1  = new AddLiftSetFragment();
                 frag1.setArguments(args);
                 Fragment frag2 = new PastLiftsFragment();
-                frag2Id = frag2.getId();
-
                 frag2.setArguments(args);
                 Fragment frag3 = new LiftGraphFragment();
                 frag3.setArguments(args);
