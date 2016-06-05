@@ -1,10 +1,9 @@
-package letshangllc.allfitness.ActivitiesAndFragments.types.fragments.lift;
+package letshangllc.allfitness.ActivitiesAndFragments.typefragments.lift;
 
 
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -25,11 +24,8 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
 import java.util.Locale;
 
-import letshangllc.allfitness.ClassObjects.LiftSet;
-import letshangllc.allfitness.ClassObjects.PastLiftSet;
 import letshangllc.allfitness.Database.DatabaseHelper;
 import letshangllc.allfitness.Database.TableConstants;
 import letshangllc.allfitness.MockData.MockedDataPoints;

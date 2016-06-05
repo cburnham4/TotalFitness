@@ -11,18 +11,13 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
 
-import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
 
-import letshangllc.allfitness.ActivitiesAndFragments.MainFragments.ExercisesFragment;
-import letshangllc.allfitness.ActivitiesAndFragments.MainFragments.MuscleGroupFragment;
-import letshangllc.allfitness.ActivitiesAndFragments.MainFragments.RoutinesFragment;
-import letshangllc.allfitness.ActivitiesAndFragments.types.fragments.lift.AddLiftSetFragment;
-import letshangllc.allfitness.ActivitiesAndFragments.types.fragments.lift.LiftGraphFragment;
-import letshangllc.allfitness.ActivitiesAndFragments.types.fragments.lift.PastLiftsFragment;
+import letshangllc.allfitness.ActivitiesAndFragments.typefragments.lift.AddLiftSetFragment;
+import letshangllc.allfitness.ActivitiesAndFragments.typefragments.lift.LiftGraphFragment;
+import letshangllc.allfitness.ActivitiesAndFragments.typefragments.lift.PastLiftsFragment;
 import letshangllc.allfitness.ClassObjects.LiftSet;
-import letshangllc.allfitness.Dialogs.AddExerciseDialog;
 import letshangllc.allfitness.R;
 
 public class ExerciseActivity extends AppCompatActivity implements AddLiftSetFragment.AddLiftSetListener,

@@ -1,13 +1,11 @@
-package letshangllc.allfitness.ActivitiesAndFragments.types.fragments.lift;
+package letshangllc.allfitness.ActivitiesAndFragments.typefragments.lift;
 
 
-import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;

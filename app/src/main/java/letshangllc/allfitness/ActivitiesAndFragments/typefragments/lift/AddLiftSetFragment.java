@@ -1,7 +1,6 @@
-package letshangllc.allfitness.ActivitiesAndFragments.types.fragments.lift;
+package letshangllc.allfitness.ActivitiesAndFragments.typefragments.lift;
 
 
-import android.app.Activity;
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -28,9 +27,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.Locale;
 
-import letshangllc.allfitness.ClassObjects.ExerciseItem;
 import letshangllc.allfitness.ClassObjects.LiftSet;
-import letshangllc.allfitness.ClassObjects.Routine;
 import letshangllc.allfitness.Database.DatabaseHelper;
 import letshangllc.allfitness.Database.TableConstants;
 import letshangllc.allfitness.ListViewAdapters.SetListAdapter;
