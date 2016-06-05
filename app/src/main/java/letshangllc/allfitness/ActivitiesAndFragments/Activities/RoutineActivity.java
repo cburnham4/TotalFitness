@@ -207,6 +207,7 @@ public class RoutineActivity extends AppCompatActivity {
         return true;
     }
 
+    /* todo add confirmation of removal */
     /* Remove the exercise passed in from the current routine */
     public void removeFromRoutine(ExerciseItem exerciseItem){
         SQLiteDatabase db = databaseHelper.getWritableDatabase();

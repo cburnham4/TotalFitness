@@ -56,6 +56,8 @@ public class LiftGraphFragment extends Fragment {
     /* Database Helper */
     DatabaseHelper databaseHelper;
 
+    TextView[] tvDateSelections;
+
     public LiftGraphFragment() {
         // Required empty public constructor
     }
@@ -100,6 +102,8 @@ public class LiftGraphFragment extends Fragment {
         final TextView tv_1y = (TextView) view.findViewById(R.id.tv_1y);
         final TextView tv_all = (TextView) view.findViewById(R.id.tv_all);
 
+        tvDateSelections = new TextView[]{tv_1m, tv_3m, tv_6m, tv_1y, tv_all};
+
         Date currentDate = new Date();
 
         final double currentTime = currentDate.getTime();
@@ -112,121 +116,49 @@ public class LiftGraphFragment extends Fragment {
         final double timeInYear = timeIn6Month * 2;
 
         /* todo check if you can break if not true */
-        tv_1m.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                ArrayList<DataPoint> dataPointsLocal = new ArrayList<DataPoint>();
-                /* Iterate though the global datapoints to get the ones that fall in a 1 month range */
-                for (DataPoint dataPoint: dataPoints){
-                    if(currentTime-dataPoint.getX()<= timeInMonth){
-                        dataPointsLocal.add(dataPoint);
-                    }
-                }
+        tv_1m.setOnClickListener(new OnDateRangeSelection(timeInMonth, 0));
+        tv_3m.setOnClickListener(new OnDateRangeSelection(timeIn3Month, 1));
+        tv_6m.setOnClickListener(new OnDateRangeSelection(timeIn6Month, 2));
+        tv_1y.setOnClickListener(new OnDateRangeSelection(timeInYear, 3));
+        tv_all.setOnClickListener(new OnDateRangeSelection(Double.MAX_VALUE, 4));
 
-                DataPoint[] dataPoints1 = dataPointsLocal.toArray(new DataPoint[dataPointsLocal.size()]);
-                lineGraphSeries.resetData(dataPoints1);
-                Viewport viewport = graph.getViewport();
-                viewport.setMinX(lineGraphSeries.getLowestValueX()-5*24*60*60*1000);
-                viewport.setMaxX(lineGraphSeries.getHighestValueX()+5*24*60*60*1000);
+    }
 
-                tv_1m.setBackgroundColor(getResources().getColor(R.color.divider));
-                tv_3m.setBackgroundColor(0);
-                tv_6m.setBackgroundColor(0);
-                tv_1y.setBackgroundColor(0);
-                tv_all.setBackgroundColor(0);
-            }
-        });
-        tv_3m.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                ArrayList<DataPoint> dataPointsLocal = new ArrayList<DataPoint>();
-                /* Iterate though the global datapoints to get the ones that fall in a 1 month range */
-                for (DataPoint dataPoint: dataPoints){
-                    if(currentTime-dataPoint.getX()<= timeIn3Month){
-                        dataPointsLocal.add(dataPoint);
-                    }
-                }
+    public class OnDateRangeSelection implements View.OnClickListener{
+        private double timeLimit;
+        private int tvIndex;
+        public OnDateRangeSelection(double timeLimit, int tvIndex) {
+            this.timeLimit = timeLimit;
+            this.tvIndex = tvIndex;
+        }
 
-                DataPoint[] dataPoints1 = dataPointsLocal.toArray(new DataPoint[dataPointsLocal.size()]);
-                lineGraphSeries.resetData(dataPoints1);
-               // graph.onDataChanged(false, false);
-                Viewport viewport = graph.getViewport();
-                viewport.setMinX(lineGraphSeries.getLowestValueX()-5*24*60*60*1000);
-                viewport.setMaxX(lineGraphSeries.getHighestValueX()+5*24*60*60*1000);
-                tv_1m.setBackgroundColor(0);
-                tv_3m.setBackgroundColor(getResources().getColor(R.color.divider));
-                tv_6m.setBackgroundColor(0);
-                tv_1y.setBackgroundColor(0);
-                tv_all.setBackgroundColor(0);
-            }
-        });
-        tv_6m.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                ArrayList<DataPoint> dataPointsLocal = new ArrayList<DataPoint>();
-                /* Iterate though the global datapoints to get the ones that fall in a 1 month range */
-                for (DataPoint dataPoint: dataPoints){
-                    if(currentTime-dataPoint.getX()<= timeIn6Month){
-                        dataPointsLocal.add(dataPoint);
-                    }
-                }
+        @Override
+        public void onClick(View v) {
+            Date currentDate = new Date();
+            final double currentTime = currentDate.getTime();
 
-                DataPoint[] dataPoints1 = dataPointsLocal.toArray(new DataPoint[dataPointsLocal.size()]);
-                lineGraphSeries.resetData(dataPoints1);
-                Viewport viewport = graph.getViewport();
-                viewport.setMinX(lineGraphSeries.getLowestValueX()-5*24*60*60*1000);
-                viewport.setMaxX(lineGraphSeries.getHighestValueX()+5*24*60*60*1000);
-                tv_1m.setBackgroundColor(0);
-                tv_3m.setBackgroundColor(0);
-                tv_6m.setBackgroundColor(getResources().getColor(R.color.divider));
-                tv_1y.setBackgroundColor(0);
-                tv_all.setBackgroundColor(0);
-            }
-        });
-        tv_1y.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                ArrayList<DataPoint> dataPointsLocal = new ArrayList<DataPoint>();
+            ArrayList<DataPoint> dataPointsLocal = new ArrayList<DataPoint>();
                 /* Iterate though the global datapoints to get the ones that fall in a 1 month range */
-                for (DataPoint dataPoint: dataPoints){
-                    if(currentTime-dataPoint.getX()<= timeInYear){
-                        dataPointsLocal.add(dataPoint);
-                    }
-                }
-
-                DataPoint[] dataPoints1 = dataPointsLocal.toArray(new DataPoint[dataPointsLocal.size()]);
-                lineGraphSeries.resetData(dataPoints1);
-                Viewport viewport = graph.getViewport();
-                viewport.setMinX(lineGraphSeries.getLowestValueX()-5*24*60*60*1000);
-                viewport.setMaxX(lineGraphSeries.getHighestValueX()+5*24*60*60*1000);
-                tv_1m.setBackgroundColor(0);
-                tv_3m.setBackgroundColor(0);
-                tv_6m.setBackgroundColor(0);
-                tv_1y.setBackgroundColor(getResources().getColor(R.color.divider));
-                tv_all.setBackgroundColor(0);
-            }
-        });
-        tv_all.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                ArrayList<DataPoint> dataPointsLocal = new ArrayList<DataPoint>();
-                /* Iterate though the global datapoints to get the ones that fall in a 1 month range */
-                for (DataPoint dataPoint: dataPoints) {
+            for (DataPoint dataPoint: dataPoints){
+                if(currentTime-dataPoint.getX()<= timeLimit){
                     dataPointsLocal.add(dataPoint);
                 }
-
-                DataPoint[] dataPoints1 = dataPointsLocal.toArray(new DataPoint[dataPointsLocal.size()]);
-                lineGraphSeries.resetData(dataPoints1);
-                Viewport viewport = graph.getViewport();
-                viewport.setMinX(lineGraphSeries.getLowestValueX()-5*24*60*60*1000);
-                viewport.setMaxX(lineGraphSeries.getHighestValueX()+5*24*60*60*1000);
-                tv_1m.setBackgroundColor(0);
-                tv_3m.setBackgroundColor(0);
-                tv_6m.setBackgroundColor(0);
-                tv_1y.setBackgroundColor(0);
-                tv_all.setBackgroundColor(getResources().getColor(R.color.divider));
             }
-        });
+
+            DataPoint[] dataPoints1 = dataPointsLocal.toArray(new DataPoint[dataPointsLocal.size()]);
+            lineGraphSeries.resetData(dataPoints1);
+            Viewport viewport = graph.getViewport();
+            viewport.setMinX(lineGraphSeries.getLowestValueX()-5*24*60*60*1000);
+            viewport.setMaxX(lineGraphSeries.getHighestValueX()+5*24*60*60*1000);
+            viewport.setMinY(lineGraphSeries.getLowestValueY()-5);
+            viewport.setMaxY(lineGraphSeries.getHighestValueY()+5);
+            /* Set all points textviews to null bg */
+            for (TextView tv: tvDateSelections){
+                tv.setBackgroundColor(0);
+            }
+            /* set background for selected item */
+            tvDateSelections[tvIndex].setBackgroundColor(getResources().getColor(R.color.divider));
+        }
     }
 
     @Override
@@ -247,7 +179,7 @@ public class LiftGraphFragment extends Fragment {
         if(!lineGraphSeries.isEmpty()){
             graph.getGridLabelRenderer().setNumHorizontalLabels(3);
             graph.getViewport().setXAxisBoundsManual(true);
-
+            graph.getViewport().setYAxisBoundsManual(true);
             if(dataPoints.size() == 1){
                 DataPoint dataPoint = dataPoints.get(0);
                 PointsGraphSeries<DataPoint> seriesSingle = new PointsGraphSeries<DataPoint>(new DataPoint[] {
@@ -260,20 +192,23 @@ public class LiftGraphFragment extends Fragment {
                 Viewport viewport = graph.getViewport();
                 viewport.setMinX(dataPoint.getX()-5*24*60*60*1000);
                 viewport.setMaxX(dataPoint.getX()+5*24*60*60*1000);
-                viewport.setYAxisBoundsManual(true);
+
                 viewport.setMinY(dataPoint.getY()-10);
                 viewport.setMaxY(dataPoint.getY() + 10);
 
             }else{
-                graph.getViewport().setMinX(lineGraphSeries.getLowestValueX()-.25*24*60*60*1000);
-                graph.getViewport().setMaxX(lineGraphSeries.getHighestValueX()+.25*24*60*60*1000);
+                Viewport viewport = graph.getViewport();
+                viewport.setMinX(lineGraphSeries.getLowestValueX()-5*24*60*60*1000);
+                viewport.setMaxX(lineGraphSeries.getHighestValueX()+5*24*60*60*1000);
+                viewport.setMinY(lineGraphSeries.getLowestValueY()-5);
+                viewport.setMaxY(lineGraphSeries.getHighestValueY()+5);
 
                 lineGraphSeries.setDrawDataPoints(true);
                 lineGraphSeries.setDataPointsRadius(10);
                 lineGraphSeries.setThickness(4);
 
-                graph.getViewport().setScalable(true);
-                graph.getViewport().setScrollable(true);
+                //graph.getViewport().setScalable(true);
+                //graph.getViewport().setScrollable(true);
                 graph.addSeries(lineGraphSeries);
             }
 
@@ -294,7 +229,8 @@ public class LiftGraphFragment extends Fragment {
                 TableConstants.MaxTableName + "." +TableConstants.DayId +
                 " WHERE " +TableConstants.MaxTableName + "." +TableConstants.ExerciseId
                 + " = " + exerciseId +
-                " GROUP BY " + TableConstants.DayDateLifted, null);
+                " GROUP BY " + TableConstants.DayDateLifted +
+                " ORDER BY " + TableConstants.MaxTableName + "." +TableConstants.DayId +" ASC", null);
         c.moveToFirst();
 
         /* Get date formatter */
@@ -305,7 +241,7 @@ public class LiftGraphFragment extends Fragment {
         /* Add the maxes to the line series */
         while(!c.isAfterLast()){
             Date date = dateFormat.parse(c.getString(1));
-
+            Log.i(TAG, c.getString(1));
             DataPoint dataPoint =  new DataPoint(date, c.getDouble(0));
             dataPoints.add(dataPoint);
             lineGraphSeries.appendData(dataPoint, true, c.getCount());

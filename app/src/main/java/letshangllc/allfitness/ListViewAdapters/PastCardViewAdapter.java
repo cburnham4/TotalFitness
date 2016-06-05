@@ -6,7 +6,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.Locale;
 
 import letshangllc.allfitness.ClassObjects.LiftSet;
@@ -56,7 +60,18 @@ public class PastCardViewAdapter extends RecyclerView.Adapter<PastCardViewAdapte
         }
 
         viewHolder.tv_info_text.setText(sets);
-        viewHolder.tv_date.setText(itemSet.getDate());
+                /* todo get from resources */
+        DateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy", Locale.US);
+        DateFormat dateFormat1 = new SimpleDateFormat("MMM dd yyyy");
+        try {
+            Date date = dateFormat.parse(itemSet.getDate());
+            String dateFormatted = dateFormat1.format(date);
+            viewHolder.tv_date.setText(dateFormatted);
+
+        } catch (ParseException e) {
+            e.printStackTrace();
+            viewHolder.tv_date.setText(itemSet.getDate());
+        }
 
     }
 

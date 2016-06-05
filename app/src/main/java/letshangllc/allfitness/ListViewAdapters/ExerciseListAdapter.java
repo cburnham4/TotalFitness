@@ -2,6 +2,7 @@ package letshangllc.allfitness.ListViewAdapters;
 
 import android.content.Context;
 import android.content.res.Resources;
+import android.os.Build;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -61,22 +62,32 @@ public class ExerciseListAdapter extends ArrayAdapter<ExerciseItem>{
         }
         // Populate the data into the template view using the data object
         viewHolder.tv_exercise.setText(exerciseItem.getExerciseName());
-        switch (exerciseItem.getExerciseType()){
-            case LIFT:
-                viewHolder.img_category.setImageDrawable(resources.getDrawable(R.drawable.dumbbell_50, theme));
-                break;
-            case BODYWEIGHT:
-                viewHolder.img_category.setImageDrawable(resources.getDrawable(R.drawable.pilates_50, theme));
-                break;
-            case TIMED:
-                viewHolder.img_category.setImageDrawable(resources.getDrawable(R.drawable.watch_50, theme));
-                break;
-            case CARDIO:
-                viewHolder.img_category.setImageDrawable(resources.getDrawable(R.drawable.sports_mode_50, theme));
-                break;
+
+        /* if the os is atleast kitkat then add icons to exercises */
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            switch (exerciseItem.getExerciseType()) {
+                case LIFT:
+                    viewHolder.img_category.setImageDrawable(resources.getDrawable(R.drawable.dumbbell_50, theme));
+                    break;
+                case BODYWEIGHT:
+                    viewHolder.img_category.setImageDrawable(resources.getDrawable(R.drawable.pilates_50, theme));
+                    break;
+                case TIMED:
+                    viewHolder.img_category.setImageDrawable(resources.getDrawable(R.drawable.watch_50, theme));
+                    break;
+                case CARDIO:
+                    viewHolder.img_category.setImageDrawable(resources.getDrawable(R.drawable.sports_mode_50, theme));
+                    break;
+            }
         }
         // Return the completed view to render on screen
         return convertView;
+    }
+
+    @Override
+    public void notifyDataSetChanged() {
+        super.notifyDataSetChanged();
+        //filter = new AppFilter<ExerciseItem>(exerciseItems);
     }
 
     @Override
@@ -86,7 +97,7 @@ public class ExerciseListAdapter extends ArrayAdapter<ExerciseItem>{
         return filter;
     }
 
-    private class AppFilter<T> extends Filter {
+    public class AppFilter<T> extends Filter {
 
         private ArrayList<T> sourceObjects;
 
@@ -101,7 +112,7 @@ public class ExerciseListAdapter extends ArrayAdapter<ExerciseItem>{
         protected FilterResults performFiltering(CharSequence chars) {
             String filterSeq = chars.toString().toLowerCase();
             FilterResults result = new FilterResults();
-            if (filterSeq != null && filterSeq.length() > 0) {
+            if (filterSeq.length() > 0) {
                 ArrayList<T> filter = new ArrayList<T>();
 
                 for (T object : sourceObjects) {

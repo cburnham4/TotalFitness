@@ -55,6 +55,9 @@ public class ExercisesFragment extends Fragment {
     private EditText et_searchExercises;
     private FloatingActionButton fab_addExercise;
 
+    /* Add item boolean */
+    private boolean isAddingItem;
+
     /*Database variables */
     private  DatabaseHelper databaseHelper;
 
@@ -66,6 +69,7 @@ public class ExercisesFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        isAddingItem = false;
         /* Initialize DB Helper */
         databaseHelper =  new DatabaseHelper(getContext());
 
@@ -161,11 +165,15 @@ public class ExercisesFragment extends Fragment {
                       /* Add exercise to arraylist and update listview */
                       exerciseItems.add(new ExerciseItem(getMaxExerciseId(),
                               name, exerciseType, muscleGroup.getMuscleGroupId()));
+
+                      exerciseListAdapter.getFilter();
                       exerciseListAdapter.notifyDataSetChanged();
+                      //exerciseListAdapter = new ExerciseListAdapter(getContext(), exerciseItems);
                   }
               }
         );
         addExerciseDialog.show(getFragmentManager(), "Add_Exercise");
+        isAddingItem =false;
     }
 
     /* Get the id of the last inputted exercise */
@@ -185,6 +193,7 @@ public class ExercisesFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 /* Set search text to "" or else it will cause a bug */
+                isAddingItem = true;
                 et_searchExercises.setText("");
                 Log.e(TAG, "Fab clicked");
                 openAddDialog();
@@ -196,7 +205,15 @@ public class ExercisesFragment extends Fragment {
             @Override
             public void onTextChanged(CharSequence cs, int arg1, int arg2, int arg3) {
                 // When user changed the Text
-                exerciseListAdapter.getFilter().filter(cs);
+                Log.e(TAG, "CS: "+ cs.toString() +" Size: "+ cs.length());
+
+                /* todo Fix search */
+                if(!isAddingItem){
+                    exerciseListAdapter.getFilter().filter(cs);
+                }
+                /* Do not filter when adding item */
+
+
             }
 
             @Override
