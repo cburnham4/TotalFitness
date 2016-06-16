@@ -53,6 +53,14 @@
     <string name="add_one">+1</string>
     <string name="zero">0</string>
 
+    <!-- Fragment Add Cardio Set -->
+    <string name="duration">DURATION:</string>
+    <string name="distance">DISTANCE:</string>
+    <string name="hour_hint">HR</string>
+    <string name="minute_hint">MM</string>
+    <string name="second_hint">SS</string>
+    <string name="miles_hint">MILES</string>
+
     <!-- Fragment Graph -->
     <string name="no_data_available">No Data Available</string>
 
