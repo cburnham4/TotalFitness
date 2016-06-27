@@ -8,7 +8,6 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AlertDialog;
 import android.text.Editable;
@@ -22,19 +21,17 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.ListView;
-import android.widget.Toast;
 
 import java.util.ArrayList;
 
 import letshangllc.allfitness.ActivitiesAndFragments.Activities.ExerciseActivity;
-import letshangllc.allfitness.ActivitiesAndFragments.Activities.MuscleGroupActivity;
 import letshangllc.allfitness.ClassObjects.ExerciseType;
 import letshangllc.allfitness.ClassObjects.MuscleGroup;
 import letshangllc.allfitness.Database.DatabaseHelper;
 import letshangllc.allfitness.Database.TableConstants;
 import letshangllc.allfitness.Dialogs.AddExerciseDialog;
 import letshangllc.allfitness.Dialogs.EditExerciseDialog;
-import letshangllc.allfitness.ListViewAdapters.ExerciseListAdapter;
+import letshangllc.allfitness.adapters.ExerciseListAdapter;
 import letshangllc.allfitness.ClassObjects.ExerciseItem;
 import letshangllc.allfitness.R;
 

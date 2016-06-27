@@ -21,7 +21,7 @@ import letshangllc.allfitness.ClassObjects.LiftSet;
 import letshangllc.allfitness.ClassObjects.PastLiftSet;
 import letshangllc.allfitness.Database.DatabaseHelper;
 import letshangllc.allfitness.Database.TableConstants;
-import letshangllc.allfitness.ListViewAdapters.PastCardViewAdapter;
+import letshangllc.allfitness.adapters.PastCardViewAdapter;
 import letshangllc.allfitness.R;
 
 /**

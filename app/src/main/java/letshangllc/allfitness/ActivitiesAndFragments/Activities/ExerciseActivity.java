@@ -81,8 +81,8 @@ public class ExerciseActivity extends AppCompatActivity implements AddLiftSetFra
                 Fragment frag3Cardio = new CardioGraphFragment();
                 frag3Cardio.setArguments(args);
                 adapter.addFragment(frag1Cardio, "Add Set");
-                adapter.addFragment(frag2Cardio, "Past Lifts");
-                adapter.addFragment(frag3Cardio, "Graph");
+                adapter.addFragment(frag2Cardio, "HISTORY");
+                adapter.addFragment(frag3Cardio, "GRAPH");
                 break;
             case 2: // LIFT
                 Fragment frag1  = new AddLiftSetFragment();

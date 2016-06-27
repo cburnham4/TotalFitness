@@ -21,13 +21,12 @@ import android.widget.ListView;
 import java.util.ArrayList;
 
 import letshangllc.allfitness.ActivitiesAndFragments.Activities.RoutineActivity;
-import letshangllc.allfitness.ClassObjects.MuscleGroup;
 import letshangllc.allfitness.ClassObjects.Routine;
 import letshangllc.allfitness.Database.DatabaseHelper;
 import letshangllc.allfitness.Database.TableConstants;
 import letshangllc.allfitness.Dialogs.AddRoutineDialog;
 import letshangllc.allfitness.Dialogs.EditItemNameDialog;
-import letshangllc.allfitness.ListViewAdapters.RoutineListAdapter;
+import letshangllc.allfitness.adapters.RoutineListAdapter;
 import letshangllc.allfitness.R;
 
 /**

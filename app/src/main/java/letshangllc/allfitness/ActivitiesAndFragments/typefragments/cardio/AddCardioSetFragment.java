@@ -1,15 +1,8 @@
 package letshangllc.allfitness.ActivitiesAndFragments.typefragments.cardio;
 
 
-import android.content.ContentValues;
-import android.content.Context;
-import android.content.DialogInterface;
-import android.database.Cursor;
-import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v7.app.AlertDialog;
-import android.util.Log;
 import android.view.ContextMenu;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
@@ -18,18 +11,12 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ListView;
-import android.widget.Toast;
 
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.Locale;
 
-import letshangllc.allfitness.ClassObjects.LiftSet;
 import letshangllc.allfitness.Database.DatabaseHelper;
-import letshangllc.allfitness.Database.TableConstants;
-import letshangllc.allfitness.ListViewAdapters.SetListAdapter;
 import letshangllc.allfitness.R;
 
 /**
@@ -49,6 +36,10 @@ public class AddCardioSetFragment extends Fragment {
 
     /* Day Id */
     int dayId;
+
+    /* Views */
+    private Button btnCancel, btnAddSet;
+    private EditText etHour, etMinute, etSeconds, etMiles;
 
 
 
@@ -79,18 +70,42 @@ public class AddCardioSetFragment extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_add_cardio_set, container, false);
 
-        //this.setupViews(view);
+        this.findViews(view);
+        this.setupViews();
 
 
         return view;
     }
 
     /* find view and set their listeners */
-    private void setupViews(View view){
+    private void findViews(View view){
         /* Find Views */
-        Button addSet =(Button) view.findViewById(R.id.btn_addSet);
-        Button btn_cancel = (Button) view.findViewById(R.id.btn_clearValues);
+        btnAddSet =(Button) view.findViewById(R.id.btnAddCardioSet);
+        btnCancel = (Button) view.findViewById(R.id.btnClearCardioValues);
 
+        etHour = (EditText) view.findViewById(R.id.etHours);
+        etMinute = (EditText) view.findViewById(R.id.etMiutes);
+        etSeconds = (EditText) view.findViewById(R.id.etSeconds);
+        etMiles = (EditText) view.findViewById(R.id.etMiles);
+
+    }
+
+    private void setupViews(){
+        btnCancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                etHour.setText("");
+                etMinute.setText("");
+                etSeconds.setText("");
+                etMiles.setText("");
+            }
+        });
+        btnAddSet.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+            }
+        });
     }
 
     public void getExistingData(){
