@@ -88,6 +88,8 @@ public class AddCardioSetFragment extends Fragment {
     /* find view and set their listeners */
     private void setupViews(View view){
         /* Find Views */
+        Button addSet =(Button) view.findViewById(R.id.btn_addSet);
+        Button btn_cancel = (Button) view.findViewById(R.id.btn_clearValues);
 
     }
 
