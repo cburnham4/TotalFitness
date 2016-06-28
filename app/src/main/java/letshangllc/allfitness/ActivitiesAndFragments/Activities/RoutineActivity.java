@@ -16,7 +16,6 @@ import android.widget.ListView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 
 import letshangllc.allfitness.ClassObjects.ExerciseItem;
 import letshangllc.allfitness.ClassObjects.ExerciseType;
@@ -24,7 +23,7 @@ import letshangllc.allfitness.ClassObjects.ExerciseType;
 import letshangllc.allfitness.Database.DatabaseHelper;
 import letshangllc.allfitness.Database.TableConstants;
 import letshangllc.allfitness.Dialogs.AddExerciseToGroupDialog;
-import letshangllc.allfitness.ListViewAdapters.ExerciseListAdapter;
+import letshangllc.allfitness.adapters.ExerciseListAdapter;
 import letshangllc.allfitness.R;
 
 /* todo allow for edit of listview poistions */

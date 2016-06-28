@@ -30,7 +30,7 @@ import java.util.Locale;
 import letshangllc.allfitness.ClassObjects.LiftSet;
 import letshangllc.allfitness.Database.DatabaseHelper;
 import letshangllc.allfitness.Database.TableConstants;
-import letshangllc.allfitness.ListViewAdapters.SetListAdapter;
+import letshangllc.allfitness.adapters.SetListAdapter;
 import letshangllc.allfitness.R;
 
 /**

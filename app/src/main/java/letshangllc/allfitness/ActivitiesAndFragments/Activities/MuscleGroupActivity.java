@@ -1,6 +1,5 @@
 package letshangllc.allfitness.ActivitiesAndFragments.Activities;
 
-import android.content.ContentValues;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
@@ -14,13 +13,11 @@ import android.widget.ListView;
 
 import java.util.ArrayList;
 
-import letshangllc.allfitness.ActivitiesAndFragments.MainFragments.ExercisesFragment;
 import letshangllc.allfitness.ClassObjects.ExerciseItem;
 import letshangllc.allfitness.ClassObjects.ExerciseType;
 import letshangllc.allfitness.Database.DatabaseHelper;
 import letshangllc.allfitness.Database.TableConstants;
-import letshangllc.allfitness.Dialogs.AddExerciseToGroupDialog;
-import letshangllc.allfitness.ListViewAdapters.ExerciseListAdapter;
+import letshangllc.allfitness.adapters.ExerciseListAdapter;
 import letshangllc.allfitness.R;
 
 public class MuscleGroupActivity extends AppCompatActivity {

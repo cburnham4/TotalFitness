@@ -21,13 +21,12 @@ import android.widget.ListView;
 import java.util.ArrayList;
 
 import letshangllc.allfitness.ActivitiesAndFragments.Activities.MuscleGroupActivity;
-import letshangllc.allfitness.ClassObjects.LiftSet;
 import letshangllc.allfitness.ClassObjects.MuscleGroup;
 import letshangllc.allfitness.Database.DatabaseHelper;
 import letshangllc.allfitness.Database.TableConstants;
 import letshangllc.allfitness.Dialogs.AddMuscleGroupDialog;
 import letshangllc.allfitness.Dialogs.EditItemNameDialog;
-import letshangllc.allfitness.ListViewAdapters.MuscleGroupListAdapter;
+import letshangllc.allfitness.adapters.MuscleGroupListAdapter;
 import letshangllc.allfitness.R;
 
 /**
