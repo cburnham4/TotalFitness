@@ -1,4 +1,4 @@
-package letshangllc.allfitness.ListViewAdapters;
+package letshangllc.allfitness.adapters;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -8,30 +8,31 @@ import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
 import java.util.ArrayList;
+import java.util.Locale;
 
-import letshangllc.allfitness.ClassObjects.MuscleGroup;
+import letshangllc.allfitness.ClassObjects.CardioSet;
+import letshangllc.allfitness.ClassObjects.LiftSet;
 import letshangllc.allfitness.R;
 
 /**
- * Created by cvburnha on 4/23/2016.
+ * Created by cvburnha on 6/30/2016.
  */
-public class MuscleGroupListAdapter extends ArrayAdapter<MuscleGroup> {
+public class CardioSetAdapter extends ArrayAdapter<CardioSet> {
 
-    private ArrayList<MuscleGroup> items;
 
     private static class ViewHolder {
         TextView item;
     }
 
-    public MuscleGroupListAdapter(Context context, ArrayList<MuscleGroup> items) {
+    public CardioSetAdapter(Context context, ArrayList<CardioSet> items) {
         super(context, R.layout.item_name, items);
-        items = items;
+
     }
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         // Get the data item for this position
-        MuscleGroup item = getItem(position);
+        CardioSet item = getItem(position);
         // Check if an existing view is being reused, otherwise inflate the view
         ViewHolder viewHolder; // view lookup cache stored in tag
         if (convertView == null) {
@@ -44,7 +45,8 @@ public class MuscleGroupListAdapter extends ArrayAdapter<MuscleGroup> {
             viewHolder = (ViewHolder) convertView.getTag();
         }
         // Populate the data into the template view using the data object
-        viewHolder.item.setText(item.getMuscleGroupName());
+        String values  = String.format(Locale.US,"H: %2d  M: %2d  S:%2d | Mi:%.2f", item.hours, item.minutes, item.seconds, item.distance);
+        viewHolder.item.setText(values);
         // Return the completed view to render on screen
         return convertView;
     }

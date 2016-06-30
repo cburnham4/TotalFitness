@@ -3,6 +3,7 @@ package letshangllc.allfitness.ActivitiesAndFragments.typefragments.cardio;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.provider.DocumentFile;
 import android.view.ContextMenu;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
@@ -11,13 +12,17 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ListView;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.Locale;
 
+import letshangllc.allfitness.ClassObjects.CardioSet;
 import letshangllc.allfitness.Database.DatabaseHelper;
 import letshangllc.allfitness.R;
+import letshangllc.allfitness.adapters.CardioSetAdapter;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -40,6 +45,11 @@ public class AddCardioSetFragment extends Fragment {
     /* Views */
     private Button btnCancel, btnAddSet;
     private EditText etHour, etMinute, etSeconds, etMiles;
+
+    /* Data variables */
+    private ArrayList<CardioSet> cardioSets;
+    private ListView lvCardioSets;
+    private CardioSetAdapter cardioSetAdapter;
 
 
 
@@ -88,9 +98,14 @@ public class AddCardioSetFragment extends Fragment {
         etSeconds = (EditText) view.findViewById(R.id.etSeconds);
         etMiles = (EditText) view.findViewById(R.id.etMiles);
 
+        lvCardioSets = (ListView) view.findViewById(R.id.lvCardioSets);
+
     }
 
     private void setupViews(){
+        cardioSetAdapter = new CardioSetAdapter(this.getContext(), cardioSets);
+        lvCardioSets.setAdapter(cardioSetAdapter);
+
         btnCancel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -103,12 +118,50 @@ public class AddCardioSetFragment extends Fragment {
         btnAddSet.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                String hourString = etHour.getText().toString();
+                String minuteString = etMinute.getText().toString();
+                String secondsString = etSeconds.getText().toString();
+                String milesString = etMiles.getText().toString();
+                int hours, minutes, seconds;
+                double miles, totalTime;
+                if(hourString.isEmpty()){
+                    hours = 0;
+                }else{
+                    hours = Integer.parseInt(hourString);
+                }
+                if(minuteString.isEmpty()){
+                    minutes = 0;
+                }else{
+                    minutes = Integer.parseInt(minuteString);
+                }
+                if(secondsString.isEmpty()){
+                    seconds = 0;
+                }else{
+                    seconds = Integer.parseInt(secondsString);
+                }
+                if(milesString.isEmpty()){
+                    totalTime = (hours * 3600) + (minutes * 60) + seconds;
+                    miles = 0;
+                }else{
+                    totalTime = 0;
+                    miles = Double.parseDouble(milesString);
+                }
+                saveData(hours, minutes, seconds, totalTime, miles);
             }
         });
     }
 
+    public void saveData(int hours, int minutes, int seconds, double totalTime, double miles){
+        /* Add to DB */
+
+        /* Add to List */
+        CardioSet cardioSet = new CardioSet(totalTime, hours, minutes, seconds, miles, 0, 0);
+        cardioSets.add(cardioSet);
+        cardioSetAdapter.notifyDataSetChanged();
+    }
+
     public void getExistingData(){
+        cardioSets = new ArrayList<>();
 
     }
 

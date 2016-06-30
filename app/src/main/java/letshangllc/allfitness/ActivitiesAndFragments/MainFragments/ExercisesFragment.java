@@ -165,7 +165,7 @@ public class ExercisesFragment extends Fragment {
 
                       exerciseListAdapter.getFilter();
                       exerciseListAdapter.notifyDataSetChanged();
-                      //exerciseListAdapter = new ExerciseListAdapter(getContext(), exerciseItems);
+
                   }
               }
         );

@@ -30,7 +30,7 @@ import java.util.Locale;
 import letshangllc.allfitness.ClassObjects.LiftSet;
 import letshangllc.allfitness.Database.DatabaseHelper;
 import letshangllc.allfitness.Database.TableConstants;
-import letshangllc.allfitness.adapters.SetListAdapter;
+import letshangllc.allfitness.adapters.LiftSetAdapter;
 import letshangllc.allfitness.R;
 
 /**
@@ -60,7 +60,7 @@ public class AddLiftSetFragment extends Fragment {
     ListView lv_setList;
 
     /* ListView Adapter */
-    SetListAdapter setListAdapter;
+    LiftSetAdapter liftSetAdapter;
 
     /* Add set listeners */
     AddLiftSetListener addLiftSetListener;
@@ -107,8 +107,8 @@ public class AddLiftSetFragment extends Fragment {
         this.setupViews(view);
 
         /* Set listview Adapter */
-        setListAdapter =  new SetListAdapter(this.getContext(), liftSets);
-        lv_setList.setAdapter(setListAdapter);
+        liftSetAdapter =  new LiftSetAdapter(this.getContext(), liftSets);
+        lv_setList.setAdapter(liftSetAdapter);
 
         registerForContextMenu(lv_setList);
         return view;
@@ -226,7 +226,7 @@ public class AddLiftSetFragment extends Fragment {
         LiftSet liftSet = new LiftSet(dayId, sid, reps, weight);
         liftSets.add(liftSet);
 
-        setListAdapter.notifyDataSetChanged();
+        liftSetAdapter.notifyDataSetChanged();
 
         /* Call the callback with the new listSet */
         addLiftSetListener.addNewLiftSet(liftSet);
@@ -430,7 +430,7 @@ public class AddLiftSetFragment extends Fragment {
 
         /* Remove item from list and update list view */
         liftSets.remove(liftSet);
-        setListAdapter.notifyDataSetChanged();
+        liftSetAdapter.notifyDataSetChanged();
         /* Todo add callback */
 
         deleteLiftSetListner.deleteNewLiftSet(liftSet);
@@ -506,7 +506,7 @@ public class AddLiftSetFragment extends Fragment {
         editLiftSetListner.editNewLiftSet(editLiftSet);
 
         /* Update List view with new information */
-        setListAdapter.notifyDataSetChanged();
+        liftSetAdapter.notifyDataSetChanged();
     }
 
 }

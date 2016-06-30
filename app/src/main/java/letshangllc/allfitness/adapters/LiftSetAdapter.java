@@ -16,17 +16,14 @@ import letshangllc.allfitness.R;
 /**
  * Created by cvburnha on 5/15/2016.
  */
-public class SetListAdapter extends ArrayAdapter<LiftSet> {
-
-    private ArrayList<LiftSet> items;
+public class LiftSetAdapter extends ArrayAdapter<LiftSet> {
 
     private static class ViewHolder {
         TextView item;
     }
 
-    public SetListAdapter(Context context, ArrayList<LiftSet> items) {
+    public LiftSetAdapter(Context context, ArrayList<LiftSet> items) {
         super(context, R.layout.item_name, items);
-        this.items = items;
     }
 
     @Override
