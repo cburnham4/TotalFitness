@@ -45,7 +45,7 @@ public class CardioSetAdapter extends ArrayAdapter<CardioSet> {
             viewHolder = (ViewHolder) convertView.getTag();
         }
         // Populate the data into the template view using the data object
-        String values  = String.format(Locale.US,"H: %2d  M: %2d  S:%2d | Mi:%.2f", item.hours, item.minutes, item.seconds, item.distance);
+        String values  = String.format(Locale.US,"%2dh %2dm %2ds | %.2fmi", item.hours, item.minutes, item.seconds, item.distance);
         viewHolder.item.setText(values);
         // Return the completed view to render on screen
         return convertView;
