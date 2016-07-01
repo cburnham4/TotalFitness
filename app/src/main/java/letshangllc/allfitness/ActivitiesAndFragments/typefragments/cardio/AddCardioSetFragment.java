@@ -185,13 +185,13 @@ public class AddCardioSetFragment extends Fragment {
 
         ContentValues values = new ContentValues();
         values.put(TableConstants.DayId, dayId);
-        values.put(TableConstants.CardioSetDistance, miles);
-        values.put(TableConstants.CardioSetTime, totalTime);
-        values.put(TableConstants.CardioSetHours, hours);
-        values.put(TableConstants.CardioSetMinutes, minutes);
-        values.put(TableConstants.CardioSetSeconds, seconds);
+        values.put(TableConstants.CARDIO_SET_DISTANCE, miles);
+        values.put(TableConstants.CARDIO_SET_TIME, totalTime);
+        values.put(TableConstants.CARDIO_SET_HOURS, hours);
+        values.put(TableConstants.CARDIO_SET_MINUTES, minutes);
+        values.put(TableConstants.CARDIO_SET_SECONDS, seconds);
 
-        db.insert(TableConstants.CardioSetsTableName, null,values);
+        db.insert(TableConstants.CARDIO_SETS_TABLE_NAME, null,values);
 
         /* Add new set into the listview */
         int sid = getMaxSetId();
@@ -209,11 +209,11 @@ public class AddCardioSetFragment extends Fragment {
         cardioSets = new ArrayList<>();
         SQLiteDatabase db = databaseHelper.getReadableDatabase();
          /* Query the db to get the muscle data */
-        String[] projection = {TableConstants.CardioSetsId, TableConstants.CardioSetDistance,
-            TableConstants.CardioSetTime, TableConstants.CardioSetHours, TableConstants.CardioSetMinutes,
-            TableConstants.CardioSetSeconds};
+        String[] projection = {TableConstants.CARDIO_SETS_ID, TableConstants.CARDIO_SET_DISTANCE,
+            TableConstants.CARDIO_SET_TIME, TableConstants.CARDIO_SET_HOURS, TableConstants.CARDIO_SET_MINUTES,
+            TableConstants.CARDIO_SET_SECONDS};
 
-        Cursor c = db.query(TableConstants.CardioSetsTableName, projection, TableConstants.DayId +" = "+ dayId,
+        Cursor c = db.query(TableConstants.CARDIO_SETS_TABLE_NAME, projection, TableConstants.DayId +" = "+ dayId,
                 null, null, null, null);
         c.moveToFirst();
 
@@ -303,7 +303,7 @@ public class AddCardioSetFragment extends Fragment {
     /* Get the id of the last Day Id */
     private int getMaxSetId(){
         SQLiteDatabase db = databaseHelper.getReadableDatabase();
-        String sql = "SELECT Max("+ TableConstants.CardioSetsId+") FROM "+ TableConstants.CardioSetsTableName;
+        String sql = "SELECT Max("+ TableConstants.CARDIO_SETS_ID +") FROM "+ TableConstants.CARDIO_SETS_TABLE_NAME;
         Cursor c = db.rawQuery(sql, null);
         c.moveToFirst();
         int max = c.getInt(0);
@@ -337,7 +337,7 @@ public class AddCardioSetFragment extends Fragment {
         SQLiteDatabase db = databaseHelper.getWritableDatabase();
 
         /* Delete from Exercise table and routines table by using exercise id */
-        db.delete(TableConstants.CardioSetsTableName, TableConstants.CardioSetsId + " = " +
+        db.delete(TableConstants.CARDIO_SETS_TABLE_NAME, TableConstants.CARDIO_SETS_ID + " = " +
                 cardioSet.setId, null);
 
         db.close();
@@ -366,15 +366,15 @@ public class AddCardioSetFragment extends Fragment {
 
         /* Put in the new values */
         values.put(TableConstants.DayId, dayId);
-        values.put(TableConstants.CardioSetDistance, miles);
-        values.put(TableConstants.CardioSetTime, totalTime);
-        values.put(TableConstants.CardioSetHours, hours);
-        values.put(TableConstants.CardioSetMinutes, minutes);
-        values.put(TableConstants.CardioSetSeconds, seconds);
+        values.put(TableConstants.CARDIO_SET_DISTANCE, miles);
+        values.put(TableConstants.CARDIO_SET_TIME, totalTime);
+        values.put(TableConstants.CARDIO_SET_HOURS, hours);
+        values.put(TableConstants.CARDIO_SET_MINUTES, minutes);
+        values.put(TableConstants.CARDIO_SET_SECONDS, seconds);
 
         /* Update database on set id */
-        db.update(TableConstants.CardioSetsTableName, values,
-                TableConstants.CardioSetsId + " = " + editCardioSet.setId, null);
+        db.update(TableConstants.CARDIO_SETS_TABLE_NAME, values,
+                TableConstants.CARDIO_SETS_ID + " = " + editCardioSet.setId, null);
 
         /* update item in fragment context*/
         editCardioSet.distance = miles;

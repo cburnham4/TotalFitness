@@ -41,12 +41,21 @@ public class TableConstants {
     public static final String MaxWeight = "MAX_WEIGHT";
 
     /* Cardio Set Table Values */
-    public static final String CardioSetsTableName = "CARDIO_SETS_TABLE";
-    public static final String CardioSetsId = "CARDIO_SETS_ID";
-    public static final String CardioSetDistance = "CARDIO_SET_DISTANCE";
-    public static final String CardioSetTime = "CARDIO_SET_TIME";
-    public static final String CardioSetHours = "CARDIO_SET_HOURS";
-    public static final String CardioSetMinutes = "CARDIO_SET_MINUTES";
-    public static final String CardioSetSeconds = "CARDIO_SET_SECONDS";
+    public static final String CARDIO_SETS_TABLE_NAME = "CARDIO_SETS_TABLE";
+    public static final String CARDIO_SETS_ID = "CARDIO_SETS_ID";
+    public static final String CARDIO_SET_DISTANCE = "CARDIO_SET_DISTANCE";
+    public static final String CARDIO_SET_TIME = "CARDIO_SET_TIME";
+    public static final String CARDIO_SET_HOURS = "CARDIO_SET_HOURS";
+    public static final String CARDIO_SET_MINUTES = "CARDIO_SET_MINUTES";
+    public static final String CARDIO_SET_SECONDS = "CARDIO_SET_SECONDS";
+
+    /* Body Weight Set Table Values */
+    public static final String BODY_WEIGHT_TABLE_NAME = "BODY_WEIGHT_TABLE_NAME";
+    public static final String BODY_WEIGHT_SET_ID = "BODY_WEIGHT_SET_ID ";
+    public static final String BODY_WEIGHT_REPS = "BODY_WEIGHT_REPS";
+    public static final String BODY_WEIGHT_TIME = "BODY_WEIGHT_TIME";
+    public static final String BODY_WEIGHT_MINUTES = "BODY_WEIGHT_MINUTES";
+    public static final String BODY_WEIGHT_SECONDS = "BODY_WEIGHT_SECONDS";
+
 
 }

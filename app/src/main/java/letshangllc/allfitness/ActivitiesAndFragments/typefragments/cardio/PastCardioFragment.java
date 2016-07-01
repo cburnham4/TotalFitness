@@ -117,11 +117,11 @@ public class PastCardioFragment extends Fragment {
         int i = 0;
         for (Integer dayId : dayIds) {
             /* Query the sets table based on dayId */
-            String[] projection2 = {TableConstants.CardioSetsId, TableConstants.CardioSetDistance,
-                    TableConstants.CardioSetTime, TableConstants.CardioSetHours, TableConstants.CardioSetMinutes,
-                    TableConstants.CardioSetSeconds};
+            String[] projection2 = {TableConstants.CARDIO_SETS_ID, TableConstants.CARDIO_SET_DISTANCE,
+                    TableConstants.CARDIO_SET_TIME, TableConstants.CARDIO_SET_HOURS, TableConstants.CARDIO_SET_MINUTES,
+                    TableConstants.CARDIO_SET_SECONDS};
 
-            c = db.query(TableConstants.CardioSetsTableName, projection2, TableConstants.DayId + " = "
+            c = db.query(TableConstants.CARDIO_SETS_TABLE_NAME, projection2, TableConstants.DayId + " = "
                     + dayId, null, null, null, null);
 
             ArrayList<CardioSet> cardioSets = new ArrayList<>();
