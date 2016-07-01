@@ -13,9 +13,8 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.Locale;
 
-import letshangllc.allfitness.ClassObjects.CardioSet;
-import letshangllc.allfitness.ClassObjects.LiftSet;
-import letshangllc.allfitness.ClassObjects.PastCardioItem;
+import letshangllc.allfitness.ClassObjects.cardio.CardioSet;
+import letshangllc.allfitness.ClassObjects.cardio.PastCardioItem;
 import letshangllc.allfitness.R;
 
 /**

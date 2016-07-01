@@ -15,9 +15,8 @@ import android.view.ViewGroup;
 
 import java.util.ArrayList;
 
-import letshangllc.allfitness.ClassObjects.CardioSet;
-import letshangllc.allfitness.ClassObjects.LiftSet;
-import letshangllc.allfitness.ClassObjects.PastLiftItem;
+import letshangllc.allfitness.ClassObjects.lift.LiftSet;
+import letshangllc.allfitness.ClassObjects.lift.PastLiftItem;
 import letshangllc.allfitness.database.DatabaseHelper;
 import letshangllc.allfitness.database.TableConstants;
 import letshangllc.allfitness.adapters.LiftHistoryAdapter;

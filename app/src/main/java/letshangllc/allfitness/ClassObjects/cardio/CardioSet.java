@@ -1,4 +1,4 @@
-package letshangllc.allfitness.ClassObjects;
+package letshangllc.allfitness.ClassObjects.cardio;
 
 /**
  * Created by cvburnha on 6/5/2016.

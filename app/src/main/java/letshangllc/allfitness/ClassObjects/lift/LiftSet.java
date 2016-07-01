@@ -1,4 +1,4 @@
-package letshangllc.allfitness.ClassObjects;
+package letshangllc.allfitness.ClassObjects.lift;
 
 /**
  * Created by cvburnha on 5/15/2016.

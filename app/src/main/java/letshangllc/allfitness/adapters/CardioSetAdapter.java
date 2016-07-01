@@ -10,8 +10,7 @@ import android.widget.TextView;
 import java.util.ArrayList;
 import java.util.Locale;
 
-import letshangllc.allfitness.ClassObjects.CardioSet;
-import letshangllc.allfitness.ClassObjects.LiftSet;
+import letshangllc.allfitness.ClassObjects.cardio.CardioSet;
 import letshangllc.allfitness.R;
 
 /**

@@ -17,8 +17,8 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Locale;
 
-import letshangllc.allfitness.ClassObjects.CardioSet;
-import letshangllc.allfitness.ClassObjects.PastCardioItem;
+import letshangllc.allfitness.ClassObjects.cardio.CardioSet;
+import letshangllc.allfitness.ClassObjects.cardio.PastCardioItem;
 import letshangllc.allfitness.R;
 import letshangllc.allfitness.adapters.CardioHistoryAdapter;
 import letshangllc.allfitness.database.DatabaseHelper;

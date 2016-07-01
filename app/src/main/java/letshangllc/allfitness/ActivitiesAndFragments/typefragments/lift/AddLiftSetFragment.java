@@ -27,7 +27,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.Locale;
 
-import letshangllc.allfitness.ClassObjects.LiftSet;
+import letshangllc.allfitness.ClassObjects.lift.LiftSet;
 import letshangllc.allfitness.database.DatabaseHelper;
 import letshangllc.allfitness.database.TableConstants;
 import letshangllc.allfitness.adapters.LiftSetAdapter;

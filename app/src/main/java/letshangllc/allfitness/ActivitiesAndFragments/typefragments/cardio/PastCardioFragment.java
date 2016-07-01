@@ -17,14 +17,11 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Locale;
 
-import letshangllc.allfitness.ClassObjects.CardioSet;
-import letshangllc.allfitness.ClassObjects.LiftSet;
-import letshangllc.allfitness.ClassObjects.PastCardioItem;
-import letshangllc.allfitness.ClassObjects.PastLiftItem;
+import letshangllc.allfitness.ClassObjects.cardio.CardioSet;
+import letshangllc.allfitness.ClassObjects.cardio.PastCardioItem;
 import letshangllc.allfitness.adapters.CardioHistoryAdapter;
 import letshangllc.allfitness.database.DatabaseHelper;
 import letshangllc.allfitness.database.TableConstants;
-import letshangllc.allfitness.adapters.LiftHistoryAdapter;
 import letshangllc.allfitness.R;
 
 /**

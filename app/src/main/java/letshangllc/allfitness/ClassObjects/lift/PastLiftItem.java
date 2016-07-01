@@ -1,4 +1,4 @@
-package letshangllc.allfitness.ClassObjects;
+package letshangllc.allfitness.ClassObjects.lift;
 
 import java.util.ArrayList;
 

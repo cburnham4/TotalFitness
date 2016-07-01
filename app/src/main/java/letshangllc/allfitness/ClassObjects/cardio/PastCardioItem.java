@@ -1,6 +1,8 @@
-package letshangllc.allfitness.ClassObjects;
+package letshangllc.allfitness.ClassObjects.cardio;
 
 import java.util.ArrayList;
+
+import letshangllc.allfitness.ClassObjects.cardio.CardioSet;
 
 /**
  * Created by cvburnha on 7/1/2016.

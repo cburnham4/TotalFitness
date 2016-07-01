@@ -20,8 +20,8 @@ import letshangllc.allfitness.ActivitiesAndFragments.typefragments.cardio.PastCa
 import letshangllc.allfitness.ActivitiesAndFragments.typefragments.lift.AddLiftSetFragment;
 import letshangllc.allfitness.ActivitiesAndFragments.typefragments.lift.GraphLiftFragment;
 import letshangllc.allfitness.ActivitiesAndFragments.typefragments.lift.PastLiftsFragment;
-import letshangllc.allfitness.ClassObjects.CardioSet;
-import letshangllc.allfitness.ClassObjects.LiftSet;
+import letshangllc.allfitness.ClassObjects.cardio.CardioSet;
+import letshangllc.allfitness.ClassObjects.lift.LiftSet;
 import letshangllc.allfitness.R;
 
 public class ExerciseActivity extends AppCompatActivity implements AddLiftSetFragment.AddLiftSetListener,
