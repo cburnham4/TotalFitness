@@ -162,7 +162,13 @@ public class AddCardioSetFragment extends Fragment {
                     totalTime = 0;
                     miles = Double.parseDouble(milesString);
                 }
-                saveData(hours, minutes, seconds, totalTime, miles);
+                if(!editing){
+                    saveData(hours, minutes, seconds, totalTime, miles);
+                } else { /* If editing the item then update the cardioSet */
+                    editing = false;
+                    updateCardioSet(hours, minutes, seconds, totalTime, miles);
+                }
+
             }
         });
     }
@@ -228,10 +234,10 @@ public class AddCardioSetFragment extends Fragment {
             AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
             switch(item.getItemId()){
                 case R.id.delete:
-                    confirmDelete(liftSets.get(info.position));
+                    confirmDelete(cardioSets.get(info.position));
                     break;
                 case R.id.edit:
-                    editItem(liftSets.get(info.position));
+                    editItem(cardioSets.get(info.position));
                     break;
             }
             return true;
@@ -301,7 +307,7 @@ public class AddCardioSetFragment extends Fragment {
 
 
 
-    public void confirmDelete(final LiftSet liftSet){
+    public void confirmDelete(final CardioSet cardioSet){
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         builder.setTitle(getString(R.string.confirm_delete));
 
@@ -337,45 +343,42 @@ public class AddCardioSetFragment extends Fragment {
         deleteLiftSetListner.deleteNewLiftSet(liftSet);
     }
 
-    public void editItem(LiftSet liftSet){
+    public void editItem(CardioSet cardioSet){
         editing = true;
-        repCount.setText(""+liftSet.getReps());
-        weightCount.setText(String.format(Locale.US, "%.1f", liftSet.getWeight()));
-        editLiftSet = liftSet;
+
+        etHour.setText(String.format(Locale.US,"%2d", cardioSet.hours));
+        etMinute.setText(String.format(Locale.US,"%2d", cardioSet.minutes));
+        etSeconds.setText(String.format(Locale.US,"%2d", cardioSet.seconds));
+        etMiles.setText(String.format(Locale.US,"%2d", cardioSet.distance));
+
+        editCardioSet = cardioSet;
     }
 
-    public void updateLiftSet(double weight, int reps){
+    public void updateCardioSet(int hours, int minutes, int seconds, double totalTime, double miles){
         SQLiteDatabase db = databaseHelper.getWritableDatabase();
         ContentValues values = new ContentValues();
 
         /* Put in the new values */
-        values.put(TableConstants.LiftSetReps, reps);
-        values.put(TableConstants.LiftSetWeight, weight);
+        values.put(TableConstants.DayId, dayId);
+        values.put(TableConstants.CardioSetDistance, miles);
+        values.put(TableConstants.CardioSetTime, totalTime);
+        values.put(TableConstants.CardioSetHours, hours);
+        values.put(TableConstants.CardioSetMinutes, minutes);
+        values.put(TableConstants.CardioSetSeconds, seconds);
 
         /* Update database on set id */
-        db.update(TableConstants.LiftSetsTableName, values,
-                TableConstants.LiftSetsId + " = " + editLiftSet.getSetId(), null);
-
+        db.update(TableConstants.CardioSetsTableName, values,
+                TableConstants.CardioSetsId + " = " + editCardioSet.setId, null);
 
         /* update item in fragment context*/
-        editLiftSet.setReps(reps);
-        editLiftSet.setWeight(weight);
-
-        double max;
-
-
-        /* Prepare the values to be inserted */
-        ContentValues updateValues =  new ContentValues();
-        updateValues.put(TableConstants.MaxWeight, max);
-
-        /* Update database on set id */
-        db.update(TableConstants.MaxTableName, updateValues,
-                TableConstants.LiftSetsId + " = " + editLiftSet.getSetId(), null);
-
-        editLiftSetListner.editNewLiftSet(editLiftSet);
+        editCardioSet.distance = miles;
+        editCardioSet.elapsedTime = totalTime;
+        editCardioSet.hours = hours;
+        editCardioSet.minutes = minutes;
+        editCardioSet.seconds = seconds;
 
         /* Update List view with new information */
-        liftSetAdapter.notifyDataSetChanged();
+        cardioSetAdapter.notifyDataSetChanged();
     }
 
 }
