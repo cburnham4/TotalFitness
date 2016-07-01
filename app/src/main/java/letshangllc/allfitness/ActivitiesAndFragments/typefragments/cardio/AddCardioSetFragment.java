@@ -166,7 +166,11 @@ public class AddCardioSetFragment extends Fragment {
                     miles = Double.parseDouble(milesString);
                 }
                 totalTime = (hours * 3600) + (minutes * 60) + seconds;
-                if(!editing){
+                /* If all values are 0 then show toast */
+                if(miles== 0 && hours == 0 && minutes ==0 && seconds ==0) {
+                    Toast.makeText(getContext(), getString(R.string.please_enter_one_value),
+                            Toast.LENGTH_SHORT).show();
+                }else if(!editing){
                     saveData(hours, minutes, seconds, totalTime, miles);
                 } else { /* If editing the item then update the cardioSet */
                     editing = false;

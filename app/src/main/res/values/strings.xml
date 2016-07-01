@@ -53,6 +53,7 @@
     <string name="add_one">+1</string>
     <string name="zero">0</string>
     <string name="edit">Edit</string>
+    <string name="please_enter_one_value">Please enter at least one value</string>
 
     <!-- Fragment Add Cardio Set -->
     <string name="duration">DURATION:</string>

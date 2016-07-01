@@ -29,6 +29,7 @@ import java.util.Locale;
 import letshangllc.allfitness.ClassObjects.bodyweight.BodyWeightSet;
 import letshangllc.allfitness.ClassObjects.cardio.CardioSet;
 import letshangllc.allfitness.R;
+import letshangllc.allfitness.adapters.bodyweight.BodyWeightSetAdapter;
 import letshangllc.allfitness.adapters.cardio.CardioSetAdapter;
 import letshangllc.allfitness.database.DatabaseHelper;
 import letshangllc.allfitness.database.TableConstants;
@@ -51,17 +52,17 @@ public class AddBodyWeightSetFragment extends Fragment {
     private DatabaseHelper databaseHelper;
 
     /* Views */
-    private Button btnCancel, btnAddSet;
+    private Button btnCancel, btnAddSet, btnSubRep, btnAddRep;
     private EditText etMinute, etSeconds, etReps;
 
     /* Data variables */
     private ArrayList<BodyWeightSet> bodyWeightSets;
     private ListView lvBodyWeightSets;
-    private CardioSetAdapter cardioSetAdapter;
+    private BodyWeightSetAdapter bodyWeightSetAdapter;
 
     /* Boolean  and cardioSet that is being editted */
     private boolean editing;
-    private CardioSet editCardioSet;
+    private BodyWeightSet editBodyWeightSet;
 
     public AddBodyWeightSetFragment() {
         // Required empty public constructor
@@ -105,30 +106,28 @@ public class AddBodyWeightSetFragment extends Fragment {
         /* Find Views */
         btnAddSet =(Button) view.findViewById(R.id.btnAddCardioSet);
         btnCancel = (Button) view.findViewById(R.id.btnClearCardioValues);
+        btnAddRep = (Button) view.findViewById(R.id.btnAddBwRep);
+        btnSubRep = (Button) view.findViewById(R.id.btnSubBwRep);
 
-        etHour = (EditText) view.findViewById(R.id.etHours);
         etMinute = (EditText) view.findViewById(R.id.etMiutes);
         etSeconds = (EditText) view.findViewById(R.id.etSeconds);
-        etMiles = (EditText) view.findViewById(R.id.etMiles);
+        etReps = (EditText) view.findViewById(R.id.etBwReps);
 
-        lvCardioSets = (ListView) view.findViewById(R.id.lvCardioSets);
-
+        lvBodyWeightSets = (ListView) view.findViewById(R.id.lvBodyWeightSets);
     }
 
     /* Setup view listeners and populate listview */
     private void setupViews(){
-        cardioSetAdapter = new CardioSetAdapter(this.getContext(), cardioSets);
-        lvCardioSets.setAdapter(cardioSetAdapter);
+        bodyWeightSetAdapter = new BodyWeightSetAdapter(this.getContext(), bodyWeightSets);
+        lvBodyWeightSets.setAdapter(bodyWeightSetAdapter);
 
-        registerForContextMenu(lvCardioSets);
+        registerForContextMenu(lvBodyWeightSets);
 
         btnCancel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                 etHour.setText("");
                 etMinute.setText("");
                 etSeconds.setText("");
-                etMiles.setText("");
                 if (editing){
                     editing = false;
                     btnAddSet.setText(getString(R.string.add));
@@ -139,39 +138,32 @@ public class AddBodyWeightSetFragment extends Fragment {
         btnAddSet.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String hourString = etHour.getText().toString().trim();
                 String minuteString = etMinute.getText().toString().trim();
                 String secondsString = etSeconds.getText().toString().trim();
-                String milesString = etMiles.getText().toString().trim();
-                int hours, minutes, seconds;
+                String repsString = etReps.getText().toString().trim();
+                int minutes =0, seconds = 0, reps =0;
                 double miles, totalTime;
-                if(hourString.isEmpty()){
-                    hours = 0;
-                }else{
-                    hours = Integer.parseInt(hourString);
-                }
-                if(minuteString.isEmpty()){
-                    minutes = 0;
-                }else{
+
+                if(!minuteString.isEmpty()){
                     minutes = Integer.parseInt(minuteString);
                 }
-                if(secondsString.isEmpty()){
-                    seconds = 0;
-                }else{
+                if(!secondsString.isEmpty()){
                     seconds = Integer.parseInt(secondsString);
                 }
-                if(milesString.isEmpty()){
-                    miles = 0;
-                }else{
-                    miles = Double.parseDouble(milesString);
+                if(! repsString.isEmpty()) {
+                    reps = Integer.parseInt(repsString);
                 }
-                totalTime = (hours * 3600) + (minutes * 60) + seconds;
-                if(!editing){
-                    saveData(hours, minutes, seconds, totalTime, miles);
+                totalTime = (minutes * 60) + seconds;
+                if(minutes == 0 && seconds == 0 && reps ==0 ) {
+                    Toast.makeText(getContext(), getString(R.string.please_enter_one_value),
+                            Toast.LENGTH_SHORT).show();
+                } else if(!editing){
+                     saveData(minutes, seconds, totalTime, reps);
+                    
                 } else { /* If editing the item then update the cardioSet */
                     editing = false;
                     btnAddSet.setText(getString(R.string.add));
-                    updateCardioSet(hours, minutes, seconds, totalTime, miles);
+                    updateCardioSet(minutes, seconds, totalTime, reps);
                 }
 
             }
@@ -179,47 +171,46 @@ public class AddBodyWeightSetFragment extends Fragment {
     }
 
     /* Save the set to the DB and update listview */
-    public void saveData(int hours, int minutes, int seconds, double totalTime, double miles){
+    public void saveData(int minutes, int seconds, double totalTime, int reps){
         /* Add to DB */
         SQLiteDatabase db = databaseHelper.getWritableDatabase();
 
         ContentValues values = new ContentValues();
         values.put(TableConstants.DayId, dayId);
-        values.put(TableConstants.CARDIO_SET_DISTANCE, miles);
-        values.put(TableConstants.CARDIO_SET_TIME, totalTime);
-        values.put(TableConstants.CARDIO_SET_HOURS, hours);
-        values.put(TableConstants.CARDIO_SET_MINUTES, minutes);
-        values.put(TableConstants.CARDIO_SET_SECONDS, seconds);
+        values.put(TableConstants.BODY_WEIGHT_TIME, totalTime);
+        values.put(TableConstants.BODY_WEIGHT_REPS, reps);
+        values.put(TableConstants.BODY_WEIGHT_MINUTES, minutes);
+        values.put(TableConstants.BODY_WEIGHT_SECONDS, seconds);
 
-        db.insert(TableConstants.CARDIO_SETS_TABLE_NAME, null,values);
+        db.insert(TableConstants.BODY_WEIGHT_TABLE_NAME, null,values);
 
         /* Add new set into the listview */
         int sid = getMaxSetId();
 
         /* Add to List */
-        CardioSet cardioSet = new CardioSet(totalTime, hours, minutes, seconds, miles, dayId, sid);
-        cardioSets.add(cardioSet);
-        cardioSetAdapter.notifyDataSetChanged();
+        BodyWeightSet bodyWeightSet = new BodyWeightSet(sid, totalTime, reps, minutes, seconds, dayId);
+        bodyWeightSets.add(bodyWeightSet);
+        bodyWeightSetAdapter.notifyDataSetChanged();
 
-        addCardioSetListener.addCardioSet(cardioSet);
+        //addCardioSetListener.addCardioSet(cardioSet);
     }
 
     /* Get existing data from the DB */
     public void getExistingData(){
-        cardioSets = new ArrayList<>();
+        bodyWeightSets = new ArrayList<>();
         SQLiteDatabase db = databaseHelper.getReadableDatabase();
          /* Query the db to get the muscle data */
-        String[] projection = {TableConstants.CARDIO_SETS_ID, TableConstants.CARDIO_SET_DISTANCE,
-            TableConstants.CARDIO_SET_TIME, TableConstants.CARDIO_SET_HOURS, TableConstants.CARDIO_SET_MINUTES,
-            TableConstants.CARDIO_SET_SECONDS};
+        String[] projection = {TableConstants.BODY_WEIGHT_SET_ID, TableConstants.BODY_WEIGHT_TIME,
+            TableConstants.BODY_WEIGHT_REPS, TableConstants.BODY_WEIGHT_MINUTES,
+            TableConstants.BODY_WEIGHT_SECONDS};
 
-        Cursor c = db.query(TableConstants.CARDIO_SETS_TABLE_NAME, projection, TableConstants.DayId +" = "+ dayId,
+        Cursor c = db.query(TableConstants.BODY_WEIGHT_TABLE_NAME, projection, TableConstants.DayId +" = "+ dayId,
                 null, null, null, null);
         c.moveToFirst();
 
         while (!c.isAfterLast()){
-            cardioSets.add(new CardioSet(c.getDouble(2), c.getInt(3), c.getInt(4), c.getInt(5),
-                    c.getDouble(1), dayId, c.getInt(0)));
+            bodyWeightSets.add(new BodyWeightSet(c.getInt(0), c.getDouble(1), c.getInt(2),
+                    c.getInt(3), c.getInt(4), dayId));
             c.moveToNext();
         }
         c.close();
@@ -253,6 +244,7 @@ public class AddBodyWeightSetFragment extends Fragment {
         return false;
     }
 
+    /* todo refactor to common class */
     /* Add date to db id it does not already exist */
     public int addDateToDB(){
         /* First check if the db row has already been created */
