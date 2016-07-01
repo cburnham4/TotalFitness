@@ -38,8 +38,8 @@ import letshangllc.allfitness.R;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class CardioGraphFragment extends Fragment {
-    private static final String TAG= CardioGraphFragment.class.getSimpleName();
+public class GraphCardioFragment extends Fragment {
+    private static final String TAG= GraphCardioFragment.class.getSimpleName();
 
     /* Views */
     private GraphView graph;
@@ -64,7 +64,7 @@ public class CardioGraphFragment extends Fragment {
 
     private TextView[] tvDateSelections;
 
-    public CardioGraphFragment() {
+    public GraphCardioFragment() {
         // Required empty public constructor
     }
 

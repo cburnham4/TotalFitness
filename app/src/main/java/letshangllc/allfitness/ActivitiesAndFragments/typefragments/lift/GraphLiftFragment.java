@@ -28,14 +28,13 @@ import java.util.Locale;
 
 import letshangllc.allfitness.database.DatabaseHelper;
 import letshangllc.allfitness.database.TableConstants;
-import letshangllc.allfitness.MockData.MockedDataPoints;
 import letshangllc.allfitness.R;
 
 /**
  * A simple {@link Fragment} subclass.
  */
-public class LiftGraphFragment extends Fragment {
-    private static final String TAG= LiftGraphFragment.class.getSimpleName();
+public class GraphLiftFragment extends Fragment {
+    private static final String TAG= GraphLiftFragment.class.getSimpleName();
 
     /* Views */
     private GraphView graph;
@@ -54,7 +53,7 @@ public class LiftGraphFragment extends Fragment {
 
     TextView[] tvDateSelections;
 
-    public LiftGraphFragment() {
+    public GraphLiftFragment() {
         // Required empty public constructor
     }
 

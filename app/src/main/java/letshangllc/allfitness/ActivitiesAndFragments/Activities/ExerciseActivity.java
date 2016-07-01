@@ -15,10 +15,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 import letshangllc.allfitness.ActivitiesAndFragments.typefragments.cardio.AddCardioSetFragment;
-import letshangllc.allfitness.ActivitiesAndFragments.typefragments.cardio.CardioGraphFragment;
+import letshangllc.allfitness.ActivitiesAndFragments.typefragments.cardio.GraphCardioFragment;
 import letshangllc.allfitness.ActivitiesAndFragments.typefragments.cardio.PastCardioFragment;
 import letshangllc.allfitness.ActivitiesAndFragments.typefragments.lift.AddLiftSetFragment;
-import letshangllc.allfitness.ActivitiesAndFragments.typefragments.lift.LiftGraphFragment;
+import letshangllc.allfitness.ActivitiesAndFragments.typefragments.lift.GraphLiftFragment;
 import letshangllc.allfitness.ActivitiesAndFragments.typefragments.lift.PastLiftsFragment;
 import letshangllc.allfitness.ClassObjects.CardioSet;
 import letshangllc.allfitness.ClassObjects.LiftSet;
@@ -82,7 +82,7 @@ public class ExerciseActivity extends AppCompatActivity implements AddLiftSetFra
                 frag1Cardio.setArguments(args);
                 Fragment frag2Cardio  = new PastCardioFragment();
                 frag2Cardio.setArguments(args);
-                Fragment frag3Cardio = new CardioGraphFragment();
+                Fragment frag3Cardio = new GraphCardioFragment();
                 frag3Cardio.setArguments(args);
                 adapter.addFragment(frag1Cardio, "Add Set");
                 adapter.addFragment(frag2Cardio, "HISTORY");
@@ -93,7 +93,7 @@ public class ExerciseActivity extends AppCompatActivity implements AddLiftSetFra
                 frag1.setArguments(args);
                 Fragment frag2 = new PastLiftsFragment();
                 frag2.setArguments(args);
-                Fragment frag3 = new LiftGraphFragment();
+                Fragment frag3 = new GraphLiftFragment();
                 frag3.setArguments(args);
                 adapter.addFragment(frag1, "Add Set");
                 adapter.addFragment(frag2, "Past Lifts");
@@ -113,8 +113,8 @@ public class ExerciseActivity extends AppCompatActivity implements AddLiftSetFra
 
         /* Get update the graph if it has already been created */
         try{
-            LiftGraphFragment liftGraphFragment = (LiftGraphFragment) getSupportFragmentManager().getFragments().get(2);
-            liftGraphFragment.updateNewLiftSet();
+            GraphLiftFragment graphLiftFragment = (GraphLiftFragment) getSupportFragmentManager().getFragments().get(2);
+            graphLiftFragment.updateNewLiftSet();
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -128,8 +128,8 @@ public class ExerciseActivity extends AppCompatActivity implements AddLiftSetFra
 
         /* Get update the graph if it has already been created */
         try{
-            LiftGraphFragment liftGraphFragment = (LiftGraphFragment) getSupportFragmentManager().getFragments().get(2);
-            liftGraphFragment.updateNewLiftSet();
+            GraphLiftFragment graphLiftFragment = (GraphLiftFragment) getSupportFragmentManager().getFragments().get(2);
+            graphLiftFragment.updateNewLiftSet();
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -144,8 +144,8 @@ public class ExerciseActivity extends AppCompatActivity implements AddLiftSetFra
 
         /* Get update the graph if it has already been created */
         try{
-            LiftGraphFragment liftGraphFragment = (LiftGraphFragment) getSupportFragmentManager().getFragments().get(2);
-            liftGraphFragment.updateNewLiftSet();
+            GraphLiftFragment graphLiftFragment = (GraphLiftFragment) getSupportFragmentManager().getFragments().get(2);
+            graphLiftFragment.updateNewLiftSet();
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -159,8 +159,8 @@ public class ExerciseActivity extends AppCompatActivity implements AddLiftSetFra
 
                 /* Get update the graph if it has already been created */
         try{
-            CardioGraphFragment cardioGraphFragment = (CardioGraphFragment) getSupportFragmentManager().getFragments().get(2);
-            cardioGraphFragment.updateCardioSet();
+            GraphCardioFragment graphCardioFragment = (GraphCardioFragment) getSupportFragmentManager().getFragments().get(2);
+            graphCardioFragment.updateCardioSet();
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -174,8 +174,8 @@ public class ExerciseActivity extends AppCompatActivity implements AddLiftSetFra
 
                 /* Get update the graph if it has already been created */
         try{
-            CardioGraphFragment cardioGraphFragment = (CardioGraphFragment) getSupportFragmentManager().getFragments().get(2);
-            cardioGraphFragment.updateCardioSet();
+            GraphCardioFragment graphCardioFragment = (GraphCardioFragment) getSupportFragmentManager().getFragments().get(2);
+            graphCardioFragment.updateCardioSet();
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -189,8 +189,8 @@ public class ExerciseActivity extends AppCompatActivity implements AddLiftSetFra
 
                 /* Get update the graph if it has already been created */
         try{
-            CardioGraphFragment cardioGraphFragment = (CardioGraphFragment) getSupportFragmentManager().getFragments().get(2);
-            cardioGraphFragment.updateCardioSet();
+            GraphCardioFragment graphCardioFragment = (GraphCardioFragment) getSupportFragmentManager().getFragments().get(2);
+            graphCardioFragment.updateCardioSet();
         } catch (Exception e) {
             e.printStackTrace();
         }
