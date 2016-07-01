@@ -86,7 +86,7 @@ public class PastCardioFragment extends Fragment {
         return view;
     }
 
-    /* todo change to sql for 1 query */
+    /* todo Change to one query */
     public void getExistingData() {
         /* Get readable db */
         SQLiteDatabase db = databaseHelper.getReadableDatabase();
@@ -120,23 +120,25 @@ public class PastCardioFragment extends Fragment {
         int i = 0;
         for (Integer dayId : dayIds) {
             /* Query the sets table based on dayId */
-            String[] projection2 = {TableConstants.LiftSetsId, TableConstants.LiftSetReps, TableConstants.LiftSetWeight};
-            c = db.query(TableConstants.LiftSetsTableName, projection2, TableConstants.DayId + " = "
+            String[] projection2 = {TableConstants.CardioSetsId, TableConstants.CardioSetDistance,
+                    TableConstants.CardioSetTime, TableConstants.CardioSetHours, TableConstants.CardioSetMinutes,
+                    TableConstants.CardioSetSeconds};
+
+            c = db.query(TableConstants.CardioSetsTableName, projection2, TableConstants.DayId + " = "
                     + dayId, null, null, null, null);
 
+            ArrayList<CardioSet> cardioSets = new ArrayList<>();
 
-            ArrayList<LiftSet> liftSets = new ArrayList<>();
-
-            /* Add all lifts for the day into a new array */
+            /* Add all sets for the day into a new array */
             c.moveToFirst();
             while (!c.isAfterLast()) {
-                liftSets.add(new LiftSet(1, c.getInt(0), c.getInt(1), c.getDouble(2)));
-                Log.e(TAG, "HERE");
+                cardioSets.add(new CardioSet(c.getDouble(2), c.getInt(3), c.getInt(4), c.getInt(5),
+                        c.getDouble(1), dayId, c.getInt(0)));
                 c.moveToNext();
             }
 
-            /* Add the lift set and date to pastLiftItems */
-            pastLiftItems.add(0, new PastLiftItem(liftSets, dates.get(i++)));
+            /* Add the list and date to past sets */
+            pastCardioItems.add(0, new PastCardioItem(cardioSets, dates.get(i++)));
 
             c.close();
         }
@@ -146,53 +148,55 @@ public class PastCardioFragment extends Fragment {
     /* Add new liftset to most current when set it added */
     public void addCardioSet(CardioSet cardioSet) {
         /* If the set set is not empty add on the new item */
-//        if(pastLiftItems.size()!=0){
-//                    /* Add the inserted item to the first recycleview item */
-//            PastLiftItem pastLiftSet = pastLiftItems.get(0);
-//            //pastLiftSet.getLiftSets().add(liftSet);
-//            mAdapter.notifyItemChanged(0);
-//        }
+        if(pastCardioItems.size()!=0){
+            /* Add the inserted item to the first recycleview item */
+            PastCardioItem pastCardioItem = pastCardioItems.get(0);
+            pastCardioItem.cardioSets.add(cardioSet);
+            mAdapter.notifyItemChanged(0);
+        }
     }
 
     public void deleteCardioSet(CardioSet cardioSet){
-//        Log.i(TAG, "Deleting Liftset");
-//        /* If the set set is not empty add on the new item */
-//        if(pastLiftItems.size()!=0){
-//            /* Remove the liftset from the first recycleview item */
-//            PastLiftItem pastLiftSet = pastLiftItems.get(0);
-//            /* Find the liftset to be deleted and remove it */
-//            Log.i(TAG, "Liftset Id: " + liftSet.getSetId());
-//            for(LiftSet item: pastLiftSet.getLiftSets()){
-//                Log.i(TAG, "Item Id: " + item.getSetId());
-//                if(item.getSetId() == liftSet.getSetId()){
-//                    pastLiftSet.getLiftSets().remove(item);
-//                    mAdapter.notifyItemChanged(0);
-//                    break;
-//                }
-//            }
-//
-//
-//
-//        }
+        /* If the set set is not empty add on the new item */
+        if(pastCardioItems.size()!=0){
+            /* Remove the liftset from the first recycleview item */
+            PastCardioItem pastCardioItem = pastCardioItems.get(0);
+            /* Find the liftset to be deleted and remove it */
+            for(CardioSet item: pastCardioItem.cardioSets){
+
+                /* Delete the item that matches */
+                if(item.setId == cardioSet.setId){
+                    pastCardioItem.cardioSets.remove(item);
+                    mAdapter.notifyItemChanged(0);
+                    break;
+                }
+            }
+
+
+
+        }
     }
 
 
     public void editCardioSet(CardioSet cardioSet){
-//        Log.i(TAG, "Edit Liftset");        /* If the set set is not empty add on the new item */
-//        if(pastLiftItems.size()!=0){
-//            /* Remove the liftset from the first recycleview item */
-//            PastLiftItem pastLiftSet = pastLiftItems.get(0);
-//            /* Find the liftset to be deleted and remove it */
-//            for(LiftSet item: pastLiftSet.getLiftSets()){
-//                Log.i(TAG, "Item Id: " + item.getSetId());
-//                if(item.getSetId() == liftSet.getSetId()){
-//                    item.setWeight(liftSet.getWeight());
-//                    item.setReps(liftSet.getReps());
-//
-//                    mAdapter.notifyItemChanged(0);
-//                    break;
-//                }
-//            }
-//        }
+        /* If the set set is not empty add on the new item */
+        if(pastCardioItems.size()!=0){
+            /* Remove the liftset from the first recycleview item */
+            PastCardioItem pastCardioItem = pastCardioItems.get(0);
+            /* Find the liftset to be deleted and remove it */
+            for(CardioSet item: pastCardioItem.cardioSets){
+
+                if(item.setId == cardioSet.setId){
+                    item.distance = cardioSet.distance;
+                    item.elapsedTime = cardioSet.elapsedTime;
+                    item.hours = cardioSet.hours;
+                    item.minutes = cardioSet.minutes;
+                    item.seconds = cardioSet.seconds;
+
+                    mAdapter.notifyItemChanged(0);
+                    break;
+                }
+            }
+        }
     }
 }
