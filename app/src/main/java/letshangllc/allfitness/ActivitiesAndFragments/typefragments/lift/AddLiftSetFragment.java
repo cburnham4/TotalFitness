@@ -208,7 +208,7 @@ public class AddLiftSetFragment extends Fragment {
         db.close();
     }
 
-    /* Add the current set to the db */
+    /* Add the current set to the db and update listview */
     public void addToDB(double weight, int reps){
         SQLiteDatabase db = databaseHelper.getWritableDatabase();
         //PUT SET INTO SETS

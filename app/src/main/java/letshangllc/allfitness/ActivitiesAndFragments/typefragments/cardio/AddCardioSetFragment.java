@@ -1,11 +1,13 @@
 package letshangllc.allfitness.ActivitiesAndFragments.typefragments.cardio;
 
 
+import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.provider.DocumentFile;
+import android.util.Log;
 import android.view.ContextMenu;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
@@ -74,6 +76,7 @@ public class AddCardioSetFragment extends Fragment {
         Date date = new Date();
         currentDate = dateFormat.format(date);
 
+        dayId = addDateToDB();
 
         getExistingData();
     }
@@ -155,11 +158,26 @@ public class AddCardioSetFragment extends Fragment {
         });
     }
 
+    /* Save the set to the DB and update listview */
     public void saveData(int hours, int minutes, int seconds, double totalTime, double miles){
         /* Add to DB */
+        SQLiteDatabase db = databaseHelper.getWritableDatabase();
+
+        ContentValues values = new ContentValues();
+        values.put(TableConstants.DayId, dayId);
+        values.put(TableConstants.CardioSetDistance, miles);
+        values.put(TableConstants.CardioSetTime, totalTime);
+        values.put(TableConstants.CardioSetHours, hours);
+        values.put(TableConstants.CardioSetMinutes, minutes);
+        values.put(TableConstants.CardioSetSeconds, seconds);
+
+        db.insert(TableConstants.CardioSetsTableName, null,values);
+
+        /* Add new set into the listview */
+        int sid = getMaxSetId();
 
         /* Add to List */
-        CardioSet cardioSet = new CardioSet(totalTime, hours, minutes, seconds, miles, 0, 0);
+        CardioSet cardioSet = new CardioSet(totalTime, hours, minutes, seconds, miles, dayId, sid);
         cardioSets.add(cardioSet);
         cardioSetAdapter.notifyDataSetChanged();
     }
@@ -171,13 +189,14 @@ public class AddCardioSetFragment extends Fragment {
         String[] projection = {TableConstants.CardioSetsId, TableConstants.CardioSetDistance,
             TableConstants.CardioSetTime, TableConstants.CardioSetHours, TableConstants.CardioSetMinutes,
             TableConstants.CardioSetSeconds};
-        
+
         Cursor c = db.query(TableConstants.LiftSetsTableName, projection, TableConstants.DayId +" = "+ dayId,
                 null, null, null, null);
         c.moveToFirst();
 
         while (!c.isAfterLast()){
-            liftSets.add(new LiftSet(dayId, c.getInt(0), c.getInt(1), c.getDouble(2)));
+            cardioSets.add(new CardioSet(c.getDouble(2), c.getInt(3), c.getInt(4), c.getInt(5),
+                    c.getDouble(1), dayId, c.getInt(0)));
             c.moveToNext();
         }
         c.close();
@@ -210,6 +229,41 @@ public class AddCardioSetFragment extends Fragment {
         }
 
         return false;
+    }
+
+    /* Add date to db id it does not already exist */
+    public int addDateToDB(){
+        /* First check if the db row has already been created */
+        SQLiteDatabase db = databaseHelper.getReadableDatabase();
+        String[] projection = {TableConstants.DayId};
+
+        /* Query the exercise table based on the muscle id to get all the associated exercises */
+        Cursor c = db.query(TableConstants.DayTableName, projection, TableConstants.DayDate
+                + " = '" + currentDate + "' AND " + TableConstants.ExerciseId +" = "+ exerciseId, null, null, null, null);
+
+        c.moveToFirst();
+        /* If there already exists a dayId for today then return it */
+        if(!c.isAfterLast()){
+            Log.e(TAG, "Day exists");
+            int dayId = c.getInt(0);
+            c.close();
+            return dayId;
+        }
+
+        Log.e(TAG, "Day does not exist");
+
+         /* Else insert in a new day */
+        ContentValues values = new ContentValues();
+        values.put(TableConstants.ExerciseId, exerciseId);
+        values.put(TableConstants.DayDate, currentDate);
+
+         /* Insert values into db */
+        db.insert(TableConstants.DayTableName, null, values);
+        db.close();
+
+        /* Return the max Day id which will be the most recently inserted dayId */
+        return getMaxDayId();
+
     }
 
     /* Get the id of the last Day Id */
