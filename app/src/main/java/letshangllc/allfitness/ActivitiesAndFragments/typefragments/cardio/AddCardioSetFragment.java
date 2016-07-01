@@ -2,6 +2,7 @@ package letshangllc.allfitness.ActivitiesAndFragments.typefragments.cardio;
 
 
 import android.content.ContentValues;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
@@ -339,7 +340,7 @@ public class AddCardioSetFragment extends Fragment {
         cardioSets.remove(cardioSet);
         cardioSetAdapter.notifyDataSetChanged();
 
-        deleteLiftSetListner.deleteNewLiftSet(liftSet);
+        deleteCardioSetListner.deleteCardioSet(cardioSet);
     }
 
     public void editItem(CardioSet cardioSet){
@@ -378,6 +379,41 @@ public class AddCardioSetFragment extends Fragment {
 
         /* Update List view with new information */
         cardioSetAdapter.notifyDataSetChanged();
+
+        editCardioSetListner.editCardioSet(editCardioSet);
+    }
+
+    /* CardioSet Change Listeners */
+    private AddCardioSetListener addCardioSetListener;
+    private DeleteCardioSetListner deleteCardioSetListner;
+    private EditCardioSetListner editCardioSetListner;
+
+    public interface AddCardioSetListener{
+        void addCardioSet(CardioSet cardioSet);
+    }
+
+    public interface DeleteCardioSetListner{
+        void deleteCardioSet(CardioSet cardioSet);
+    }
+
+    public interface EditCardioSetListner{
+        void editCardioSet(CardioSet cardioSet);
+    }
+
+    @Override
+    public void onAttach(Context activity) {
+        super.onAttach(activity);
+
+        // This makes sure that the container activity has implemented
+        // the callback interface. If not, it throws an exception
+        try {
+            addCardioSetListener = (AddCardioSetListener) activity;
+            deleteCardioSetListner = (DeleteCardioSetListner) activity;
+            editCardioSetListner = (EditCardioSetListner) activity;
+        } catch (ClassCastException e) {
+            throw new ClassCastException(activity.toString()
+                    + " must implement OnHeadlineSelectedListener");
+        }
     }
 
 }

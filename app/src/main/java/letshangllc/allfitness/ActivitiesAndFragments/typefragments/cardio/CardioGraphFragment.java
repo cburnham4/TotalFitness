@@ -259,7 +259,7 @@ public class CardioGraphFragment extends Fragment {
         db.close();
     }
 
-    public void updateNewLiftSet() throws ParseException {
+    public void updateCardioSet() throws ParseException {
         getExistingData();
         createGraph();
     }

@@ -20,11 +20,15 @@ import letshangllc.allfitness.ActivitiesAndFragments.typefragments.cardio.PastCa
 import letshangllc.allfitness.ActivitiesAndFragments.typefragments.lift.AddLiftSetFragment;
 import letshangllc.allfitness.ActivitiesAndFragments.typefragments.lift.LiftGraphFragment;
 import letshangllc.allfitness.ActivitiesAndFragments.typefragments.lift.PastLiftsFragment;
+import letshangllc.allfitness.ClassObjects.CardioSet;
 import letshangllc.allfitness.ClassObjects.LiftSet;
 import letshangllc.allfitness.R;
 
 public class ExerciseActivity extends AppCompatActivity implements AddLiftSetFragment.AddLiftSetListener,
-        AddLiftSetFragment.DeleteLiftSetListner, AddLiftSetFragment.EditLiftSetListner{
+        AddLiftSetFragment.DeleteLiftSetListner, AddLiftSetFragment.EditLiftSetListner,
+        AddCardioSetFragment.AddCardioSetListener, AddCardioSetFragment.EditCardioSetListner,
+        AddCardioSetFragment.DeleteCardioSetListner
+{
     private final static String TAG  = ExerciseActivity.class.getSimpleName();
 
     /* Bundle to pass to each of the fragments */
@@ -102,9 +106,9 @@ public class ExerciseActivity extends AppCompatActivity implements AddLiftSetFra
         viewPager.setAdapter(adapter);
     }
 
+    /* Lift Set Listeners */
     @Override
     public void addNewLiftSet(LiftSet liftSet) {
-        Log.e(TAG, "FRAGMENTS: "+ 0);
         PastLiftsFragment pastLiftsFragment = (PastLiftsFragment)getSupportFragmentManager().getFragments().get(0);
 
         /* Get update the graph if it has already been created */
@@ -149,6 +153,53 @@ public class ExerciseActivity extends AppCompatActivity implements AddLiftSetFra
         pastLiftsFragment.editLiftSet(liftSet);
     }
 
+    @Override
+    public void addCardioSet(CardioSet cardioSet) {
+        PastCardioFragment pastCardioFragment = (PastCardioFragment) getSupportFragmentManager().getFragments().get(0);
+
+                /* Get update the graph if it has already been created */
+        try{
+            CardioGraphFragment cardioGraphFragment = (CardioGraphFragment) getSupportFragmentManager().getFragments().get(2);
+            cardioGraphFragment.updateCardioSet();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        pastCardioFragment.addCardioSet(cardioSet);
+    }
+
+    @Override
+    public void deleteCardioSet(CardioSet cardioSet) {
+        PastCardioFragment pastCardioFragment = (PastCardioFragment) getSupportFragmentManager().getFragments().get(0);
+
+                /* Get update the graph if it has already been created */
+        try{
+            CardioGraphFragment cardioGraphFragment = (CardioGraphFragment) getSupportFragmentManager().getFragments().get(2);
+            cardioGraphFragment.updateCardioSet();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        pastCardioFragment.deleteCardioSet(cardioSet);
+    }
+
+    @Override
+    public void editCardioSet(CardioSet cardioSet) {
+        PastCardioFragment pastCardioFragment = (PastCardioFragment) getSupportFragmentManager().getFragments().get(0);
+
+                /* Get update the graph if it has already been created */
+        try{
+            CardioGraphFragment cardioGraphFragment = (CardioGraphFragment) getSupportFragmentManager().getFragments().get(2);
+            cardioGraphFragment.updateCardioSet();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        pastCardioFragment.editCardioSet(cardioSet);
+    }
+
+
+    /* View Pager Adapter */
     class ViewPagerAdapter extends FragmentPagerAdapter {
         private final List<Fragment> mFragmentList = new ArrayList<>();
         private final List<String> mFragmentTitleList = new ArrayList<>();
