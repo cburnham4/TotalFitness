@@ -64,6 +64,13 @@
     <!-- Fragment Graph -->
     <string name="no_data_available">No Data Available</string>
 
+    <!-- Fragment Cardio Graph -->
+    <string-array name="cardio_graph_types">
+        <item>Distance</item>
+        <item>Time (m)</item>
+        <item>Speed</item>
+    </string-array>
+
     <!-- Formatting -->
     <string name="date_format">dd-MM-yyyy</string>
 </resources>

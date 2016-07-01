@@ -8,7 +8,7 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:id="@+id/rel_graph">
+        android:id="@+id/relGraphOptions">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -87,5 +87,5 @@
         android:layout_centerInParent="true"
         android:text="@string/no_data_available"
         android:visibility="gone"
-        android:id="@+id/tv_noData"/>
+        android:id="@+id/tvNoData"/>
 </RelativeLayout>

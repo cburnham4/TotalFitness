@@ -21,4 +21,10 @@ public class CardioSet {
         this.dayId = dayId;
         this.setId = setId;
     }
+
+    public double getMPH(){
+        double hours  = elapsedTime/3600.0;
+        double mph = distance/hours;
+        return mph;
+    }
 }

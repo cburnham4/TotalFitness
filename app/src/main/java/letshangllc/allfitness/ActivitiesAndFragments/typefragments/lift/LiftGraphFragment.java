@@ -63,12 +63,12 @@ public class LiftGraphFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View view = inflater.inflate(R.layout.fragment_lift_graph, container, false);
+        View view = inflater.inflate(R.layout.fragment_graph_lift, container, false);
 
         setupDateSelections(view);
         graph = (GraphView) view.findViewById(R.id.graph);
-        rel_graph = (RelativeLayout) view.findViewById(R.id.rel_graph);
-        tvNoData = (TextView) view.findViewById(R.id.tv_noData);
+        rel_graph = (RelativeLayout) view.findViewById(R.id.relGraphOptions);
+        tvNoData = (TextView) view.findViewById(R.id.tvNoData);
 
 
         /* Attempt to get the existing data */
@@ -78,13 +78,13 @@ public class LiftGraphFragment extends Fragment {
             e.printStackTrace();
         }
 
-        try {
-
-            dataPoints = MockedDataPoints.getMockDataPoints();
-            lineGraphSeries.resetData(dataPoints.toArray(new DataPoint[dataPoints.size()]));
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
+//        try {
+//
+//            dataPoints = MockedDataPoints.getMockDataPoints();
+//            lineGraphSeries.resetData(dataPoints.toArray(new DataPoint[dataPoints.size()]));
+//        } catch (ParseException e) {
+//            e.printStackTrace();
+//        }
         /* createGraph */
         createGraph();
         return view;

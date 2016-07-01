@@ -97,7 +97,6 @@ public class AddCardioSetFragment extends Fragment {
         this.findViews(view);
         this.setupViews();
 
-
         return view;
     }
 
@@ -157,12 +156,11 @@ public class AddCardioSetFragment extends Fragment {
                     seconds = Integer.parseInt(secondsString);
                 }
                 if(milesString.isEmpty()){
-                    totalTime = (hours * 3600) + (minutes * 60) + seconds;
                     miles = 0;
                 }else{
-                    totalTime = 0;
                     miles = Double.parseDouble(milesString);
                 }
+                totalTime = (hours * 3600) + (minutes * 60) + seconds;
                 if(!editing){
                     saveData(hours, minutes, seconds, totalTime, miles);
                 } else { /* If editing the item then update the cardioSet */

@@ -9,7 +9,10 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.RelativeLayout;
+import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.jjoe64.graphview.GraphView;
@@ -26,9 +29,10 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.Locale;
 
+import letshangllc.allfitness.ClassObjects.CardioSet;
+import letshangllc.allfitness.ClassObjects.PastCardioItem;
 import letshangllc.allfitness.database.DatabaseHelper;
 import letshangllc.allfitness.database.TableConstants;
-import letshangllc.allfitness.MockData.MockedDataPoints;
 import letshangllc.allfitness.R;
 
 /**
@@ -42,9 +46,15 @@ public class CardioGraphFragment extends Fragment {
     private RelativeLayout rel_graph;
     private TextView tvNoData;
 
+    /* Array of past days */
+    private ArrayList<PastCardioItem> pastCardioItems;
+
     /* DataPoints and series */
     private LineGraphSeries<DataPoint> lineGraphSeries;
-    private ArrayList<DataPoint> dataPoints;
+    private ArrayList<DataPoint> dataPointsDistance;
+    private ArrayList<DataPoint> dataPointsTime;
+    private ArrayList<DataPoint> dataPointsSpeed;
+    private ArrayList<DataPoint> presentedDataPoints;
 
     /* Passed in lift variables */
     private int exerciseId;
@@ -52,45 +62,95 @@ public class CardioGraphFragment extends Fragment {
     /* Database Helper */
     DatabaseHelper databaseHelper;
 
-    TextView[] tvDateSelections;
+    private TextView[] tvDateSelections;
 
     public CardioGraphFragment() {
         // Required empty public constructor
     }
 
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+
+        Log.e(TAG, "Create Graph");
+
+        Bundle args = getArguments();
+        exerciseId = args.getInt(getString(R.string.exercise_id), 0);
+
+        databaseHelper = new DatabaseHelper(this.getContext());
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View view = inflater.inflate(R.layout.fragment_lift_graph, container, false);
+        View view = inflater.inflate(R.layout.fragment_graph_cardio, container, false);
+
+        Log.e(TAG, "Create Graph View ");
 
         setupDateSelections(view);
-        graph = (GraphView) view.findViewById(R.id.graph);
-        rel_graph = (RelativeLayout) view.findViewById(R.id.rel_graph);
-        tvNoData = (TextView) view.findViewById(R.id.tv_noData);
-
+        setupAdditionalViews(view);
 
         /* Attempt to get the existing data */
         try {
             getExistingData();
+            setupDatapoints();
         } catch (ParseException e) {
             e.printStackTrace();
         }
 
-        try {
-
-            dataPoints = MockedDataPoints.getMockDataPoints();
-            lineGraphSeries.resetData(dataPoints.toArray(new DataPoint[dataPoints.size()]));
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
         /* createGraph */
         createGraph();
         return view;
     }
 
-    /* todo clean up code */
+    public void setupAdditionalViews(View view){
+        graph = (GraphView) view.findViewById(R.id.graph);
+        rel_graph = (RelativeLayout) view.findViewById(R.id.relGraphOptions);
+        tvNoData = (TextView) view.findViewById(R.id.tvNoData);
+
+        Spinner spinner = (Spinner) view.findViewById(R.id.spinCardioGraph);
+        // Create an ArrayAdapter using the string array and a default spinner layout
+        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this.getContext(),
+                R.array.cardio_graph_types, android.R.layout.simple_spinner_item);
+        // Specify the layout to use when the list of choices appears
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        // Apply the adapter to the spinner
+        spinner.setAdapter(adapter);
+
+        spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                String cardioType = (String) parent.getItemAtPosition(position);
+                switch (cardioType){
+                    case "Distance":
+                        presentedDataPoints = dataPointsDistance;
+                        break;
+                    case "Time (m)":
+                        presentedDataPoints = dataPointsTime;
+                        break;
+                    case "Speed":
+                        presentedDataPoints = dataPointsSpeed;
+                        break;
+                }
+                if(presentedDataPoints.size() == 0){
+                    graph.setVisibility(View.GONE);
+                    tvNoData.setVisibility(View.VISIBLE);
+                }else{
+                    graph.setVisibility(View.VISIBLE);
+                    tvNoData.setVisibility(View.GONE);
+                    updateGraphWithDataPoints(presentedDataPoints, 4);
+                    //createGraph();
+                }
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
+    }
+
     public void setupDateSelections(View view){
         final TextView tv_1m = (TextView) view.findViewById(R.id.tv_1m);
         final TextView tv_3m = (TextView) view.findViewById(R.id.tv_3m);
@@ -135,49 +195,63 @@ public class CardioGraphFragment extends Fragment {
 
             ArrayList<DataPoint> dataPointsLocal = new ArrayList<DataPoint>();
                 /* Iterate though the global datapoints to get the ones that fall in a 1 month range */
-            for (DataPoint dataPoint: dataPoints){
+            for (DataPoint dataPoint: presentedDataPoints){
                 if(currentTime-dataPoint.getX()<= timeLimit){
                     dataPointsLocal.add(dataPoint);
                 }
             }
+            updateGraphWithDataPoints(dataPointsLocal, tvIndex);
 
-            DataPoint[] dataPoints1 = dataPointsLocal.toArray(new DataPoint[dataPointsLocal.size()]);
+        }
+    }
+
+    private void updateGraphWithDataPoints(ArrayList<DataPoint> dataPoints, int tvIndex){
+        if(dataPoints.size() == 1){
+            DataPoint dataPoint = dataPoints.get(0);
+            PointsGraphSeries<DataPoint> seriesSingle = new PointsGraphSeries<DataPoint>(new DataPoint[] {
+                    dataPoint
+            });
+
+            graph.addSeries(seriesSingle);
+            seriesSingle.setShape(PointsGraphSeries.Shape.TRIANGLE);
+
+            Viewport viewport = graph.getViewport();
+            viewport.setMinX(dataPoint.getX()-5*24*60*60*1000);
+            viewport.setMaxX(dataPoint.getX()+5*24*60*60*1000);
+
+            viewport.setMinY(dataPoint.getY()-10);
+            viewport.setMaxY(dataPoint.getY() + 10);
+        }else{
+            DataPoint[] dataPoints1 = dataPoints.toArray(new DataPoint[dataPoints.size()]);
             lineGraphSeries.resetData(dataPoints1);
             Viewport viewport = graph.getViewport();
             viewport.setMinX(lineGraphSeries.getLowestValueX()-5*24*60*60*1000);
             viewport.setMaxX(lineGraphSeries.getHighestValueX()+5*24*60*60*1000);
             viewport.setMinY(lineGraphSeries.getLowestValueY()-5);
             viewport.setMaxY(lineGraphSeries.getHighestValueY()+5);
-            /* Set all points textviews to null bg */
+        /* Set all points textviews to null bg */
             for (TextView tv: tvDateSelections){
                 tv.setBackgroundColor(0);
             }
-            /* set background for selected item */
+        /* set background for selected item */
             tvDateSelections[tvIndex].setBackgroundColor(getResources().getColor(R.color.divider));
         }
-    }
-
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-
-        Bundle args = getArguments();
-        exerciseId = args.getInt(getString(R.string.exercise_id), 0);
-
-        databaseHelper = new DatabaseHelper(this.getContext());
 
     }
+
 
     /* todo just change the x min and x max for times */
     private void createGraph(){
-        graph.setTitle("Max Weight Over Time");
+        graph.setTitle("Cardio Results");
         graph.getGridLabelRenderer().setLabelFormatter(new DateAsXAxisLabelFormatter(this.getContext()));
+        Log.i(TAG, "Create Graph");
         if(!lineGraphSeries.isEmpty()){
+            Log.i(TAG, "Creating Graph");
             graph.getGridLabelRenderer().setNumHorizontalLabels(3);
             graph.getViewport().setXAxisBoundsManual(true);
             graph.getViewport().setYAxisBoundsManual(true);
-            if(dataPoints.size() == 1){
-                DataPoint dataPoint = dataPoints.get(0);
+            if(presentedDataPoints.size() == 1){
+                DataPoint dataPoint = presentedDataPoints.get(0);
                 PointsGraphSeries<DataPoint> seriesSingle = new PointsGraphSeries<DataPoint>(new DataPoint[] {
                         dataPoint
                 });
@@ -209,58 +283,117 @@ public class CardioGraphFragment extends Fragment {
             }
 
 
+        }else{
+            Log.i(TAG, "Line Graph Series is empty");
         }
 
     }
 
-    public void getExistingData() throws ParseException {
-        dataPoints = new ArrayList<>();
+    /* Parse datapoints from the data obtained from getExistingData */
+    public void setupDatapoints() throws ParseException {
+        dataPointsDistance = new ArrayList<>();
+        dataPointsTime = new ArrayList<>();
+        dataPointsSpeed = new ArrayList<>();
         lineGraphSeries = new LineGraphSeries<>();
-        /* Get db and query data */
-        SQLiteDatabase db = databaseHelper.getReadableDatabase();
-        Cursor c = db.rawQuery("SELECT MAX("+ TableConstants.MaxWeight +") " +
-                ", " + TableConstants.DayDate + " " +
-                "FROM "+ TableConstants.DayTableName +" INNER JOIN " +TableConstants.MaxTableName +
-                " ON " + TableConstants.DayTableName +"." +TableConstants.DayId +" = " +
-                TableConstants.MaxTableName + "." +TableConstants.DayId +
-                " WHERE " +TableConstants.MaxTableName + "." +TableConstants.ExerciseId
-                + " = " + exerciseId +
-                " GROUP BY " + TableConstants.DayDate +
-                " ORDER BY " + TableConstants.MaxTableName + "." +TableConstants.DayId +" ASC", null);
-        c.moveToFirst();
 
         /* Get date formatter */
         DateFormat dateFormat = new SimpleDateFormat(getString(R.string.date_format), Locale.US);
 
-        Log.e(TAG, "Max Count: " + c.getCount());
+        /* Fill the data series with the appropriate data */
+        for (PastCardioItem pastCardioItem: pastCardioItems){
+            Date date = dateFormat.parse(pastCardioItem.date);
+            if(pastCardioItem.getMaxDistance() != 0){
+                DataPoint datapoint = new DataPoint(date, pastCardioItem.getMaxDistance());
+                dataPointsDistance.add(datapoint);
+                lineGraphSeries.appendData(datapoint, true, pastCardioItems.size());
+            }
 
-        /* Add the maxes to the line series */
-        while(!c.isAfterLast()){
-            Date date = dateFormat.parse(c.getString(1));
-            Log.i(TAG, c.getString(1));
-            DataPoint dataPoint =  new DataPoint(date, c.getDouble(0));
-            dataPoints.add(dataPoint);
-            lineGraphSeries.appendData(dataPoint, true, c.getCount());
+            if(pastCardioItem.getMaxTime() != 0){
+                dataPointsTime.add(new DataPoint(date, pastCardioItem.getMaxTime()));
+            }
+            if(pastCardioItem.getMaxSpeed() != 0){
+                dataPointsSpeed.add(new DataPoint(date, pastCardioItem.getMaxSpeed()));
+            }
+        }
+
+        presentedDataPoints = dataPointsDistance;
+        Log.e(TAG, "# Distance Datapoints = " + dataPointsDistance.size());
+        Log.e(TAG, "# Datapoints Time = " + dataPointsTime.size());
+        Log.e(TAG, "# Datapoints Speed = " + dataPointsSpeed.size());
+
+        if(presentedDataPoints.size() == 0){
+            graph.setVisibility(View.GONE);
+            tvNoData.setVisibility(View.VISIBLE);
+        }else{
+            graph.setVisibility(View.VISIBLE);
+            tvNoData.setVisibility(View.GONE);
+        }
+    }
+
+    /* todo Change to one query */
+    public void getExistingData() {
+        pastCardioItems = new ArrayList<>();
+
+        /* Get readable db */
+        SQLiteDatabase db = databaseHelper.getReadableDatabase();
+
+        /* Get day ids and dates */
+        String[] projection = {TableConstants.DayId, TableConstants.DayDate};
+
+        /* Create an arraylist of the dates and Dayid*/
+        ArrayList<String> dates = new ArrayList<>();
+        ArrayList<Integer> dayIds = new ArrayList<>();
+
+        /* Query the exercise table based on the exercise id to get all the associated exercises */
+        Cursor c = db.query(TableConstants.DayTableName, projection,
+                TableConstants.ExerciseId + " = " + exerciseId, null, null, null, null);
+
+        c.moveToFirst();
+
+        /* Insert the dayId and dates into their arrays */
+        while (!c.isAfterLast()) {
+            dayIds.add(c.getInt(0));
+            dates.add(c.getString(1));
             c.moveToNext();
         }
 
 
+        Log.e(TAG, "Daysize = " + dayIds.size());
 
-        if(dataPoints.size() == 0){
-            tvNoData.setVisibility(View.VISIBLE);
-            rel_graph.setVisibility(View.GONE);
-        }else{
-            tvNoData.setVisibility(View.GONE);
-            rel_graph.setVisibility(View.VISIBLE);
+        db = databaseHelper.getReadableDatabase();
+
+        /* Get the sets for each day */
+        int i = 0;
+        for (Integer dayId : dayIds) {
+            /* Query the sets table based on dayId */
+            String[] projection2 = {TableConstants.CardioSetsId, TableConstants.CardioSetDistance,
+                    TableConstants.CardioSetTime, TableConstants.CardioSetHours, TableConstants.CardioSetMinutes,
+                    TableConstants.CardioSetSeconds};
+
+            c = db.query(TableConstants.CardioSetsTableName, projection2, TableConstants.DayId + " = "
+                    + dayId, null, null, null, null);
+
+            ArrayList<CardioSet> cardioSets = new ArrayList<>();
+
+            /* Add all sets for the day into a new array */
+            c.moveToFirst();
+            while (!c.isAfterLast()) {
+                cardioSets.add(new CardioSet(c.getDouble(2), c.getInt(3), c.getInt(4), c.getInt(5),
+                        c.getDouble(1), dayId, c.getInt(0)));
+                c.moveToNext();
+            }
+
+            /* Add the list and date to past sets */
+            pastCardioItems.add(0, new PastCardioItem(cardioSets, dates.get(i++)));
+
+            c.close();
         }
-
-        /* close cursor and db */
-        c.close();
         db.close();
     }
 
     public void updateCardioSet() throws ParseException {
         getExistingData();
+        setupDatapoints();
         createGraph();
     }
 

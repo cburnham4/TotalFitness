@@ -177,8 +177,10 @@ public class PastCardioFragment extends Fragment {
         }
     }
 
+    public void editCardioSet(CardioSet cardioSet)
 
-    public void editCardioSet(CardioSet cardioSet){
+
+    {
         /* If the set set is not empty add on the new item */
         if(pastCardioItems.size()!=0){
             /* Remove the liftset from the first recycleview item */
