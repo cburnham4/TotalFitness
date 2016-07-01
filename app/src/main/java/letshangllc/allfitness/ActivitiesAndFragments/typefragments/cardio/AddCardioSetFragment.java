@@ -2,10 +2,12 @@ package letshangllc.allfitness.ActivitiesAndFragments.typefragments.cardio;
 
 
 import android.content.ContentValues;
+import android.content.DialogInterface;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v7.app.AlertDialog;
 import android.util.Log;
 import android.view.ContextMenu;
 import android.view.LayoutInflater;
@@ -23,6 +25,7 @@ import java.util.Date;
 import java.util.Locale;
 
 import letshangllc.allfitness.ClassObjects.CardioSet;
+import letshangllc.allfitness.ClassObjects.LiftSet;
 import letshangllc.allfitness.database.DatabaseHelper;
 import letshangllc.allfitness.database.TableConstants;
 import letshangllc.allfitness.R;
@@ -55,7 +58,9 @@ public class AddCardioSetFragment extends Fragment {
     private ListView lvCardioSets;
     private CardioSetAdapter cardioSetAdapter;
 
-
+    /* Boolean  and cardioSet that is being editted */
+    private boolean editing;
+    private CardioSet editCardioSet;
 
     public AddCardioSetFragment() {
         // Required empty public constructor
@@ -65,6 +70,9 @@ public class AddCardioSetFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Bundle args = getArguments();
+
+        /* Set editing to false to start the fragment */
+        editing = false;
 
         exerciseId = args.getInt(getString(R.string.exercise_id), 0);
 
@@ -107,14 +115,17 @@ public class AddCardioSetFragment extends Fragment {
 
     }
 
+    /* Setup view listeners and populate listview */
     private void setupViews(){
         cardioSetAdapter = new CardioSetAdapter(this.getContext(), cardioSets);
         lvCardioSets.setAdapter(cardioSetAdapter);
 
+        registerForContextMenu(lvCardioSets);
+
         btnCancel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                etHour.setText("");
+                                etHour.setText("");
                 etMinute.setText("");
                 etSeconds.setText("");
                 etMiles.setText("");
@@ -180,6 +191,7 @@ public class AddCardioSetFragment extends Fragment {
         cardioSetAdapter.notifyDataSetChanged();
     }
 
+    /* Get existing data from the DB */
     public void getExistingData(){
         cardioSets = new ArrayList<>();
         SQLiteDatabase db = databaseHelper.getReadableDatabase();
@@ -216,12 +228,11 @@ public class AddCardioSetFragment extends Fragment {
             AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
             switch(item.getItemId()){
                 case R.id.delete:
-
+                    confirmDelete(liftSets.get(info.position));
                     break;
                 case R.id.edit:
-
+                    editItem(liftSets.get(info.position));
                     break;
-
             }
             return true;
         }
@@ -290,6 +301,81 @@ public class AddCardioSetFragment extends Fragment {
 
 
 
+    public void confirmDelete(final LiftSet liftSet){
+        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+        builder.setTitle(getString(R.string.confirm_delete));
 
+        builder.setPositiveButton(getString(R.string.confirm), new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                deleteItem(liftSet);
+            }
+        }).setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.cancel();
+            }
+        });
+        AlertDialog alertDialog = builder.create();
+        alertDialog.show();
+    }
+
+    public void deleteItem(LiftSet liftSet){
+        SQLiteDatabase db = databaseHelper.getWritableDatabase();
+
+        /* Delete from Exercise table and routines table by using exercise id */
+        db.delete(TableConstants.LiftSetsTableName, TableConstants.LiftSetsId + " = " + liftSet.getSetId(), null);
+        db.delete(TableConstants.MaxTableName, TableConstants.LiftSetsId + " = " + liftSet.getSetId(), null);
+
+        db.close();
+
+        /* Remove item from list and update list view */
+        liftSets.remove(liftSet);
+        liftSetAdapter.notifyDataSetChanged();
+        /* Todo add callback */
+
+        deleteLiftSetListner.deleteNewLiftSet(liftSet);
+    }
+
+    public void editItem(LiftSet liftSet){
+        editing = true;
+        repCount.setText(""+liftSet.getReps());
+        weightCount.setText(String.format(Locale.US, "%.1f", liftSet.getWeight()));
+        editLiftSet = liftSet;
+    }
+
+    public void updateLiftSet(double weight, int reps){
+        SQLiteDatabase db = databaseHelper.getWritableDatabase();
+        ContentValues values = new ContentValues();
+
+        /* Put in the new values */
+        values.put(TableConstants.LiftSetReps, reps);
+        values.put(TableConstants.LiftSetWeight, weight);
+
+        /* Update database on set id */
+        db.update(TableConstants.LiftSetsTableName, values,
+                TableConstants.LiftSetsId + " = " + editLiftSet.getSetId(), null);
+
+
+        /* update item in fragment context*/
+        editLiftSet.setReps(reps);
+        editLiftSet.setWeight(weight);
+
+        double max;
+
+
+        /* Prepare the values to be inserted */
+        ContentValues updateValues =  new ContentValues();
+        updateValues.put(TableConstants.MaxWeight, max);
+
+        /* Update database on set id */
+        db.update(TableConstants.MaxTableName, updateValues,
+                TableConstants.LiftSetsId + " = " + editLiftSet.getSetId(), null);
+
+        editLiftSetListner.editNewLiftSet(editLiftSet);
+
+        /* Update List view with new information */
+        liftSetAdapter.notifyDataSetChanged();
+    }
 
 }

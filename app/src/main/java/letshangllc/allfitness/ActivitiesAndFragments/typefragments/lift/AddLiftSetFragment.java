@@ -69,7 +69,6 @@ public class AddLiftSetFragment extends Fragment {
 
     /* Boolean  and id for if the liftSet is being editted */
     boolean editing;
-    int editId;
     LiftSet editLiftSet;
 
     public AddLiftSetFragment() {
