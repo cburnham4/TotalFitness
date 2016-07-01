@@ -314,7 +314,7 @@ public class AddCardioSetFragment extends Fragment {
         builder.setPositiveButton(getString(R.string.confirm), new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                deleteItem(liftSet);
+                deleteItem(cardioSet);
             }
         }).setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
             @Override
@@ -326,19 +326,18 @@ public class AddCardioSetFragment extends Fragment {
         alertDialog.show();
     }
 
-    public void deleteItem(LiftSet liftSet){
+    public void deleteItem(CardioSet cardioSet){
         SQLiteDatabase db = databaseHelper.getWritableDatabase();
 
         /* Delete from Exercise table and routines table by using exercise id */
-        db.delete(TableConstants.LiftSetsTableName, TableConstants.LiftSetsId + " = " + liftSet.getSetId(), null);
-        db.delete(TableConstants.MaxTableName, TableConstants.LiftSetsId + " = " + liftSet.getSetId(), null);
+        db.delete(TableConstants.CardioSetsTableName, TableConstants.CardioSetsId + " = " +
+                cardioSet.setId, null);
 
         db.close();
 
         /* Remove item from list and update list view */
-        liftSets.remove(liftSet);
-        liftSetAdapter.notifyDataSetChanged();
-        /* Todo add callback */
+        cardioSets.remove(cardioSet);
+        cardioSetAdapter.notifyDataSetChanged();
 
         deleteLiftSetListner.deleteNewLiftSet(liftSet);
     }
