@@ -1,4 +1,4 @@
-package letshangllc.allfitness.Database;
+package letshangllc.allfitness.database;
 
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;

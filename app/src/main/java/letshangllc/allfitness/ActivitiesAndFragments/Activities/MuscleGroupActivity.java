@@ -15,8 +15,8 @@ import java.util.ArrayList;
 
 import letshangllc.allfitness.ClassObjects.ExerciseItem;
 import letshangllc.allfitness.ClassObjects.ExerciseType;
-import letshangllc.allfitness.Database.DatabaseHelper;
-import letshangllc.allfitness.Database.TableConstants;
+import letshangllc.allfitness.database.DatabaseHelper;
+import letshangllc.allfitness.database.TableConstants;
 import letshangllc.allfitness.adapters.ExerciseListAdapter;
 import letshangllc.allfitness.R;
 

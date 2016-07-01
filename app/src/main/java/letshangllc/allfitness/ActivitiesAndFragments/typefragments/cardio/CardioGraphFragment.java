@@ -26,8 +26,8 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.Locale;
 
-import letshangllc.allfitness.Database.DatabaseHelper;
-import letshangllc.allfitness.Database.TableConstants;
+import letshangllc.allfitness.database.DatabaseHelper;
+import letshangllc.allfitness.database.TableConstants;
 import letshangllc.allfitness.MockData.MockedDataPoints;
 import letshangllc.allfitness.R;
 

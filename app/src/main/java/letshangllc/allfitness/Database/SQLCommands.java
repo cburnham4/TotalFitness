@@ -1,4 +1,4 @@
-package letshangllc.allfitness.Database;
+package letshangllc.allfitness.database;
 
 /**
  * Created by cvburnha on 5/8/2016.

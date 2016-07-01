@@ -6,7 +6,6 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v4.provider.DocumentFile;
 import android.util.Log;
 import android.view.ContextMenu;
 import android.view.LayoutInflater;
@@ -24,9 +23,8 @@ import java.util.Date;
 import java.util.Locale;
 
 import letshangllc.allfitness.ClassObjects.CardioSet;
-import letshangllc.allfitness.ClassObjects.LiftSet;
-import letshangllc.allfitness.Database.DatabaseHelper;
-import letshangllc.allfitness.Database.TableConstants;
+import letshangllc.allfitness.database.DatabaseHelper;
+import letshangllc.allfitness.database.TableConstants;
 import letshangllc.allfitness.R;
 import letshangllc.allfitness.adapters.CardioSetAdapter;
 
@@ -190,7 +188,7 @@ public class AddCardioSetFragment extends Fragment {
             TableConstants.CardioSetTime, TableConstants.CardioSetHours, TableConstants.CardioSetMinutes,
             TableConstants.CardioSetSeconds};
 
-        Cursor c = db.query(TableConstants.LiftSetsTableName, projection, TableConstants.DayId +" = "+ dayId,
+        Cursor c = db.query(TableConstants.CardioSetsTableName, projection, TableConstants.DayId +" = "+ dayId,
                 null, null, null, null);
         c.moveToFirst();
 

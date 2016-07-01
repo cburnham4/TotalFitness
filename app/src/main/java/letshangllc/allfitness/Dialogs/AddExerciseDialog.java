@@ -12,16 +12,13 @@ import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.Spinner;
-import android.widget.TextView;
 
 import java.util.ArrayList;
 
-import letshangllc.allfitness.ClassObjects.ExerciseItem;
 import letshangllc.allfitness.ClassObjects.ExerciseType;
 import letshangllc.allfitness.ClassObjects.MuscleGroup;
-import letshangllc.allfitness.Database.DatabaseHelper;
-import letshangllc.allfitness.Database.SQLCommands;
-import letshangllc.allfitness.Database.TableConstants;
+import letshangllc.allfitness.database.DatabaseHelper;
+import letshangllc.allfitness.database.TableConstants;
 import letshangllc.allfitness.R;
 
 /**
