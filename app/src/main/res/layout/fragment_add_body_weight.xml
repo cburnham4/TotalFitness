@@ -16,10 +16,10 @@
         android:id="@+id/lin_addSet">
 
         <TextView
-            android:id="@+id/weightLabel"
+            android:id="@+id/durationLabel"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/weight"
+            android:text="@string/duration"
             android:textSize="@dimen/txtsz_addset_labels"
             android:layout_marginTop="3dp"
             android:gravity="center_vertical" />
@@ -37,33 +37,28 @@
             android:layout_marginRight="@dimen/margin_lr_addsublayouts"
             android:layout_gravity="center_horizontal">
 
-
-            <Button
-                style="?android:attr/buttonStyleSmall"
+            <EditText
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="@string/sub_five"
-                android:id="@+id/btn_subWeight" />
+                android:hint="@string/minute_hint"
+                android:id="@+id/etMiutes"
+                android:inputType="number"
+                android:gravity="center"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text=":"/>
 
             <EditText
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:inputType="numberDecimal"
-                android:text="@string/zero"
-                android:layout_weight="4"
-                android:id="@+id/et_weight"
-                android:longClickable="true"
-                android:layout_gravity="center_horizontal"
-                android:gravity="center_horizontal" />
-
-            <Button
-                style="?android:attr/buttonStyleSmall"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="@string/add_five"
-                android:id="@+id/btn_addWeight" />
+                android:hint="@string/second_hint"
+                android:id="@+id/etSeconds"
+                android:inputType="number"
+                android:gravity="center"/>
         </LinearLayout>
 
         <TextView
@@ -72,7 +67,6 @@
             android:layout_height="wrap_content"
             android:text="@string/reps"
             android:textSize="@dimen/txtsz_addset_labels"
-
             android:gravity="center_vertical" />
 
         <TextView
@@ -125,7 +119,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:text="@string/add"
-                android:id="@+id/btn_addSet"
+                android:id="@+id/btnAddBodyWeightSet"
                 android:layout_margin="3dp" />
 
             <Button
@@ -134,14 +128,14 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:layout_margin="3dp"
-                android:id="@+id/btn_clearValues"
+                android:id="@+id/btnClearBodyWeightValues"
                 android:text="@string/clear" />
 
         </LinearLayout>
     </LinearLayout>
 
     <ListView
-        android:id="@+id/lv_setsList"
+        android:id="@+id/lvBodyWeightSets"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/lin_addSet">
