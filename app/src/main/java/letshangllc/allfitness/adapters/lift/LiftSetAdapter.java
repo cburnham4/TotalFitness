@@ -1,4 +1,4 @@
-package letshangllc.allfitness.adapters;
+package letshangllc.allfitness.adapters.lift;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -10,28 +10,26 @@ import android.widget.TextView;
 import java.util.ArrayList;
 import java.util.Locale;
 
-import letshangllc.allfitness.ClassObjects.cardio.CardioSet;
+import letshangllc.allfitness.ClassObjects.lift.LiftSet;
 import letshangllc.allfitness.R;
 
 /**
- * Created by cvburnha on 6/30/2016.
+ * Created by cvburnha on 5/15/2016.
  */
-public class CardioSetAdapter extends ArrayAdapter<CardioSet> {
-
+public class LiftSetAdapter extends ArrayAdapter<LiftSet> {
 
     private static class ViewHolder {
         TextView item;
     }
 
-    public CardioSetAdapter(Context context, ArrayList<CardioSet> items) {
+    public LiftSetAdapter(Context context, ArrayList<LiftSet> items) {
         super(context, R.layout.item_name, items);
-
     }
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         // Get the data item for this position
-        CardioSet item = getItem(position);
+        LiftSet item = getItem(position);
         // Check if an existing view is being reused, otherwise inflate the view
         ViewHolder viewHolder; // view lookup cache stored in tag
         if (convertView == null) {
@@ -44,7 +42,7 @@ public class CardioSetAdapter extends ArrayAdapter<CardioSet> {
             viewHolder = (ViewHolder) convertView.getTag();
         }
         // Populate the data into the template view using the data object
-        String values  = String.format(Locale.US,"%2dh %2dm %2ds | %.2fmi", item.hours, item.minutes, item.seconds, item.distance);
+        String values  = String.format(Locale.US,"REPS: %2d  |  WEIGHT: %.1f", item.getReps(), item.getWeight());
         viewHolder.item.setText(values);
         // Return the completed view to render on screen
         return convertView;

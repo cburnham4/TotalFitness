@@ -30,7 +30,7 @@ import letshangllc.allfitness.ClassObjects.cardio.CardioSet;
 import letshangllc.allfitness.database.DatabaseHelper;
 import letshangllc.allfitness.database.TableConstants;
 import letshangllc.allfitness.R;
-import letshangllc.allfitness.adapters.CardioSetAdapter;
+import letshangllc.allfitness.adapters.cardio.CardioSetAdapter;
 
 /**
  * A simple {@link Fragment} subclass.

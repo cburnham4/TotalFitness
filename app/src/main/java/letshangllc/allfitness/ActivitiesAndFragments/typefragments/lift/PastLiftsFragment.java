@@ -19,7 +19,7 @@ import letshangllc.allfitness.ClassObjects.lift.LiftSet;
 import letshangllc.allfitness.ClassObjects.lift.PastLiftItem;
 import letshangllc.allfitness.database.DatabaseHelper;
 import letshangllc.allfitness.database.TableConstants;
-import letshangllc.allfitness.adapters.LiftHistoryAdapter;
+import letshangllc.allfitness.adapters.lift.LiftHistoryAdapter;
 import letshangllc.allfitness.R;
 
 /**

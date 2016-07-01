@@ -26,9 +26,10 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.Locale;
 
+import letshangllc.allfitness.ClassObjects.bodyweight.BodyWeightSet;
 import letshangllc.allfitness.ClassObjects.cardio.CardioSet;
 import letshangllc.allfitness.R;
-import letshangllc.allfitness.adapters.CardioSetAdapter;
+import letshangllc.allfitness.adapters.cardio.CardioSetAdapter;
 import letshangllc.allfitness.database.DatabaseHelper;
 import letshangllc.allfitness.database.TableConstants;
 
@@ -38,25 +39,24 @@ import letshangllc.allfitness.database.TableConstants;
 public class AddBodyWeightSetFragment extends Fragment {
     /* Instance variables */
     private static final String TAG = AddBodyWeightSetFragment.class.getSimpleName();
+
     /* Passed in lift variables */
     private int exerciseId;
 
     /* Current Date variable */
-    String currentDate;
+    private String currentDate;
+    private int dayId;
 
     /* Database Helper */
-    DatabaseHelper databaseHelper;
-
-    /* Day Id */
-    int dayId;
+    private DatabaseHelper databaseHelper;
 
     /* Views */
     private Button btnCancel, btnAddSet;
-    private EditText etHour, etMinute, etSeconds, etMiles;
+    private EditText etMinute, etSeconds, etReps;
 
     /* Data variables */
-    private ArrayList<CardioSet> cardioSets;
-    private ListView lvCardioSets;
+    private ArrayList<BodyWeightSet> bodyWeightSets;
+    private ListView lvBodyWeightSets;
     private CardioSetAdapter cardioSetAdapter;
 
     /* Boolean  and cardioSet that is being editted */
@@ -92,7 +92,7 @@ public class AddBodyWeightSetFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View view = inflater.inflate(R.layout.fragment_add_cardio_set, container, false);
+        View view = inflater.inflate(R.layout.fragment_add_body_weight, container, false);
 
         this.findViews(view);
         this.setupViews();

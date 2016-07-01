@@ -1,4 +1,4 @@
-package letshangllc.allfitness.adapters;
+package letshangllc.allfitness.adapters.lift;
 
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -13,24 +13,26 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.Locale;
 
-import letshangllc.allfitness.ClassObjects.cardio.CardioSet;
-import letshangllc.allfitness.ClassObjects.cardio.PastCardioItem;
+import letshangllc.allfitness.ClassObjects.lift.LiftSet;
+import letshangllc.allfitness.ClassObjects.lift.PastLiftItem;
 import letshangllc.allfitness.R;
 
 /**
- * Created by cvburnha on 7/1/2016.
+ * Created by cvburnha on 10/31/2015.
  */
-public class CardioHistoryAdapter extends RecyclerView.Adapter<CardioHistoryAdapter.ViewHolder> {
-    public ArrayList<PastCardioItem> items;
+public class LiftHistoryAdapter extends RecyclerView.Adapter<LiftHistoryAdapter.ViewHolder> {
+    public ArrayList<PastLiftItem> items;
+
+
 
     // Provide a suitable constructor (depends on the kind of dataset)
-    public CardioHistoryAdapter(ArrayList<PastCardioItem> items) {
+    public LiftHistoryAdapter(ArrayList<PastLiftItem> items) {
         this.items = items;
     }
 
     // Create new views (invoked by the layout manager)
     @Override
-    public CardioHistoryAdapter.ViewHolder onCreateViewHolder(ViewGroup parent,
+    public LiftHistoryAdapter.ViewHolder onCreateViewHolder(ViewGroup parent,
                                                             int viewType) {
         // create a new view
         View itemLayoutView = LayoutInflater.from(parent.getContext()).inflate(
@@ -49,26 +51,26 @@ public class CardioHistoryAdapter extends RecyclerView.Adapter<CardioHistoryAdap
         // - get data from your itemsData at this position
         // - replace the contents of the view with that itemsData
         String sets = "";
-        PastCardioItem pastCardioItem = items.get(position);
+        PastLiftItem itemSet = items.get(position);
 
         /* If there are no lifts then display nothing */
 
-        for(CardioSet item: pastCardioItem.cardioSets){
-            sets += (String.format(Locale.US,"%2dh %2dm %2ds | %.2fmi\n", item.hours, item.minutes, item.seconds, item.distance));
+        for(LiftSet item: itemSet.getLiftSets()){
+            sets += (String.format(Locale.US,"REPS: %2d  |  WEIGHT: %.1f\n", item.getReps(), item.getWeight()));
         }
 
         viewHolder.tv_info_text.setText(sets);
                 /* todo get from resources */
         DateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy", Locale.US);
-        DateFormat dateFormat1 = new SimpleDateFormat("MMM dd yyyy", Locale.getDefault());
+        DateFormat dateFormat1 = new SimpleDateFormat("MMM dd yyyy");
         try {
-            Date date = dateFormat.parse(pastCardioItem.date);
+            Date date = dateFormat.parse(itemSet.getDate());
             String dateFormatted = dateFormat1.format(date);
             viewHolder.tv_date.setText(dateFormatted);
 
         } catch (ParseException e) {
             e.printStackTrace();
-            viewHolder.tv_date.setText(pastCardioItem.date);
+            viewHolder.tv_date.setText(itemSet.getDate());
         }
 
     }
@@ -93,4 +95,3 @@ public class CardioHistoryAdapter extends RecyclerView.Adapter<CardioHistoryAdap
     }
 
 }
-

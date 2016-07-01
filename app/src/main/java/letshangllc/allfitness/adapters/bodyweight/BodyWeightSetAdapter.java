@@ -1,4 +1,4 @@
-package letshangllc.allfitness.adapters;
+package letshangllc.allfitness.adapters.bodyweight;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -10,26 +10,29 @@ import android.widget.TextView;
 import java.util.ArrayList;
 import java.util.Locale;
 
-import letshangllc.allfitness.ClassObjects.lift.LiftSet;
+import letshangllc.allfitness.ClassObjects.bodyweight.BodyWeightSet;
+import letshangllc.allfitness.ClassObjects.cardio.CardioSet;
 import letshangllc.allfitness.R;
 
 /**
- * Created by cvburnha on 5/15/2016.
+ * Created by cvburnha on 6/30/2016.
  */
-public class LiftSetAdapter extends ArrayAdapter<LiftSet> {
+public class BodyWeightSetAdapter extends ArrayAdapter<BodyWeightSet> {
+
 
     private static class ViewHolder {
         TextView item;
     }
 
-    public LiftSetAdapter(Context context, ArrayList<LiftSet> items) {
+    public BodyWeightSetAdapter(Context context, ArrayList<BodyWeightSet> items) {
         super(context, R.layout.item_name, items);
+
     }
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         // Get the data item for this position
-        LiftSet item = getItem(position);
+        BodyWeightSet item = getItem(position);
         // Check if an existing view is being reused, otherwise inflate the view
         ViewHolder viewHolder; // view lookup cache stored in tag
         if (convertView == null) {
@@ -42,8 +45,16 @@ public class LiftSetAdapter extends ArrayAdapter<LiftSet> {
             viewHolder = (ViewHolder) convertView.getTag();
         }
         // Populate the data into the template view using the data object
-        String values  = String.format(Locale.US,"REPS: %2d  |  WEIGHT: %.1f", item.getReps(), item.getWeight());
-        viewHolder.item.setText(values);
+        String repString = String.format(Locale.US,"%2dreps", item.reps);
+        String timeString = String.format(Locale.US,"%2dm %2ds", item.minutes, item.seconds);
+        if(item.reps != 0 && (item.minutes != 0 || item.seconds!=0)){
+            viewHolder.item.setText(timeString + " | " + repString);
+        }else if(item.reps == 0){
+            viewHolder.item.setText(timeString);
+        }else{
+            viewHolder.item.setText(repString);
+        }
+
         // Return the completed view to render on screen
         return convertView;
     }
