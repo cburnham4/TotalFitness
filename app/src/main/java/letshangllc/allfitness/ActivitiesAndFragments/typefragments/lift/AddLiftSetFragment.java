@@ -170,8 +170,8 @@ public class AddLiftSetFragment extends Fragment {
             public void onClick(View v) {
                 if(!weightCount.getText().toString().isEmpty() && !repCount.getText().toString().isEmpty()){
 
-                    double weight = Double.parseDouble(weightCount.getText().toString());
-                    int reps = Integer.parseInt(repCount.getText().toString());
+                    double weight = Double.parseDouble(weightCount.getText().toString().trim());
+                    int reps = Integer.parseInt(repCount.getText().toString().trim());
                     if(weight == 0 || reps == 0){
                         Toast.makeText(getContext(), "Atleast one attribute is 0", Toast.LENGTH_SHORT).show();
                         if (editing){

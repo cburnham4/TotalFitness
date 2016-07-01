@@ -135,10 +135,10 @@ public class AddCardioSetFragment extends Fragment {
         btnAddSet.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String hourString = etHour.getText().toString();
-                String minuteString = etMinute.getText().toString();
-                String secondsString = etSeconds.getText().toString();
-                String milesString = etMiles.getText().toString();
+                String hourString = etHour.getText().toString().trim();
+                String minuteString = etMinute.getText().toString().trim();
+                String secondsString = etSeconds.getText().toString().trim();
+                String milesString = etMiles.getText().toString().trim();
                 int hours, minutes, seconds;
                 double miles, totalTime;
                 if(hourString.isEmpty()){
@@ -196,6 +196,8 @@ public class AddCardioSetFragment extends Fragment {
         CardioSet cardioSet = new CardioSet(totalTime, hours, minutes, seconds, miles, dayId, sid);
         cardioSets.add(cardioSet);
         cardioSetAdapter.notifyDataSetChanged();
+
+        addCardioSetListener.addCardioSet(cardioSet);
     }
 
     /* Get existing data from the DB */
@@ -349,7 +351,7 @@ public class AddCardioSetFragment extends Fragment {
         etHour.setText(String.format(Locale.US,"%2d", cardioSet.hours));
         etMinute.setText(String.format(Locale.US,"%2d", cardioSet.minutes));
         etSeconds.setText(String.format(Locale.US,"%2d", cardioSet.seconds));
-        etMiles.setText(String.format(Locale.US,"%2d", cardioSet.distance));
+        etMiles.setText(String.format(Locale.US,"%.2f", cardioSet.distance));
 
         editCardioSet = cardioSet;
     }
