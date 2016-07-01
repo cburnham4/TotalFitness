@@ -83,6 +83,9 @@ public class DatabaseHelper  extends SQLiteOpenHelper {
                     TableConstants.CardioSetsId + " integer primary key AUTOINCREMENT, " +
                     TableConstants.CardioSetDistance + " REAL, " +
                     TableConstants.CardioSetTime + " REAL, " +
+                    TableConstants.CardioSetHours + " INTEGER, " +
+                    TableConstants.CardioSetMinutes + " INTEGER, " +
+                    TableConstants.CardioSetSeconds + " INTEGER, " +
                     TableConstants.DayId + " integer, " +
                     "FOREIGN KEY(" + TableConstants.DayId + ") " +
                     "REFERENCES " + TableConstants.DayTableName + "(" + TableConstants.DayId + ") " +

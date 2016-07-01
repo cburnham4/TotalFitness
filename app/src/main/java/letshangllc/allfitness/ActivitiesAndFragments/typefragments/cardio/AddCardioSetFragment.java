@@ -1,6 +1,8 @@
 package letshangllc.allfitness.ActivitiesAndFragments.typefragments.cardio;
 
 
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.provider.DocumentFile;
@@ -20,7 +22,9 @@ import java.util.Date;
 import java.util.Locale;
 
 import letshangllc.allfitness.ClassObjects.CardioSet;
+import letshangllc.allfitness.ClassObjects.LiftSet;
 import letshangllc.allfitness.Database.DatabaseHelper;
+import letshangllc.allfitness.Database.TableConstants;
 import letshangllc.allfitness.R;
 import letshangllc.allfitness.adapters.CardioSetAdapter;
 
@@ -162,7 +166,22 @@ public class AddCardioSetFragment extends Fragment {
 
     public void getExistingData(){
         cardioSets = new ArrayList<>();
+        SQLiteDatabase db = databaseHelper.getReadableDatabase();
+         /* Query the db to get the muscle data */
+        String[] projection = {TableConstants.CardioSetsId, TableConstants.CardioSetDistance,
+            TableConstants.CardioSetTime, TableConstants.CardioSetHours, TableConstants.CardioSetMinutes,
+            TableConstants.CardioSetSeconds};
+        
+        Cursor c = db.query(TableConstants.LiftSetsTableName, projection, TableConstants.DayId +" = "+ dayId,
+                null, null, null, null);
+        c.moveToFirst();
 
+        while (!c.isAfterLast()){
+            liftSets.add(new LiftSet(dayId, c.getInt(0), c.getInt(1), c.getDouble(2)));
+            c.moveToNext();
+        }
+        c.close();
+        db.close();
     }
 
 
@@ -192,6 +211,31 @@ public class AddCardioSetFragment extends Fragment {
 
         return false;
     }
+
+    /* Get the id of the last Day Id */
+    private int getMaxDayId(){
+        SQLiteDatabase db = databaseHelper.getReadableDatabase();
+        String sql = "SELECT Max("+ TableConstants.DayId +") FROM "+ TableConstants.DayTableName;
+        Cursor c = db.rawQuery(sql, null);
+        c.moveToFirst();
+        int max = c.getInt(0);
+        c.close();
+        db.close();
+        return max;
+    }
+
+    /* Get the id of the last Day Id */
+    private int getMaxSetId(){
+        SQLiteDatabase db = databaseHelper.getReadableDatabase();
+        String sql = "SELECT Max("+ TableConstants.CardioSetsId+") FROM "+ TableConstants.CardioSetsTableName;
+        Cursor c = db.rawQuery(sql, null);
+        c.moveToFirst();
+        int max = c.getInt(0);
+        c.close();
+        db.close();
+        return max;
+    }
+
 
 
 

@@ -45,4 +45,8 @@ public class TableConstants {
     public static final String CardioSetsId = "CARDIO_SETS_ID";
     public static final String CardioSetDistance = "CARDIO_SET_DISTANCE";
     public static final String CardioSetTime = "CARDIO_SET_TIME";
+    public static final String CardioSetHours = "CARDIO_SET_HOURS";
+    public static final String CardioSetMinutes = "CARDIO_SET_MINUTES";
+    public static final String CardioSetSeconds = "CARDIO_SET_SECONDS";
+
 }
