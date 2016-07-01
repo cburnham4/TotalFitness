@@ -14,26 +14,26 @@ import java.util.Date;
 import java.util.Locale;
 
 import letshangllc.allfitness.ClassObjects.LiftSet;
-import letshangllc.allfitness.ClassObjects.PastLiftSet;
+import letshangllc.allfitness.ClassObjects.PastLiftItem;
 import letshangllc.allfitness.R;
 
 /**
  * Created by cvburnha on 10/31/2015.
  */
-public class PastCardViewAdapter extends RecyclerView.Adapter<PastCardViewAdapter.ViewHolder> {
-    public ArrayList<PastLiftSet> items;
+public class LiftHistoryAdapter extends RecyclerView.Adapter<LiftHistoryAdapter.ViewHolder> {
+    public ArrayList<PastLiftItem> items;
 
 
 
     // Provide a suitable constructor (depends on the kind of dataset)
-    public PastCardViewAdapter(ArrayList<PastLiftSet> items) {
+    public LiftHistoryAdapter(ArrayList<PastLiftItem> items) {
         this.items = items;
     }
 
     // Create new views (invoked by the layout manager)
     @Override
-    public PastCardViewAdapter.ViewHolder onCreateViewHolder(ViewGroup parent,
-                                                             int viewType) {
+    public LiftHistoryAdapter.ViewHolder onCreateViewHolder(ViewGroup parent,
+                                                            int viewType) {
         // create a new view
         View itemLayoutView = LayoutInflater.from(parent.getContext()).inflate(
                 R.layout.card_pastdate, null);
@@ -51,7 +51,7 @@ public class PastCardViewAdapter extends RecyclerView.Adapter<PastCardViewAdapte
         // - get data from your itemsData at this position
         // - replace the contents of the view with that itemsData
         String sets = "";
-        PastLiftSet itemSet = items.get(position);
+        PastLiftItem itemSet = items.get(position);
 
         /* If there are no lifts then display nothing */
 

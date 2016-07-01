@@ -13,15 +13,14 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Locale;
 
+import letshangllc.allfitness.ClassObjects.CardioSet;
 import letshangllc.allfitness.ClassObjects.LiftSet;
-import letshangllc.allfitness.ClassObjects.PastLiftSet;
+import letshangllc.allfitness.ClassObjects.PastLiftItem;
 import letshangllc.allfitness.database.DatabaseHelper;
 import letshangllc.allfitness.database.TableConstants;
-import letshangllc.allfitness.adapters.PastCardViewAdapter;
+import letshangllc.allfitness.adapters.LiftHistoryAdapter;
 import letshangllc.allfitness.R;
 
 /**
@@ -34,10 +33,10 @@ public class PastLiftsFragment extends Fragment {
     private int exerciseId;
 
     /* Array of past days */
-    private ArrayList<PastLiftSet> pastLiftSets;
+    private ArrayList<PastLiftItem> pastLiftItems;
 
     /* Recycle view variables */
-    private RecyclerView rv_pastdates;
+    private RecyclerView rvPastLifts;
     private RecyclerView.Adapter mAdapter;
     private RecyclerView.LayoutManager mLayoutManager;
 
@@ -53,13 +52,11 @@ public class PastLiftsFragment extends Fragment {
         super.onCreate(savedInstanceState);
         Bundle args = getArguments();
 
-        pastLiftSets = new ArrayList<>();
+        pastLiftItems = new ArrayList<>();
 
         exerciseId = args.getInt(getString(R.string.exercise_id), 0);
 
         databaseHelper = new DatabaseHelper(this.getContext());
-
-        SimpleDateFormat dateFormat = new SimpleDateFormat(getString(R.string.date_format), Locale.US);
 
         getExistingData();
 
@@ -70,14 +67,14 @@ public class PastLiftsFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view =  inflater.inflate(R.layout.fragment_past_sets, container, false);
-        rv_pastdates = (RecyclerView) view.findViewById(R.id.rv_past_sets);
+        rvPastLifts = (RecyclerView) view.findViewById(R.id.rv_past_sets);
 
         // use a linear layout manager
         mLayoutManager = new LinearLayoutManager(this.getContext());
-        rv_pastdates.setLayoutManager(mLayoutManager);
+        rvPastLifts.setLayoutManager(mLayoutManager);
 
-        mAdapter = new PastCardViewAdapter(pastLiftSets);
-        rv_pastdates.setAdapter(mAdapter);
+        mAdapter = new LiftHistoryAdapter(pastLiftItems);
+        rvPastLifts.setAdapter(mAdapter);
 
 
         return view;
@@ -133,7 +130,7 @@ public class PastLiftsFragment extends Fragment {
             }
 
             /* Add the lift set and date to pastLiftSets */
-            pastLiftSets.add(0, new PastLiftSet(liftSets, dates.get(i++)));
+            pastLiftItems.add(0, new PastLiftItem(liftSets, dates.get(i++)));
 
             c.close();
         }
@@ -143,10 +140,10 @@ public class PastLiftsFragment extends Fragment {
     /* Add new liftset to most current when set it added */
     public void updateNewLiftSet(LiftSet liftSet) {
         /* If the set set is not empty add on the new item */
-        if(pastLiftSets.size()!=0){
+        if(pastLiftItems.size()!=0){
                     /* Add the inserted item to the first recycleview item */
-            PastLiftSet pastLiftSet = pastLiftSets.get(0);
-            pastLiftSet.getLiftSets().add(liftSet);
+            PastLiftItem pastLiftItem = pastLiftItems.get(0);
+            pastLiftItem.getLiftSets().add(liftSet);
             mAdapter.notifyItemChanged(0);
         }
     }
@@ -154,15 +151,15 @@ public class PastLiftsFragment extends Fragment {
     public void deleteLiftSet(LiftSet liftSet){
         Log.i(TAG, "Deleting Liftset");
         /* If the set set is not empty add on the new item */
-        if(pastLiftSets.size()!=0){
+        if(pastLiftItems.size()!=0){
             /* Remove the liftset from the first recycleview item */
-            PastLiftSet pastLiftSet = pastLiftSets.get(0);
+            PastLiftItem pastLiftItem = pastLiftItems.get(0);
             /* Find the liftset to be deleted and remove it */
             Log.i(TAG, "Liftset Id: " + liftSet.getSetId());
-            for(LiftSet item: pastLiftSet.getLiftSets()){
+            for(LiftSet item: pastLiftItem.getLiftSets()){
                 Log.i(TAG, "Item Id: " + item.getSetId());
                 if(item.getSetId() == liftSet.getSetId()){
-                    pastLiftSet.getLiftSets().remove(item);
+                    pastLiftItem.getLiftSets().remove(item);
                     mAdapter.notifyItemChanged(0);
                     break;
                 }
@@ -176,11 +173,11 @@ public class PastLiftsFragment extends Fragment {
 
     public void editLiftSet(LiftSet liftSet){
         Log.i(TAG, "Edit Liftset");        /* If the set set is not empty add on the new item */
-        if(pastLiftSets.size()!=0){
+        if(pastLiftItems.size()!=0){
             /* Remove the liftset from the first recycleview item */
-            PastLiftSet pastLiftSet = pastLiftSets.get(0);
+            PastLiftItem pastLiftItem = pastLiftItems.get(0);
             /* Find the liftset to be deleted and remove it */
-            for(LiftSet item: pastLiftSet.getLiftSets()){
+            for(LiftSet item: pastLiftItem.getLiftSets()){
                 Log.i(TAG, "Item Id: " + item.getSetId());
                 if(item.getSetId() == liftSet.getSetId()){
                     item.setWeight(liftSet.getWeight());

@@ -19,10 +19,12 @@ import java.util.Locale;
 
 import letshangllc.allfitness.ClassObjects.CardioSet;
 import letshangllc.allfitness.ClassObjects.LiftSet;
-import letshangllc.allfitness.ClassObjects.PastLiftSet;
+import letshangllc.allfitness.ClassObjects.PastCardioItem;
+import letshangllc.allfitness.ClassObjects.PastLiftItem;
+import letshangllc.allfitness.adapters.CardioHistoryAdapter;
 import letshangllc.allfitness.database.DatabaseHelper;
 import letshangllc.allfitness.database.TableConstants;
-import letshangllc.allfitness.adapters.PastCardViewAdapter;
+import letshangllc.allfitness.adapters.LiftHistoryAdapter;
 import letshangllc.allfitness.R;
 
 /**
@@ -35,10 +37,10 @@ public class PastCardioFragment extends Fragment {
     private int exerciseId;
 
     /* Array of past days */
-    private ArrayList<PastLiftSet> pastLiftSets;
+    private ArrayList<PastCardioItem> pastCardioItems;
 
     /* Recycle view variables */
-    private RecyclerView rv_pastdates;
+    private RecyclerView rvPastCardio;
     private RecyclerView.Adapter mAdapter;
     private RecyclerView.LayoutManager mLayoutManager;
 
@@ -54,7 +56,7 @@ public class PastCardioFragment extends Fragment {
         super.onCreate(savedInstanceState);
         Bundle args = getArguments();
 
-        pastLiftSets = new ArrayList<>();
+        pastCardioItems = new ArrayList<>();
 
         exerciseId = args.getInt(getString(R.string.exercise_id), 0);
 
@@ -71,14 +73,14 @@ public class PastCardioFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view =  inflater.inflate(R.layout.fragment_past_sets, container, false);
-        rv_pastdates = (RecyclerView) view.findViewById(R.id.rv_past_sets);
+        rvPastCardio = (RecyclerView) view.findViewById(R.id.rv_past_sets);
 
         // use a linear layout manager
         mLayoutManager = new LinearLayoutManager(this.getContext());
-        rv_pastdates.setLayoutManager(mLayoutManager);
+        rvPastCardio.setLayoutManager(mLayoutManager);
 
-        mAdapter = new PastCardViewAdapter(pastLiftSets);
-        rv_pastdates.setAdapter(mAdapter);
+        mAdapter = new CardioHistoryAdapter(pastCardioItems);
+        rvPastCardio.setAdapter(mAdapter);
 
 
         return view;
@@ -133,8 +135,8 @@ public class PastCardioFragment extends Fragment {
                 c.moveToNext();
             }
 
-            /* Add the lift set and date to pastLiftSets */
-            pastLiftSets.add(0, new PastLiftSet(liftSets, dates.get(i++)));
+            /* Add the lift set and date to pastLiftItems */
+            pastLiftItems.add(0, new PastLiftItem(liftSets, dates.get(i++)));
 
             c.close();
         }
@@ -144,9 +146,9 @@ public class PastCardioFragment extends Fragment {
     /* Add new liftset to most current when set it added */
     public void addCardioSet(CardioSet cardioSet) {
         /* If the set set is not empty add on the new item */
-//        if(pastLiftSets.size()!=0){
+//        if(pastLiftItems.size()!=0){
 //                    /* Add the inserted item to the first recycleview item */
-//            PastLiftSet pastLiftSet = pastLiftSets.get(0);
+//            PastLiftItem pastLiftSet = pastLiftItems.get(0);
 //            //pastLiftSet.getLiftSets().add(liftSet);
 //            mAdapter.notifyItemChanged(0);
 //        }
@@ -155,9 +157,9 @@ public class PastCardioFragment extends Fragment {
     public void deleteCardioSet(CardioSet cardioSet){
 //        Log.i(TAG, "Deleting Liftset");
 //        /* If the set set is not empty add on the new item */
-//        if(pastLiftSets.size()!=0){
+//        if(pastLiftItems.size()!=0){
 //            /* Remove the liftset from the first recycleview item */
-//            PastLiftSet pastLiftSet = pastLiftSets.get(0);
+//            PastLiftItem pastLiftSet = pastLiftItems.get(0);
 //            /* Find the liftset to be deleted and remove it */
 //            Log.i(TAG, "Liftset Id: " + liftSet.getSetId());
 //            for(LiftSet item: pastLiftSet.getLiftSets()){
@@ -177,9 +179,9 @@ public class PastCardioFragment extends Fragment {
 
     public void editCardioSet(CardioSet cardioSet){
 //        Log.i(TAG, "Edit Liftset");        /* If the set set is not empty add on the new item */
-//        if(pastLiftSets.size()!=0){
+//        if(pastLiftItems.size()!=0){
 //            /* Remove the liftset from the first recycleview item */
-//            PastLiftSet pastLiftSet = pastLiftSets.get(0);
+//            PastLiftItem pastLiftSet = pastLiftItems.get(0);
 //            /* Find the liftset to be deleted and remove it */
 //            for(LiftSet item: pastLiftSet.getLiftSets()){
 //                Log.i(TAG, "Item Id: " + item.getSetId());

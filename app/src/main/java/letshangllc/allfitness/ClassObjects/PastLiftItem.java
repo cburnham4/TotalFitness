@@ -5,11 +5,11 @@ import java.util.ArrayList;
 /**
  * Created by cvburnha on 5/15/2016.
  */
-public class PastLiftSet {
+public class PastLiftItem {
     private ArrayList<LiftSet> liftSets;
     private String date;
 
-    public PastLiftSet(ArrayList<LiftSet> liftSets, String date) {
+    public PastLiftItem(ArrayList<LiftSet> liftSets, String date) {
         this.liftSets = liftSets;
         this.date = date;
     }
