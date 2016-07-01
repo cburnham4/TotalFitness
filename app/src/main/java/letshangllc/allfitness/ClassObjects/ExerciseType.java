@@ -7,8 +7,8 @@ package letshangllc.allfitness.ClassObjects;
 public enum ExerciseType {
     BODYWEIGHT ("Bodyweight", 0),
     CARDIO ("Cardio", 1),
-    LIFT ("Lift", 2),
-    TIMED ("Timed", 3);
+    LIFT ("Lift", 2);
+    //TIMED ("Timed", 3);
 
     public String getExerciseTypeName() {
         return exerciseTypeName;
@@ -36,9 +36,9 @@ public enum ExerciseType {
             case 2:
                 return LIFT;
             case 3:
-                return TIMED;
+                //return TIMED;
         }
-        return TIMED;
+        return BODYWEIGHT;
     }
 
     public String toString(){
