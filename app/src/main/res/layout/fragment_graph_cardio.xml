@@ -76,7 +76,8 @@
             android:layout_height="wrap_content"
             android:layout_below="@id/lin_dateSelection"
             android:paddingLeft="@dimen/padding_lr_spinner"
-            android:paddingRight="@dimen/padding_lr_spinner"/>
+            android:layout_marginRight="@dimen/padding_lr_spinner"
+            />
 
 
 

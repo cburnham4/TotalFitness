@@ -19,6 +19,7 @@ import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -125,10 +126,15 @@ public class AddCardioSetFragment extends Fragment {
         btnCancel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                                etHour.setText("");
+                 etHour.setText("");
                 etMinute.setText("");
                 etSeconds.setText("");
                 etMiles.setText("");
+                if (editing){
+                    editing = false;
+                    btnAddSet.setText(getString(R.string.add));
+                    Toast.makeText(getContext(), "You are no longer in edit mode", Toast.LENGTH_SHORT).show();
+                }
             }
         });
         btnAddSet.setOnClickListener(new View.OnClickListener() {
@@ -165,6 +171,7 @@ public class AddCardioSetFragment extends Fragment {
                     saveData(hours, minutes, seconds, totalTime, miles);
                 } else { /* If editing the item then update the cardioSet */
                     editing = false;
+                    btnAddSet.setText(getString(R.string.add));
                     updateCardioSet(hours, minutes, seconds, totalTime, miles);
                 }
 
@@ -350,7 +357,7 @@ public class AddCardioSetFragment extends Fragment {
         etMinute.setText(String.format(Locale.US,"%2d", cardioSet.minutes));
         etSeconds.setText(String.format(Locale.US,"%2d", cardioSet.seconds));
         etMiles.setText(String.format(Locale.US,"%.2f", cardioSet.distance));
-
+        btnAddSet.setText(getString(R.string.edit));
         editCardioSet = cardioSet;
     }
 

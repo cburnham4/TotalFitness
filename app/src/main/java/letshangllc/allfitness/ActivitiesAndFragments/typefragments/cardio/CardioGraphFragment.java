@@ -123,13 +123,13 @@ public class CardioGraphFragment extends Fragment {
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 String cardioType = (String) parent.getItemAtPosition(position);
                 switch (cardioType){
-                    case "Distance":
+                    case "Distance (mi)":
                         presentedDataPoints = dataPointsDistance;
                         break;
-                    case "Time (m)":
+                    case "Time (min)":
                         presentedDataPoints = dataPointsTime;
                         break;
-                    case "Speed":
+                    case "Speed (mph)":
                         presentedDataPoints = dataPointsSpeed;
                         break;
                 }

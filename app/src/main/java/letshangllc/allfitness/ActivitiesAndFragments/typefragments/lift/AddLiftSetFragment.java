@@ -43,21 +43,22 @@ public class AddLiftSetFragment extends Fragment {
     private int exerciseId;
 
     /* Current Date variable */
-    String currentDate;
+    private String currentDate;
 
     /* Database Helper */
-    DatabaseHelper databaseHelper;
+    private DatabaseHelper databaseHelper;
 
     /* Day Id */
-    int dayId;
+    private int dayId;
 
     /* ArrayList of sets */
-    ArrayList<LiftSet> liftSets;
+    private ArrayList<LiftSet> liftSets;
 
     /* Views */
-    EditText repCount;
-    EditText weightCount;
-    ListView lv_setList;
+    private EditText repCount;
+    private EditText weightCount;
+    private ListView lv_setList;
+    private Button addSet;
 
     /* ListView Adapter */
     LiftSetAdapter liftSetAdapter;
@@ -116,12 +117,12 @@ public class AddLiftSetFragment extends Fragment {
     /* find view and set their listeners */
     private void setupViews(View view){
         /* Find Views */
-        Button addSet =(Button) view.findViewById(R.id.btn_addSet);
+        addSet =(Button) view.findViewById(R.id.btn_addSet);
         Button addRep = (Button) view.findViewById(R.id.btn_addRep);
         Button subRep = (Button) view.findViewById(R.id.btn_subRep);
         Button subWeight = (Button) view.findViewById(R.id.btn_subWeight);
         Button btn_cancel = (Button) view.findViewById(R.id.btn_clearValues);
-        final Button addWeight = (Button) view.findViewById(R.id.btn_addWeight);
+        Button addWeight = (Button) view.findViewById(R.id.btn_addWeight);
         repCount = (EditText) view.findViewById(R.id.et_reps);
         weightCount = (EditText) view.findViewById(R.id.et_weight);
 
@@ -133,6 +134,11 @@ public class AddLiftSetFragment extends Fragment {
             public void onClick(View v) {
                 repCount.setText("0");
                 weightCount.setText("0");
+                if (editing){
+                    editing = false;
+                    addSet.setText(getString(R.string.add));
+                    Toast.makeText(getContext(), "You are no longer in edit mode", Toast.LENGTH_SHORT).show();
+                }
             }
         });
 
@@ -176,6 +182,7 @@ public class AddLiftSetFragment extends Fragment {
                         Toast.makeText(getContext(), "Atleast one attribute is 0", Toast.LENGTH_SHORT).show();
                         if (editing){
                             editing = false;
+                            addSet.setText(getString(R.string.add));
                             Toast.makeText(getContext(), "You are no longer in edit mode", Toast.LENGTH_SHORT).show();
                         }
                     }else if (!editing){
@@ -184,6 +191,7 @@ public class AddLiftSetFragment extends Fragment {
                     }else{ /* If editing then add to db */
                         updateLiftSet(weight, reps);
                         editing = false;
+                        addSet.setText(getString(R.string.add));
                     }
 
                 }
@@ -439,6 +447,7 @@ public class AddLiftSetFragment extends Fragment {
         editing = true;
         repCount.setText(""+liftSet.getReps());
         weightCount.setText(String.format(Locale.US, "%.1f", liftSet.getWeight()));
+        addSet.setText(getString(R.string.edit));
         editLiftSet = liftSet;
     }
 

@@ -52,6 +52,7 @@
     <string name="sub_one">-1</string>
     <string name="add_one">+1</string>
     <string name="zero">0</string>
+    <string name="edit">Edit</string>
 
     <!-- Fragment Add Cardio Set -->
     <string name="duration">DURATION:</string>
@@ -66,9 +67,9 @@
 
     <!-- Fragment Cardio Graph -->
     <string-array name="cardio_graph_types">
-        <item>Distance</item>
-        <item>Time (m)</item>
-        <item>Speed</item>
+        <item>Distance (mi)</item>
+        <item>Time (min)</item>
+        <item>Speed (mph)</item>
     </string-array>
 
     <!-- Formatting -->

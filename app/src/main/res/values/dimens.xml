@@ -41,7 +41,7 @@
     <dimen name="margin_between_dates">8dp</dimen>
     <dimen name="graph_dateSelection_textsz">18sp</dimen>
     <dimen name="margin_top_graph">8dp</dimen>
-    <dimen name="padding_lr_spinner">16dp</dimen>
+    <dimen name="padding_lr_spinner">24dp</dimen>
 
 
 </resources>
