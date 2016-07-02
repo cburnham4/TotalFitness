@@ -14,12 +14,16 @@ import android.view.View;
 import java.util.ArrayList;
 import java.util.List;
 
+import letshangllc.allfitness.ActivitiesAndFragments.typefragments.bodyweight.AddBodyWeightSetFragment;
+import letshangllc.allfitness.ActivitiesAndFragments.typefragments.bodyweight.GraphBodyWeightFragment;
+import letshangllc.allfitness.ActivitiesAndFragments.typefragments.bodyweight.PastBodyWeightFragment;
 import letshangllc.allfitness.ActivitiesAndFragments.typefragments.cardio.AddCardioSetFragment;
 import letshangllc.allfitness.ActivitiesAndFragments.typefragments.cardio.GraphCardioFragment;
 import letshangllc.allfitness.ActivitiesAndFragments.typefragments.cardio.PastCardioFragment;
 import letshangllc.allfitness.ActivitiesAndFragments.typefragments.lift.AddLiftSetFragment;
 import letshangllc.allfitness.ActivitiesAndFragments.typefragments.lift.GraphLiftFragment;
 import letshangllc.allfitness.ActivitiesAndFragments.typefragments.lift.PastLiftsFragment;
+import letshangllc.allfitness.ClassObjects.bodyweight.BodyWeightSet;
 import letshangllc.allfitness.ClassObjects.cardio.CardioSet;
 import letshangllc.allfitness.ClassObjects.lift.LiftSet;
 import letshangllc.allfitness.R;
@@ -27,7 +31,8 @@ import letshangllc.allfitness.R;
 public class ExerciseActivity extends AppCompatActivity implements AddLiftSetFragment.AddLiftSetListener,
         AddLiftSetFragment.DeleteLiftSetListner, AddLiftSetFragment.EditLiftSetListner,
         AddCardioSetFragment.AddCardioSetListener, AddCardioSetFragment.EditCardioSetListner,
-        AddCardioSetFragment.DeleteCardioSetListner
+        AddCardioSetFragment.DeleteCardioSetListner, AddBodyWeightSetFragment.AddBwSetListener,
+        AddBodyWeightSetFragment.EditBwSetListner, AddBodyWeightSetFragment.DeleteBwSetListner
 {
     private final static String TAG  = ExerciseActivity.class.getSimpleName();
 
@@ -76,6 +81,15 @@ public class ExerciseActivity extends AppCompatActivity implements AddLiftSetFra
         ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager());
         switch (typeId) {
             case 0: // BODYWEIGHT
+                Fragment frag1Bw = new AddBodyWeightSetFragment();
+                frag1Bw.setArguments(args);
+                Fragment frag2Bw  = new PastBodyWeightFragment();
+                frag2Bw.setArguments(args);
+                Fragment frag3Bw = new GraphBodyWeightFragment();
+                frag3Bw.setArguments(args);
+                adapter.addFragment(frag1Bw , "Add Set");
+                adapter.addFragment(frag2Bw , "HISTORY");
+                adapter.addFragment(frag3Bw , "GRAPH");
                 break;
             case 1: // CARDIO
                 Fragment frag1Cardio  = new AddCardioSetFragment();
@@ -196,6 +210,48 @@ public class ExerciseActivity extends AppCompatActivity implements AddLiftSetFra
         }
 
         pastCardioFragment.editCardioSet(cardioSet);
+    }
+
+    @Override
+    public void addBwSet(BodyWeightSet bodyWeightSet) {
+        PastBodyWeightFragment pastBodyWeightFragment = (PastBodyWeightFragment) getSupportFragmentManager().getFragments().get(0);
+        /* Get update the graph if it has already been created */
+        try{
+            GraphBodyWeightFragment graphBodyWeightFragment = (GraphBodyWeightFragment) getSupportFragmentManager().getFragments().get(2);
+            graphBodyWeightFragment.updateCardioSet();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        pastBodyWeightFragment.addBodyWeightSet(bodyWeightSet);
+    }
+
+    @Override
+    public void deleteBwSet(BodyWeightSet bodyWeightSet) {
+        PastBodyWeightFragment pastBodyWeightFragment = (PastBodyWeightFragment) getSupportFragmentManager().getFragments().get(0);
+        /* Get update the graph if it has already been created */
+        try{
+            GraphBodyWeightFragment graphBodyWeightFragment = (GraphBodyWeightFragment) getSupportFragmentManager().getFragments().get(2);
+            graphBodyWeightFragment.updateCardioSet();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        pastBodyWeightFragment.deleteBodyWeightSet(bodyWeightSet);
+    }
+
+    @Override
+    public void editBwSet(BodyWeightSet bodyWeightSet) {
+        PastBodyWeightFragment pastBodyWeightFragment = (PastBodyWeightFragment) getSupportFragmentManager().getFragments().get(0);
+        /* Get update the graph if it has already been created */
+        try{
+            GraphBodyWeightFragment graphBodyWeightFragment = (GraphBodyWeightFragment) getSupportFragmentManager().getFragments().get(2);
+            graphBodyWeightFragment.updateCardioSet();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        pastBodyWeightFragment.editBodyWeightSet(bodyWeightSet);
     }
 
 

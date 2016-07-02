@@ -159,7 +159,7 @@ public class AddBodyWeightSetFragment extends Fragment {
                             Toast.LENGTH_SHORT).show();
                 } else if(!editing){
                      saveData(minutes, seconds, totalTime, reps);
-                    
+
                 } else { /* If editing the item then update the cardioSet */
                     editing = false;
                     btnAddSet.setText(getString(R.string.add));
@@ -192,7 +192,7 @@ public class AddBodyWeightSetFragment extends Fragment {
         bodyWeightSets.add(bodyWeightSet);
         bodyWeightSetAdapter.notifyDataSetChanged();
 
-        //addCardioSetListener.addCardioSet(cardioSet);
+        addBwSetListener.addBwSet(bodyWeightSet);
     }
 
     /* Get existing data from the DB */
@@ -232,10 +232,10 @@ public class AddBodyWeightSetFragment extends Fragment {
             AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
             switch(item.getItemId()){
                 case R.id.delete:
-                    confirmDelete(cardioSets.get(info.position));
+                    confirmDelete(bodyWeightSets.get(info.position));
                     break;
                 case R.id.edit:
-                    editItem(cardioSets.get(info.position));
+                    editItem(bodyWeightSets.get(info.position));
                     break;
             }
             return true;
@@ -280,6 +280,7 @@ public class AddBodyWeightSetFragment extends Fragment {
 
     }
 
+    /* todo move to common */
     /* Get the id of the last Day Id */
     private int getMaxDayId(){
         SQLiteDatabase db = databaseHelper.getReadableDatabase();
@@ -306,14 +307,14 @@ public class AddBodyWeightSetFragment extends Fragment {
 
 
 
-    public void confirmDelete(final CardioSet cardioSet){
+    public void confirmDelete(final BodyWeightSet bodyWeightSet){
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         builder.setTitle(getString(R.string.confirm_delete));
 
         builder.setPositiveButton(getString(R.string.confirm), new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                deleteItem(cardioSet);
+                deleteItem(bodyWeightSet);
             }
         }).setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
             @Override
@@ -325,77 +326,75 @@ public class AddBodyWeightSetFragment extends Fragment {
         alertDialog.show();
     }
 
-    public void deleteItem(CardioSet cardioSet){
+    public void deleteItem(BodyWeightSet bodyWeightSet){
         SQLiteDatabase db = databaseHelper.getWritableDatabase();
 
         /* Delete from Exercise table and routines table by using exercise id */
-        db.delete(TableConstants.CARDIO_SETS_TABLE_NAME, TableConstants.CARDIO_SETS_ID + " = " +
-                cardioSet.setId, null);
+        db.delete(TableConstants.BODY_WEIGHT_TABLE_NAME, TableConstants.BODY_WEIGHT_SET_ID + " = " +
+                bodyWeightSet.setId, null);
 
         db.close();
 
         /* Remove item from list and update list view */
-        cardioSets.remove(cardioSet);
-        cardioSetAdapter.notifyDataSetChanged();
+        bodyWeightSets.remove(bodyWeightSet);
+        bodyWeightSetAdapter.notifyDataSetChanged();
 
-        deleteCardioSetListner.deleteCardioSet(cardioSet);
+        deleteBwSetListner.deleteBwSet(bodyWeightSet);
     }
 
-    public void editItem(CardioSet cardioSet){
+    public void editItem(BodyWeightSet bodyWeightSet){
         editing = true;
 
-        etHour.setText(String.format(Locale.US,"%2d", cardioSet.hours));
-        etMinute.setText(String.format(Locale.US,"%2d", cardioSet.minutes));
-        etSeconds.setText(String.format(Locale.US,"%2d", cardioSet.seconds));
-        etMiles.setText(String.format(Locale.US,"%.2f", cardioSet.distance));
+        etMinute.setText(String.format(Locale.US,"%2d", bodyWeightSet.minutes));
+        etSeconds.setText(String.format(Locale.US,"%2d", bodyWeightSet.seconds));
+
         btnAddSet.setText(getString(R.string.edit));
-        editCardioSet = cardioSet;
+        editBodyWeightSet = bodyWeightSet;
     }
 
-    public void updateCardioSet(int hours, int minutes, int seconds, double totalTime, double miles){
+    public void updateCardioSet(int minutes, int seconds, double totalTime, int reps){
         SQLiteDatabase db = databaseHelper.getWritableDatabase();
         ContentValues values = new ContentValues();
 
         /* Put in the new values */
         values.put(TableConstants.DayId, dayId);
-        values.put(TableConstants.CARDIO_SET_DISTANCE, miles);
-        values.put(TableConstants.CARDIO_SET_TIME, totalTime);
-        values.put(TableConstants.CARDIO_SET_HOURS, hours);
-        values.put(TableConstants.CARDIO_SET_MINUTES, minutes);
-        values.put(TableConstants.CARDIO_SET_SECONDS, seconds);
+        values.put(TableConstants.BODY_WEIGHT_TIME, totalTime);
+        values.put(TableConstants.BODY_WEIGHT_REPS, reps);
+        values.put(TableConstants.BODY_WEIGHT_MINUTES, minutes);
+        values.put(TableConstants.BODY_WEIGHT_SECONDS, seconds);
 
         /* Update database on set id */
         db.update(TableConstants.CARDIO_SETS_TABLE_NAME, values,
-                TableConstants.CARDIO_SETS_ID + " = " + editCardioSet.setId, null);
+                TableConstants.CARDIO_SETS_ID + " = " + editBodyWeightSet.setId, null);
 
         /* update item in fragment context*/
-        editCardioSet.distance = miles;
-        editCardioSet.elapsedTime = totalTime;
-        editCardioSet.hours = hours;
-        editCardioSet.minutes = minutes;
-        editCardioSet.seconds = seconds;
+        editBodyWeightSet.reps = reps;
+        editBodyWeightSet.duration = totalTime;
+
+        editBodyWeightSet.minutes = minutes;
+        editBodyWeightSet.seconds = seconds;
 
         /* Update List view with new information */
-        cardioSetAdapter.notifyDataSetChanged();
+        bodyWeightSetAdapter.notifyDataSetChanged();
 
-        editCardioSetListner.editCardioSet(editCardioSet);
+        editBwSetListner.editBwSet(editBodyWeightSet);
     }
 
-    /* CardioSet Change Listeners */
-    private AddCardioSetListener addCardioSetListener;
-    private DeleteCardioSetListner deleteCardioSetListner;
-    private EditCardioSetListner editCardioSetListner;
+    /* BodyWeight Set Change Listeners */
+    private AddBwSetListener addBwSetListener;
+    private DeleteBwSetListner deleteBwSetListner;
+    private EditBwSetListner editBwSetListner;
 
-    public interface AddCardioSetListener{
-        void addCardioSet(CardioSet cardioSet);
+    public interface AddBwSetListener{
+        void addBwSet(BodyWeightSet bodyWeightSet);
     }
 
-    public interface DeleteCardioSetListner{
-        void deleteCardioSet(CardioSet cardioSet);
+    public interface DeleteBwSetListner{
+        void deleteBwSet(BodyWeightSet bodyWeightSet);
     }
 
-    public interface EditCardioSetListner{
-        void editCardioSet(CardioSet cardioSet);
+    public interface EditBwSetListner{
+        void editBwSet(BodyWeightSet bodyWeightSet);
     }
 
     @Override
@@ -405,9 +404,9 @@ public class AddBodyWeightSetFragment extends Fragment {
         // This makes sure that the container activity has implemented
         // the callback interface. If not, it throws an exception
         try {
-            addCardioSetListener = (AddCardioSetListener) activity;
-            deleteCardioSetListner = (DeleteCardioSetListner) activity;
-            editCardioSetListner = (EditCardioSetListner) activity;
+            addBwSetListener = (AddBwSetListener) activity;
+            deleteBwSetListner = (DeleteBwSetListner) activity;
+            editBwSetListner = (EditBwSetListner) activity;
         } catch (ClassCastException e) {
             throw new ClassCastException(activity.toString()
                     + " must implement OnHeadlineSelectedListener");

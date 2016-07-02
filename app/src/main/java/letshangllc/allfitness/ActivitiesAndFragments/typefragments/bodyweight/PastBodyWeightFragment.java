@@ -17,6 +17,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Locale;
 
+import letshangllc.allfitness.ClassObjects.bodyweight.BodyWeightSet;
 import letshangllc.allfitness.ClassObjects.cardio.CardioSet;
 import letshangllc.allfitness.ClassObjects.cardio.PastCardioItem;
 import letshangllc.allfitness.R;
@@ -27,8 +28,8 @@ import letshangllc.allfitness.database.TableConstants;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class PastCardioFragment extends Fragment {
-    private String TAG = PastCardioFragment.class.getSimpleName();
+public class PastBodyWeightFragment extends Fragment {
+    private String TAG = PastBodyWeightFragment.class.getSimpleName();
 
     /* Passed in lift variables */
     private int exerciseId;
@@ -44,7 +45,7 @@ public class PastCardioFragment extends Fragment {
     /* Database Helper */
     DatabaseHelper databaseHelper;
 
-    public PastCardioFragment() {
+    public PastBodyWeightFragment() {
         // Required empty public constructor
     }
 
@@ -143,59 +144,59 @@ public class PastCardioFragment extends Fragment {
     }
 
     /* Add new liftset to most current when set it added */
-    public void addCardioSet(CardioSet cardioSet) {
+    public void addBodyWeightSet(BodyWeightSet bodyWeightSet) {
         /* If the set set is not empty add on the new item */
-        if(pastCardioItems.size()!=0){
-            /* Add the inserted item to the first recycleview item */
-            PastCardioItem pastCardioItem = pastCardioItems.get(0);
-            pastCardioItem.cardioSets.add(cardioSet);
-            mAdapter.notifyItemChanged(0);
-        }
+//        if(pastCardioItems.size()!=0){
+//            /* Add the inserted item to the first recycleview item */
+//            PastCardioItem pastCardioItem = pastCardioItems.get(0);
+//            pastCardioItem.cardioSets.add(cardioSet);
+//            mAdapter.notifyItemChanged(0);
+//        }
     }
 
-    public void deleteCardioSet(CardioSet cardioSet){
+    public void deleteBodyWeightSet(BodyWeightSet bodyWeightSet){
         /* If the set set is not empty add on the new item */
-        if(pastCardioItems.size()!=0){
-            /* Remove the liftset from the first recycleview item */
-            PastCardioItem pastCardioItem = pastCardioItems.get(0);
-            /* Find the liftset to be deleted and remove it */
-            for(CardioSet item: pastCardioItem.cardioSets){
-
-                /* Delete the item that matches */
-                if(item.setId == cardioSet.setId){
-                    pastCardioItem.cardioSets.remove(item);
-                    mAdapter.notifyItemChanged(0);
-                    break;
-                }
-            }
-
-
-
-        }
+//        if(pastCardioItems.size()!=0){
+//            /* Remove the liftset from the first recycleview item */
+//            PastCardioItem pastCardioItem = pastCardioItems.get(0);
+//            /* Find the liftset to be deleted and remove it */
+//            for(CardioSet item: pastCardioItem.cardioSets){
+//
+//                /* Delete the item that matches */
+//                if(item.setId == cardioSet.setId){
+//                    pastCardioItem.cardioSets.remove(item);
+//                    mAdapter.notifyItemChanged(0);
+//                    break;
+//                }
+//            }
+//
+//
+//
+//        }
     }
 
-    public void editCardioSet(CardioSet cardioSet)
+    public void editBodyWeightSet(BodyWeightSet bodyWeightSet)
 
 
     {
-        /* If the set set is not empty add on the new item */
-        if(pastCardioItems.size()!=0){
-            /* Remove the liftset from the first recycleview item */
-            PastCardioItem pastCardioItem = pastCardioItems.get(0);
-            /* Find the liftset to be deleted and remove it */
-            for(CardioSet item: pastCardioItem.cardioSets){
-
-                if(item.setId == cardioSet.setId){
-                    item.distance = cardioSet.distance;
-                    item.elapsedTime = cardioSet.elapsedTime;
-                    item.hours = cardioSet.hours;
-                    item.minutes = cardioSet.minutes;
-                    item.seconds = cardioSet.seconds;
-
-                    mAdapter.notifyItemChanged(0);
-                    break;
-                }
-            }
-        }
+//        /* If the set set is not empty add on the new item */
+//        if(pastCardioItems.size()!=0){
+//            /* Remove the liftset from the first recycleview item */
+//            PastCardioItem pastCardioItem = pastCardioItems.get(0);
+//            /* Find the liftset to be deleted and remove it */
+//            for(CardioSet item: pastCardioItem.cardioSets){
+//
+//                if(item.setId == cardioSet.setId){
+//                    item.distance = cardioSet.distance;
+//                    item.elapsedTime = cardioSet.elapsedTime;
+//                    item.hours = cardioSet.hours;
+//                    item.minutes = cardioSet.minutes;
+//                    item.seconds = cardioSet.seconds;
+//
+//                    mAdapter.notifyItemChanged(0);
+//                    break;
+//                }
+//            }
+//        }
     }
 }
