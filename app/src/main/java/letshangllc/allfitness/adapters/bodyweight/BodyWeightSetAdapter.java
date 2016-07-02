@@ -45,7 +45,7 @@ public class BodyWeightSetAdapter extends ArrayAdapter<BodyWeightSet> {
             viewHolder = (ViewHolder) convertView.getTag();
         }
         // Populate the data into the template view using the data object
-        String repString = String.format(Locale.US,"%2dreps", item.reps);
+        String repString = String.format(Locale.US,"%2d reps", item.reps);
         String timeString = String.format(Locale.US,"%2dm %2ds", item.minutes, item.seconds);
         if(item.reps != 0 && (item.minutes != 0 || item.seconds!=0)){
             viewHolder.item.setText(timeString + " | " + repString);

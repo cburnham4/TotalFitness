@@ -104,8 +104,8 @@ public class AddBodyWeightSetFragment extends Fragment {
     /* find view and set their listeners */
     private void findViews(View view){
         /* Find Views */
-        btnAddSet =(Button) view.findViewById(R.id.btnAddCardioSet);
-        btnCancel = (Button) view.findViewById(R.id.btnClearCardioValues);
+        btnAddSet =(Button) view.findViewById(R.id.btnAddBodyWeightSet);
+        btnCancel = (Button) view.findViewById(R.id.btnClearBodyWeightValues);
         btnAddRep = (Button) view.findViewById(R.id.btnAddBwRep);
         btnSubRep = (Button) view.findViewById(R.id.btnSubBwRep);
 
@@ -164,6 +164,33 @@ public class AddBodyWeightSetFragment extends Fragment {
                     editing = false;
                     btnAddSet.setText(getString(R.string.add));
                     updateCardioSet(minutes, seconds, totalTime, reps);
+                }
+            }
+        });
+        btnAddRep.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String repString = etReps.getText().toString().trim();
+                if(!repString.isEmpty()){
+                    int reps = Integer.parseInt(repString);
+                    reps+=1;
+                    etReps.setText(String.format(Locale.getDefault(), "%d", reps));
+                }else{
+                    etReps.setText(String.format(Locale.getDefault(), "%d", 1));
+                }
+
+            }
+        });
+        btnSubRep.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String repString = etReps.getText().toString().trim();
+                if(!repString.isEmpty()){
+                    int reps = Integer.parseInt(repString);
+                    if(reps>0){
+                        reps-=1;
+                        etReps.setText(String.format(Locale.getDefault(), "%d", reps));
+                    }
                 }
 
             }
@@ -364,8 +391,8 @@ public class AddBodyWeightSetFragment extends Fragment {
         values.put(TableConstants.BODY_WEIGHT_SECONDS, seconds);
 
         /* Update database on set id */
-        db.update(TableConstants.CARDIO_SETS_TABLE_NAME, values,
-                TableConstants.CARDIO_SETS_ID + " = " + editBodyWeightSet.setId, null);
+        db.update(TableConstants.BODY_WEIGHT_TABLE_NAME, values,
+                TableConstants.BODY_WEIGHT_SET_ID + " = " + editBodyWeightSet.setId, null);
 
         /* update item in fragment context*/
         editBodyWeightSet.reps = reps;
