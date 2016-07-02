@@ -5,9 +5,10 @@ package letshangllc.allfitness.ClassObjects;
  * Enum with the 4 types of exercises
  */
 public enum ExerciseType {
+    LIFT ("Lift", 2),
     BODYWEIGHT ("Bodyweight", 0),
-    CARDIO ("Cardio", 1),
-    LIFT ("Lift", 2);
+    CARDIO ("Cardio", 1);
+
     //TIMED ("Timed", 3);
 
     public String getExerciseTypeName() {

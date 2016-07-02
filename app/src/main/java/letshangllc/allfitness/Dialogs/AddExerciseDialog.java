@@ -39,6 +39,7 @@ public class AddExerciseDialog  extends DialogFragment {
 
     AddExerciseListener mListener;
 
+    /* todo move to one dialog class */
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
@@ -53,12 +54,13 @@ public class AddExerciseDialog  extends DialogFragment {
         final Spinner spin_type = (Spinner) view.findViewById(R.id.spin_exerciseType);
         final Spinner spin_muscle = (Spinner) view.findViewById(R.id.spin_muscleGroup);
 
-
+        /* Get an array of the exercise types */
         ArrayList<String> exerciseTypes = new ArrayList<>();
         for(ExerciseType exerciseType: ExerciseType.values()){
             exerciseTypes.add(exerciseType.getExerciseTypeName());
         }
-        // Create an ArrayAdapter using a string array and a default spinner layout
+
+        /* Create an array adapter for the exercise types */
         ArrayAdapter<String> adapterType = new ArrayAdapter<String>(getContext(),
                 android.R.layout.simple_spinner_dropdown_item, exerciseTypes);
         // Specify the layout to use when the list of choices appears
@@ -75,13 +77,15 @@ public class AddExerciseDialog  extends DialogFragment {
                 null, null, null, null);
         c.moveToFirst();
 
+        muscleGroups.add(new MuscleGroup(getResources().getInteger(R.integer.fake_muscle_group_id),
+                getString(R.string.no_muscle_group)));
+
         while (c.isAfterLast() == false){
             muscleGroups.add(new MuscleGroup(c.getInt(0), c.getString(1)));
             c.moveToNext();
         }
 
-            muscleGroups.add(new MuscleGroup(getResources().getInteger(R.integer.fake_muscle_group_id),
-                    getString(R.string.no_muscle_group)));
+
 
 
         // Create an ArrayAdapter using the string array and a default spinner layout

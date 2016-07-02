@@ -58,6 +58,7 @@ public class EditExerciseDialog extends DialogFragment {
         final Spinner spin_type = (Spinner) view.findViewById(R.id.spin_exerciseType);
         final Spinner spin_muscle = (Spinner) view.findViewById(R.id.spin_muscleGroup);
 
+        /* Set Name */
         et_item_name.setText(exerciseItem.getExerciseName());
 
         /* Create a list of the exercise type names */
@@ -68,13 +69,11 @@ public class EditExerciseDialog extends DialogFragment {
         // Create an ArrayAdapter using a string array and a default spinner layout
         ArrayAdapter<ExerciseType> adapterType = new ArrayAdapter<ExerciseType>(getContext(),
                 android.R.layout.simple_spinner_dropdown_item, exerciseTypes);
-
-
-        // Specify the layout to use when the list of choices appears
         adapterType.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         // Apply the adapter to the spinner
         spin_type.setAdapter(adapterType);
 
+        /* Set selected to that exercise's type */
         spin_type.setSelection(exerciseTypes.indexOf(exerciseItem.getExerciseType()));
 
         DatabaseHelper databaseHelper = new DatabaseHelper(getContext());
@@ -89,7 +88,12 @@ public class EditExerciseDialog extends DialogFragment {
         /* Keep and index of the current muscle to setSection for the correct muscleGroup */
         int currentMuscleIndex = -1;
 
+
+        muscleGroups.add(new MuscleGroup(getResources().getInteger(R.integer.fake_muscle_group_id),
+                getString(R.string.no_muscle_group)));
+
         while (!c.isAfterLast()){
+
             muscleGroups.add(new MuscleGroup(c.getInt(0), c.getString(1)));
 
             /* if that muscle group is the current one then grab its index */
@@ -97,10 +101,6 @@ public class EditExerciseDialog extends DialogFragment {
                 currentMuscleIndex = muscleGroups.size()-1;
             }
             c.moveToNext();
-        }
-        if(muscleGroups.size() == 0){
-            muscleGroups.add(new MuscleGroup(getResources().getInteger(R.integer.fake_muscle_group_id),
-                    getString(R.string.no_muscle_group)));
         }
 
         // Create an ArrayAdapter using the string array and a default spinner layout
