@@ -71,7 +71,7 @@
         </LinearLayout>
 
         <Spinner
-            android:id="@+id/spinCardioGraph"
+            android:id="@+id/spinGraph"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@id/lin_dateSelection"

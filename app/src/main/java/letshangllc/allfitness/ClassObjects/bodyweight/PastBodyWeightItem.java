@@ -13,4 +13,23 @@ public class PastBodyWeightItem {
         this.bodyWeightSets = bodyWeightSets;
         this.date = date;
     }
+
+    public int getMaxReps(){
+        int maxReps = 0;
+        for (BodyWeightSet bodyWeightSet: bodyWeightSets){
+            if(bodyWeightSet.reps >maxReps){
+                maxReps = bodyWeightSet.reps;
+            }
+        }
+        return maxReps;
+    }
+    public double getMaxTime(){
+        double maxTime = 0;
+        for (BodyWeightSet bodyWeightSet: bodyWeightSets){
+            if(maxTime < bodyWeightSet.duration){
+                maxTime = bodyWeightSet.duration;
+            }
+        }
+        return maxTime/60.0;
+    }
 }

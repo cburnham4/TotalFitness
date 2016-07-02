@@ -95,6 +95,7 @@
                 android:layout_height="wrap_content"
                 android:inputType="number"
                 android:text="@string/zero"
+                android:hint="@string/zero"
                 android:id="@+id/etBwReps"
                 android:layout_gravity="center_horizontal"
                 android:layout_weight="4"

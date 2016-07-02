@@ -84,7 +84,7 @@ public class GraphCardioFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View view = inflater.inflate(R.layout.fragment_graph_cardio, container, false);
+        View view = inflater.inflate(R.layout.fragment_graph_spinner, container, false);
 
         Log.e(TAG, "Create Graph View ");
 
@@ -109,7 +109,7 @@ public class GraphCardioFragment extends Fragment {
         rel_graph = (RelativeLayout) view.findViewById(R.id.relGraphOptions);
         tvNoData = (TextView) view.findViewById(R.id.tvNoData);
 
-        Spinner spinner = (Spinner) view.findViewById(R.id.spinCardioGraph);
+        Spinner spinner = (Spinner) view.findViewById(R.id.spinGraph);
         // Create an ArrayAdapter using the string array and a default spinner layout
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this.getContext(),
                 R.array.cardio_graph_types, android.R.layout.simple_spinner_item);
@@ -236,6 +236,12 @@ public class GraphCardioFragment extends Fragment {
         /* set background for selected item */
             tvDateSelections[tvIndex].setBackgroundColor(getResources().getColor(R.color.divider));
         }
+
+        for (TextView tv: tvDateSelections){
+            tv.setBackgroundColor(0);
+        }
+        /* set background for selected item */
+        tvDateSelections[tvIndex].setBackgroundColor(getResources().getColor(R.color.divider));
 
     }
 

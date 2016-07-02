@@ -29,6 +29,8 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.Locale;
 
+import letshangllc.allfitness.ClassObjects.bodyweight.BodyWeightSet;
+import letshangllc.allfitness.ClassObjects.bodyweight.PastBodyWeightItem;
 import letshangllc.allfitness.ClassObjects.cardio.CardioSet;
 import letshangllc.allfitness.ClassObjects.cardio.PastCardioItem;
 import letshangllc.allfitness.R;
@@ -45,24 +47,23 @@ public class GraphBodyWeightFragment extends Fragment {
     private GraphView graph;
     private RelativeLayout rel_graph;
     private TextView tvNoData;
+    private TextView[] tvDateSelections;
 
     /* Array of past days */
-    private ArrayList<PastCardioItem> pastCardioItems;
+    private ArrayList<PastBodyWeightItem> pastBodyWeightItems;
 
     /* DataPoints and series */
     private LineGraphSeries<DataPoint> lineGraphSeries;
-    private ArrayList<DataPoint> dataPointsDistance;
+    private ArrayList<DataPoint> dataPointsReps;
     private ArrayList<DataPoint> dataPointsTime;
-    private ArrayList<DataPoint> dataPointsSpeed;
     private ArrayList<DataPoint> presentedDataPoints;
 
     /* Passed in lift variables */
     private int exerciseId;
 
     /* Database Helper */
-    DatabaseHelper databaseHelper;
+    private DatabaseHelper databaseHelper;
 
-    private TextView[] tvDateSelections;
 
     public GraphBodyWeightFragment() {
         // Required empty public constructor
@@ -84,7 +85,7 @@ public class GraphBodyWeightFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View view = inflater.inflate(R.layout.fragment_graph_cardio, container, false);
+        View view = inflater.inflate(R.layout.fragment_graph_spinner, container, false);
 
         Log.e(TAG, "Create Graph View ");
 
@@ -109,10 +110,10 @@ public class GraphBodyWeightFragment extends Fragment {
         rel_graph = (RelativeLayout) view.findViewById(R.id.relGraphOptions);
         tvNoData = (TextView) view.findViewById(R.id.tvNoData);
 
-        Spinner spinner = (Spinner) view.findViewById(R.id.spinCardioGraph);
+        Spinner spinner = (Spinner) view.findViewById(R.id.spinGraph);
         // Create an ArrayAdapter using the string array and a default spinner layout
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this.getContext(),
-                R.array.cardio_graph_types, android.R.layout.simple_spinner_item);
+                R.array.bodyweight_graph_types, android.R.layout.simple_spinner_item);
         // Specify the layout to use when the list of choices appears
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         // Apply the adapter to the spinner
@@ -123,14 +124,11 @@ public class GraphBodyWeightFragment extends Fragment {
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 String cardioType = (String) parent.getItemAtPosition(position);
                 switch (cardioType){
-                    case "Distance (mi)":
-                        presentedDataPoints = dataPointsDistance;
-                        break;
                     case "Time (min)":
                         presentedDataPoints = dataPointsTime;
                         break;
-                    case "Speed (mph)":
-                        presentedDataPoints = dataPointsSpeed;
+                    case "Reps":
+                        presentedDataPoints = dataPointsReps;
                         break;
                 }
                 if(presentedDataPoints.size() == 0){
@@ -140,7 +138,6 @@ public class GraphBodyWeightFragment extends Fragment {
                     graph.setVisibility(View.VISIBLE);
                     tvNoData.setVisibility(View.GONE);
                     updateGraphWithDataPoints(presentedDataPoints, 4);
-                    //createGraph();
                 }
             }
 
@@ -229,20 +226,21 @@ public class GraphBodyWeightFragment extends Fragment {
             viewport.setMaxX(lineGraphSeries.getHighestValueX()+5*24*60*60*1000);
             viewport.setMinY(lineGraphSeries.getLowestValueY()-5);
             viewport.setMaxY(lineGraphSeries.getHighestValueY()+5);
-        /* Set all points textviews to null bg */
-            for (TextView tv: tvDateSelections){
-                tv.setBackgroundColor(0);
-            }
-        /* set background for selected item */
-            tvDateSelections[tvIndex].setBackgroundColor(getResources().getColor(R.color.divider));
+
         }
+                /* Set all points textviews to null bg */
+        for (TextView tv: tvDateSelections){
+            tv.setBackgroundColor(0);
+        }
+        /* set background for selected item */
+        tvDateSelections[tvIndex].setBackgroundColor(getResources().getColor(R.color.divider));
 
     }
 
 
     /* todo just change the x min and x max for times */
     private void createGraph(){
-        graph.setTitle("Cardio Results");
+        graph.setTitle("Body Weight Exercises");
         graph.getGridLabelRenderer().setLabelFormatter(new DateAsXAxisLabelFormatter(this.getContext()));
         Log.i(TAG, "Create Graph");
         if(!lineGraphSeries.isEmpty()){
@@ -291,35 +289,33 @@ public class GraphBodyWeightFragment extends Fragment {
 
     /* Parse datapoints from the data obtained from getExistingData */
     public void setupDatapoints() throws ParseException {
-        dataPointsDistance = new ArrayList<>();
         dataPointsTime = new ArrayList<>();
-        dataPointsSpeed = new ArrayList<>();
+        dataPointsReps = new ArrayList<>();
         lineGraphSeries = new LineGraphSeries<>();
 
         /* Get date formatter */
         DateFormat dateFormat = new SimpleDateFormat(getString(R.string.date_format), Locale.US);
 
         /* Fill the data series with the appropriate data */
-        for (PastCardioItem pastCardioItem: pastCardioItems){
-            Date date = dateFormat.parse(pastCardioItem.date);
-            if(pastCardioItem.getMaxDistance() != 0){
-                DataPoint datapoint = new DataPoint(date, pastCardioItem.getMaxDistance());
-                dataPointsDistance.add(datapoint);
-                lineGraphSeries.appendData(datapoint, true, pastCardioItems.size());
+        for (PastBodyWeightItem pastBodyWeightItem: pastBodyWeightItems){
+            Date date = dateFormat.parse(pastBodyWeightItem.date);
+            if(pastBodyWeightItem.getMaxReps() != 0){
+                DataPoint dataPoint = new DataPoint(date, pastBodyWeightItem.getMaxReps());
+                dataPointsReps.add(dataPoint);
+                lineGraphSeries.appendData(dataPoint, true, pastBodyWeightItems.size());
+            }
+            if(pastBodyWeightItem.getMaxTime() != 0){
+                DataPoint datapoint = new DataPoint(date, (pastBodyWeightItem.getMaxTime()));
+                dataPointsTime.add(datapoint);
             }
 
-            if(pastCardioItem.getMaxTime() != 0){
-                dataPointsTime.add(new DataPoint(date, pastCardioItem.getMaxTime()));
-            }
-            if(pastCardioItem.getMaxSpeed() != 0){
-                dataPointsSpeed.add(new DataPoint(date, pastCardioItem.getMaxSpeed()));
-            }
+
         }
 
-        presentedDataPoints = dataPointsDistance;
-        Log.e(TAG, "# Distance Datapoints = " + dataPointsDistance.size());
+        presentedDataPoints = dataPointsReps;
+        Log.e(TAG, "# Datapoints Reps = " + dataPointsReps.size());
         Log.e(TAG, "# Datapoints Time = " + dataPointsTime.size());
-        Log.e(TAG, "# Datapoints Speed = " + dataPointsSpeed.size());
+
 
         if(presentedDataPoints.size() == 0){
             graph.setVisibility(View.GONE);
@@ -330,10 +326,9 @@ public class GraphBodyWeightFragment extends Fragment {
         }
     }
 
-    /* todo Change to one query */
+    /* todo 1 query */
     public void getExistingData() {
-        pastCardioItems = new ArrayList<>();
-
+        pastBodyWeightItems = new ArrayList<>();
         /* Get readable db */
         SQLiteDatabase db = databaseHelper.getReadableDatabase();
 
@@ -366,25 +361,25 @@ public class GraphBodyWeightFragment extends Fragment {
         int i = 0;
         for (Integer dayId : dayIds) {
             /* Query the sets table based on dayId */
-            String[] projection2 = {TableConstants.CARDIO_SETS_ID, TableConstants.CARDIO_SET_DISTANCE,
-                    TableConstants.CARDIO_SET_TIME, TableConstants.CARDIO_SET_HOURS, TableConstants.CARDIO_SET_MINUTES,
-                    TableConstants.CARDIO_SET_SECONDS};
+             /* Query the db to get the muscle data */
+            String[] projection2 = {TableConstants.BODY_WEIGHT_SET_ID, TableConstants.BODY_WEIGHT_TIME,
+                    TableConstants.BODY_WEIGHT_REPS, TableConstants.BODY_WEIGHT_MINUTES,
+                    TableConstants.BODY_WEIGHT_SECONDS};
 
-            c = db.query(TableConstants.CARDIO_SETS_TABLE_NAME, projection2, TableConstants.DayId + " = "
-                    + dayId, null, null, null, null);
-
-            ArrayList<CardioSet> cardioSets = new ArrayList<>();
-
-            /* Add all sets for the day into a new array */
+            c = db.query(TableConstants.BODY_WEIGHT_TABLE_NAME, projection2, TableConstants.DayId +" = "+ dayId,
+                    null, null, null, null);
             c.moveToFirst();
-            while (!c.isAfterLast()) {
-                cardioSets.add(new CardioSet(c.getDouble(2), c.getInt(3), c.getInt(4), c.getInt(5),
-                        c.getDouble(1), dayId, c.getInt(0)));
+
+            ArrayList<BodyWeightSet> bodyWeightSets = new ArrayList<>();
+
+            while (!c.isAfterLast()){
+                bodyWeightSets.add(new BodyWeightSet(c.getInt(0), c.getDouble(1), c.getInt(2),
+                        c.getInt(3), c.getInt(4), dayId));
                 c.moveToNext();
             }
 
             /* Add the list and date to past sets */
-            pastCardioItems.add(0, new PastCardioItem(cardioSets, dates.get(i++)));
+            pastBodyWeightItems.add(0, new PastBodyWeightItem(bodyWeightSets, dates.get(i++)));
 
             c.close();
         }

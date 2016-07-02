@@ -62,8 +62,6 @@ public class PastBodyWeightFragment extends Fragment {
 
         databaseHelper = new DatabaseHelper(this.getContext());
 
-        SimpleDateFormat dateFormat = new SimpleDateFormat(getString(R.string.date_format), Locale.US);
-
         getExistingData();
 
 
