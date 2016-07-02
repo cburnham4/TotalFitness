@@ -56,7 +56,7 @@ public class LiftHistoryAdapter extends RecyclerView.Adapter<LiftHistoryAdapter.
         /* If there are no lifts then display nothing */
 
         for(LiftSet item: itemSet.getLiftSets()){
-            sets += (String.format(Locale.US,"REPS: %2d  |  WEIGHT: %.1f\n", item.getReps(), item.getWeight()));
+            sets += (String.format(Locale.US,"REPS: %d  |  WEIGHT: %.1f\n", item.getReps(), item.getWeight()));
         }
 
         viewHolder.tv_info_text.setText(sets);

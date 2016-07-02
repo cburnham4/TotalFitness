@@ -56,8 +56,8 @@ public class BodyWeightHistoryAdapter extends RecyclerView.Adapter<BodyWeightHis
         /* If there are no lifts then display nothing */
 
         for(BodyWeightSet item: pastCardioItem.bodyWeightSets){
-            String repString = String.format(Locale.US,"%2d reps", item.reps);
-            String timeString = String.format(Locale.US,"%2dm %2ds", item.minutes, item.seconds);
+            String repString = String.format(Locale.US,"%d reps", item.reps);
+            String timeString = String.format(Locale.US,"%dm %ds", item.minutes, item.seconds);
             if(item.reps != 0 && (item.minutes != 0 || item.seconds!=0)){
                 sets += timeString + " | " + repString +"\n";
             }else if(item.reps == 0){

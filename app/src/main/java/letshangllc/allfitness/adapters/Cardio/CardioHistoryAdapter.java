@@ -54,7 +54,7 @@ public class CardioHistoryAdapter extends RecyclerView.Adapter<CardioHistoryAdap
         /* If there are no lifts then display nothing */
 
         for(CardioSet item: pastCardioItem.cardioSets){
-            sets += (String.format(Locale.US,"%2dh %2dm %2ds | %.2fmi\n", item.hours, item.minutes, item.seconds, item.distance));
+            sets += (String.format(Locale.US,"%dh %dm %ds | %.2fmi\n", item.hours, item.minutes, item.seconds, item.distance));
         }
 
         viewHolder.tv_info_text.setText(sets);

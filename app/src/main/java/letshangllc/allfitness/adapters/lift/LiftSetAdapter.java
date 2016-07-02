@@ -42,7 +42,7 @@ public class LiftSetAdapter extends ArrayAdapter<LiftSet> {
             viewHolder = (ViewHolder) convertView.getTag();
         }
         // Populate the data into the template view using the data object
-        String values  = String.format(Locale.US,"REPS: %2d  |  WEIGHT: %.1f", item.getReps(), item.getWeight());
+        String values  = String.format(Locale.US,"REPS: %d  |  WEIGHT: %.1f", item.getReps(), item.getWeight());
         viewHolder.item.setText(values);
         // Return the completed view to render on screen
         return convertView;

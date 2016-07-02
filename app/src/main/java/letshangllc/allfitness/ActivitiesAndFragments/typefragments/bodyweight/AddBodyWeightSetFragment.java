@@ -128,6 +128,7 @@ public class AddBodyWeightSetFragment extends Fragment {
             public void onClick(View v) {
                 etMinute.setText("");
                 etSeconds.setText("");
+                etReps.setText("");
                 if (editing){
                     editing = false;
                     btnAddSet.setText(getString(R.string.add));
