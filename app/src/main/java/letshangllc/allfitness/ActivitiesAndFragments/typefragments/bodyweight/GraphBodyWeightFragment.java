@@ -33,6 +33,7 @@ import letshangllc.allfitness.ClassObjects.bodyweight.BodyWeightSet;
 import letshangllc.allfitness.ClassObjects.bodyweight.PastBodyWeightItem;
 import letshangllc.allfitness.ClassObjects.cardio.CardioSet;
 import letshangllc.allfitness.ClassObjects.cardio.PastCardioItem;
+import letshangllc.allfitness.MockData.MockedDataPoints;
 import letshangllc.allfitness.R;
 import letshangllc.allfitness.database.DatabaseHelper;
 import letshangllc.allfitness.database.TableConstants;
@@ -99,6 +100,14 @@ public class GraphBodyWeightFragment extends Fragment {
         } catch (ParseException e) {
             e.printStackTrace();
         }
+
+//        try {
+//            dataPointsReps = MockedDataPoints.getMockDataPoints();
+//            presentedDataPoints = dataPointsReps;
+//            lineGraphSeries.resetData(presentedDataPoints.toArray(new DataPoint[presentedDataPoints.size()]));
+//        } catch (ParseException e) {
+//            e.printStackTrace();
+//        }
 
         /* createGraph */
         createGraph();
@@ -219,7 +228,8 @@ public class GraphBodyWeightFragment extends Fragment {
 
             viewport.setMinY(dataPoint.getY()-10);
             viewport.setMaxY(dataPoint.getY() + 10);
-        }else{
+        }else if(dataPoints.size() > 1){
+            graph.removeAllSeries();
             DataPoint[] dataPoints1 = dataPoints.toArray(new DataPoint[dataPoints.size()]);
             lineGraphSeries.resetData(dataPoints1);
             Viewport viewport = graph.getViewport();
@@ -227,12 +237,7 @@ public class GraphBodyWeightFragment extends Fragment {
             viewport.setMaxX(lineGraphSeries.getHighestValueX()+5*24*60*60*1000);
             viewport.setMinY(lineGraphSeries.getLowestValueY()-5);
             viewport.setMaxY(lineGraphSeries.getHighestValueY()+5);
-        /* Set all points textviews to null bg */
-            for (TextView tv: tvDateSelections){
-                tv.setBackgroundColor(0);
-            }
-        /* set background for selected item */
-            tvDateSelections[tvIndex].setBackgroundColor(getResources().getColor(R.color.divider));
+            graph.addSeries(lineGraphSeries);
         }
 
         for (TextView tv: tvDateSelections){

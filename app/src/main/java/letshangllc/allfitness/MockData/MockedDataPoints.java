@@ -36,11 +36,6 @@ public final class MockedDataPoints {
         dataPoints.add(new DataPoint(dateFormat.parse("28-05-2016"), 180));
         dataPoints.add(new DataPoint(new Date(), 175));
 
-        Log.e("DATAPOINT TIME: ", ""+ dataPoints.get(0).getX());
-        Log.e("DATAPOINT TIME: ", ""+ dataPoints.get(1).getX());
-        Log.e("DATAPOINT TIME: ", ""+ dataPoints.get(2).getX());
-        Log.e("DATAPOINT TIME: ", ""+ dataPoints.get(3).getX());
-        Log.e("DATAPOINT TIME: ", ""+ dataPoints.get(4).getX());
         return  dataPoints;
     }
 

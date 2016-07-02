@@ -75,8 +75,8 @@
 
     <!-- Fragment Graph Bodyweight -->
     <string-array name="bodyweight_graph_types">
-        <item>Time (min)</item>
         <item>Reps</item>
+        <item>Time (min)</item>
     </string-array>
 
     <!-- Formatting -->

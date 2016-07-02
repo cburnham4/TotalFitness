@@ -26,6 +26,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.Locale;
 
+import letshangllc.allfitness.MockData.MockedDataPoints;
 import letshangllc.allfitness.database.DatabaseHelper;
 import letshangllc.allfitness.database.TableConstants;
 import letshangllc.allfitness.R;
@@ -78,7 +79,6 @@ public class GraphLiftFragment extends Fragment {
         }
 
 //        try {
-//
 //            dataPoints = MockedDataPoints.getMockDataPoints();
 //            lineGraphSeries.resetData(dataPoints.toArray(new DataPoint[dataPoints.size()]));
 //        } catch (ParseException e) {

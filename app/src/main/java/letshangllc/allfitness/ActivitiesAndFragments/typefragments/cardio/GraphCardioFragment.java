@@ -31,6 +31,7 @@ import java.util.Locale;
 
 import letshangllc.allfitness.ClassObjects.cardio.CardioSet;
 import letshangllc.allfitness.ClassObjects.cardio.PastCardioItem;
+import letshangllc.allfitness.MockData.MockedDataPoints;
 import letshangllc.allfitness.database.DatabaseHelper;
 import letshangllc.allfitness.database.TableConstants;
 import letshangllc.allfitness.R;
@@ -98,6 +99,15 @@ public class GraphCardioFragment extends Fragment {
         } catch (ParseException e) {
             e.printStackTrace();
         }
+//        try {
+//
+//            dataPointsDistance = MockedDataPoints.getMockDataPoints();
+//            dataPointsSpeed = MockedDataPoints.getMockDataPoints();
+//            presentedDataPoints= dataPointsDistance;
+//            lineGraphSeries.resetData(presentedDataPoints.toArray(new DataPoint[presentedDataPoints.size()]));
+//        } catch (ParseException e) {
+//            e.printStackTrace();
+//        }
 
         /* createGraph */
         createGraph();
@@ -207,6 +217,7 @@ public class GraphCardioFragment extends Fragment {
     }
 
     private void updateGraphWithDataPoints(ArrayList<DataPoint> dataPoints, int tvIndex, boolean dataSetChanged){
+        Log.e(TAG, "Update data size = " + dataPoints.size());
         if(dataPoints.size() == 1 && dataSetChanged){
             graph.removeAllSeries();
             DataPoint dataPoint = dataPoints.get(0);
@@ -223,7 +234,8 @@ public class GraphCardioFragment extends Fragment {
 
             viewport.setMinY(dataPoint.getY()-10);
             viewport.setMaxY(dataPoint.getY() + 10);
-        }else{
+        }else if(dataPoints.size() > 1){
+            graph.removeAllSeries();
             DataPoint[] dataPoints1 = dataPoints.toArray(new DataPoint[dataPoints.size()]);
             lineGraphSeries.resetData(dataPoints1);
             Viewport viewport = graph.getViewport();
@@ -231,12 +243,7 @@ public class GraphCardioFragment extends Fragment {
             viewport.setMaxX(lineGraphSeries.getHighestValueX()+5*24*60*60*1000);
             viewport.setMinY(lineGraphSeries.getLowestValueY()-5);
             viewport.setMaxY(lineGraphSeries.getHighestValueY()+5);
-        /* Set all points textviews to null bg */
-            for (TextView tv: tvDateSelections){
-                tv.setBackgroundColor(0);
-            }
-        /* set background for selected item */
-            tvDateSelections[tvIndex].setBackgroundColor(getResources().getColor(R.color.divider));
+            graph.addSeries(lineGraphSeries);
         }
 
         for (TextView tv: tvDateSelections){
