@@ -18,9 +18,11 @@ import java.util.ArrayList;
 import java.util.Locale;
 
 import letshangllc.allfitness.ClassObjects.bodyweight.BodyWeightSet;
+import letshangllc.allfitness.ClassObjects.bodyweight.PastBodyWeightItem;
 import letshangllc.allfitness.ClassObjects.cardio.CardioSet;
 import letshangllc.allfitness.ClassObjects.cardio.PastCardioItem;
 import letshangllc.allfitness.R;
+import letshangllc.allfitness.adapters.bodyweight.BodyWeightHistoryAdapter;
 import letshangllc.allfitness.adapters.cardio.CardioHistoryAdapter;
 import letshangllc.allfitness.database.DatabaseHelper;
 import letshangllc.allfitness.database.TableConstants;
@@ -35,10 +37,10 @@ public class PastBodyWeightFragment extends Fragment {
     private int exerciseId;
 
     /* Array of past days */
-    private ArrayList<PastCardioItem> pastCardioItems;
+    private ArrayList<PastBodyWeightItem> pastBodyWeightItems;
 
     /* Recycle view variables */
-    private RecyclerView rvPastCardio;
+    private RecyclerView rvPastBodyWeight;
     private RecyclerView.Adapter mAdapter;
     private RecyclerView.LayoutManager mLayoutManager;
 
@@ -54,7 +56,7 @@ public class PastBodyWeightFragment extends Fragment {
         super.onCreate(savedInstanceState);
         Bundle args = getArguments();
 
-        pastCardioItems = new ArrayList<>();
+        pastBodyWeightItems = new ArrayList<>();
 
         exerciseId = args.getInt(getString(R.string.exercise_id), 0);
 
@@ -71,14 +73,14 @@ public class PastBodyWeightFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view =  inflater.inflate(R.layout.fragment_past_sets, container, false);
-        rvPastCardio = (RecyclerView) view.findViewById(R.id.rv_past_sets);
+        rvPastBodyWeight = (RecyclerView) view.findViewById(R.id.rv_past_sets);
 
         // use a linear layout manager
         mLayoutManager = new LinearLayoutManager(this.getContext());
-        rvPastCardio.setLayoutManager(mLayoutManager);
+        rvPastBodyWeight.setLayoutManager(mLayoutManager);
 
-        mAdapter = new CardioHistoryAdapter(pastCardioItems);
-        rvPastCardio.setAdapter(mAdapter);
+        mAdapter = new BodyWeightHistoryAdapter(pastBodyWeightItems);
+        rvPastBodyWeight.setAdapter(mAdapter);
 
 
         return view;
@@ -118,25 +120,25 @@ public class PastBodyWeightFragment extends Fragment {
         int i = 0;
         for (Integer dayId : dayIds) {
             /* Query the sets table based on dayId */
-            String[] projection2 = {TableConstants.CARDIO_SETS_ID, TableConstants.CARDIO_SET_DISTANCE,
-                    TableConstants.CARDIO_SET_TIME, TableConstants.CARDIO_SET_HOURS, TableConstants.CARDIO_SET_MINUTES,
-                    TableConstants.CARDIO_SET_SECONDS};
+             /* Query the db to get the muscle data */
+            String[] projection2 = {TableConstants.BODY_WEIGHT_SET_ID, TableConstants.BODY_WEIGHT_TIME,
+                    TableConstants.BODY_WEIGHT_REPS, TableConstants.BODY_WEIGHT_MINUTES,
+                    TableConstants.BODY_WEIGHT_SECONDS};
 
-            c = db.query(TableConstants.CARDIO_SETS_TABLE_NAME, projection2, TableConstants.DayId + " = "
-                    + dayId, null, null, null, null);
-
-            ArrayList<CardioSet> cardioSets = new ArrayList<>();
-
-            /* Add all sets for the day into a new array */
+            c = db.query(TableConstants.BODY_WEIGHT_TABLE_NAME, projection2, TableConstants.DayId +" = "+ dayId,
+                    null, null, null, null);
             c.moveToFirst();
-            while (!c.isAfterLast()) {
-                cardioSets.add(new CardioSet(c.getDouble(2), c.getInt(3), c.getInt(4), c.getInt(5),
-                        c.getDouble(1), dayId, c.getInt(0)));
+
+            ArrayList<BodyWeightSet> bodyWeightSets = new ArrayList<>();
+
+            while (!c.isAfterLast()){
+                bodyWeightSets.add(new BodyWeightSet(c.getInt(0), c.getDouble(1), c.getInt(2),
+                        c.getInt(3), c.getInt(4), dayId));
                 c.moveToNext();
             }
 
             /* Add the list and date to past sets */
-            pastCardioItems.add(0, new PastCardioItem(cardioSets, dates.get(i++)));
+            pastBodyWeightItems.add(0, new PastBodyWeightItem(bodyWeightSets, dates.get(i++)));
 
             c.close();
         }
@@ -146,57 +148,49 @@ public class PastBodyWeightFragment extends Fragment {
     /* Add new liftset to most current when set it added */
     public void addBodyWeightSet(BodyWeightSet bodyWeightSet) {
         /* If the set set is not empty add on the new item */
-//        if(pastCardioItems.size()!=0){
-//            /* Add the inserted item to the first recycleview item */
-//            PastCardioItem pastCardioItem = pastCardioItems.get(0);
-//            pastCardioItem.cardioSets.add(cardioSet);
-//            mAdapter.notifyItemChanged(0);
-//        }
+        if(pastBodyWeightItems.size()!=0){
+            /* Add the inserted item to the first recycleview item */
+            PastBodyWeightItem pastBodyWeightItem = pastBodyWeightItems.get(0);
+            pastBodyWeightItem.bodyWeightSets.add(bodyWeightSet);
+            mAdapter.notifyItemChanged(0);
+        }
     }
 
     public void deleteBodyWeightSet(BodyWeightSet bodyWeightSet){
         /* If the set set is not empty add on the new item */
-//        if(pastCardioItems.size()!=0){
-//            /* Remove the liftset from the first recycleview item */
-//            PastCardioItem pastCardioItem = pastCardioItems.get(0);
-//            /* Find the liftset to be deleted and remove it */
-//            for(CardioSet item: pastCardioItem.cardioSets){
-//
-//                /* Delete the item that matches */
-//                if(item.setId == cardioSet.setId){
-//                    pastCardioItem.cardioSets.remove(item);
-//                    mAdapter.notifyItemChanged(0);
-//                    break;
-//                }
-//            }
-//
-//
-//
-//        }
+        if(pastBodyWeightItems.size()!=0){
+            /* Remove the liftset from the first recycleview item */
+            PastBodyWeightItem pastBodyWeightItem= pastBodyWeightItems.get(0);
+            /* Find the liftset to be deleted and remove it */
+            for(BodyWeightSet item: pastBodyWeightItem.bodyWeightSets){
+
+                /* Delete the item that matches */
+                if(item.setId == bodyWeightSet.setId){
+                    pastBodyWeightItem.bodyWeightSets.remove(item);
+                    mAdapter.notifyItemChanged(0);
+                    break;
+                }
+            }
+        }
     }
 
-    public void editBodyWeightSet(BodyWeightSet bodyWeightSet)
+    public void editBodyWeightSet(BodyWeightSet bodyWeightSet){
+        /* If the set set is not empty add on the new item */
+        if(pastBodyWeightItems.size()!=0){
+            /* Remove the liftset from the first recycleview item */
+            PastBodyWeightItem pastBodyWeightItem= pastBodyWeightItems.get(0);
+            /* Find the liftset to be deleted and remove it */
+            for(BodyWeightSet item: pastBodyWeightItem.bodyWeightSets){
+                if(item.setId == bodyWeightSet.setId){
+                    item.minutes = bodyWeightSet.minutes;
+                    item.seconds = bodyWeightSet.seconds;
+                    item.reps = bodyWeightSet.reps;
+                    item.duration = bodyWeightSet.duration;
 
-
-    {
-//        /* If the set set is not empty add on the new item */
-//        if(pastCardioItems.size()!=0){
-//            /* Remove the liftset from the first recycleview item */
-//            PastCardioItem pastCardioItem = pastCardioItems.get(0);
-//            /* Find the liftset to be deleted and remove it */
-//            for(CardioSet item: pastCardioItem.cardioSets){
-//
-//                if(item.setId == cardioSet.setId){
-//                    item.distance = cardioSet.distance;
-//                    item.elapsedTime = cardioSet.elapsedTime;
-//                    item.hours = cardioSet.hours;
-//                    item.minutes = cardioSet.minutes;
-//                    item.seconds = cardioSet.seconds;
-//
-//                    mAdapter.notifyItemChanged(0);
-//                    break;
-//                }
-//            }
-//        }
+                    mAdapter.notifyItemChanged(0);
+                    break;
+                }
+            }
+        }
     }
 }
