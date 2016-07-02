@@ -356,9 +356,9 @@ public class AddCardioSetFragment extends Fragment {
     public void editItem(CardioSet cardioSet){
         editing = true;
 
-        etHour.setText(String.format(Locale.US,"%2d", cardioSet.hours));
-        etMinute.setText(String.format(Locale.US,"%2d", cardioSet.minutes));
-        etSeconds.setText(String.format(Locale.US,"%2d", cardioSet.seconds));
+        etHour.setText(String.format(Locale.US,"%d", cardioSet.hours));
+        etMinute.setText(String.format(Locale.US,"%d", cardioSet.minutes));
+        etSeconds.setText(String.format(Locale.US,"%d", cardioSet.seconds));
         etMiles.setText(String.format(Locale.US,"%.2f", cardioSet.distance));
         btnAddSet.setText(getString(R.string.edit));
         editCardioSet = cardioSet;

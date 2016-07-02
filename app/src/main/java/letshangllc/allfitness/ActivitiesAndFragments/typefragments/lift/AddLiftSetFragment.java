@@ -445,7 +445,7 @@ public class AddLiftSetFragment extends Fragment {
 
     public void editItem(LiftSet liftSet){
         editing = true;
-        repCount.setText(""+liftSet.getReps());
+        repCount.setText(String.format(Locale.US,"%d",liftSet.getReps()));
         weightCount.setText(String.format(Locale.US, "%.1f", liftSet.getWeight()));
         addSet.setText(getString(R.string.edit));
         editLiftSet = liftSet;

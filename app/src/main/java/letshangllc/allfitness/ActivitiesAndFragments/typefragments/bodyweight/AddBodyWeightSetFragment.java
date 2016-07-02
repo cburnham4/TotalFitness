@@ -372,8 +372,9 @@ public class AddBodyWeightSetFragment extends Fragment {
     public void editItem(BodyWeightSet bodyWeightSet){
         editing = true;
 
-        etMinute.setText(String.format(Locale.US,"%2d", bodyWeightSet.minutes));
-        etSeconds.setText(String.format(Locale.US,"%2d", bodyWeightSet.seconds));
+        etMinute.setText(String.format(Locale.US,"%d", bodyWeightSet.minutes));
+        etSeconds.setText(String.format(Locale.US,"%d", bodyWeightSet.seconds));
+        etReps.setText(String.format(Locale.US,"%d", bodyWeightSet.reps));
 
         btnAddSet.setText(getString(R.string.edit));
         editBodyWeightSet = bodyWeightSet;

@@ -73,6 +73,12 @@
         <item>Speed (mph)</item>
     </string-array>
 
+    <!-- Fragment Graph Bodyweight -->
+    <string-array name="bodyweight_graph_types">
+        <item>Time (min)</item>
+        <item>Reps</item>
+    </string-array>
+
     <!-- Formatting -->
     <string name="date_format">dd-MM-yyyy</string>
 </resources>
