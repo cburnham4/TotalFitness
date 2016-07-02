@@ -131,6 +131,7 @@ public class GraphCardioFragment extends Fragment {
                         break;
                     case "Speed (mph)":
                         presentedDataPoints = dataPointsSpeed;
+                        Log.i(TAG, "Show sped Data");
                         break;
                 }
                 if(presentedDataPoints.size() == 0){
@@ -139,7 +140,7 @@ public class GraphCardioFragment extends Fragment {
                 }else{
                     graph.setVisibility(View.VISIBLE);
                     tvNoData.setVisibility(View.GONE);
-                    updateGraphWithDataPoints(presentedDataPoints, 4);
+                    updateGraphWithDataPoints(presentedDataPoints, 4, true);
                     //createGraph();
                 }
             }
@@ -200,13 +201,14 @@ public class GraphCardioFragment extends Fragment {
                     dataPointsLocal.add(dataPoint);
                 }
             }
-            updateGraphWithDataPoints(dataPointsLocal, tvIndex);
+            updateGraphWithDataPoints(dataPointsLocal, tvIndex, false);
 
         }
     }
 
-    private void updateGraphWithDataPoints(ArrayList<DataPoint> dataPoints, int tvIndex){
-        if(dataPoints.size() == 1){
+    private void updateGraphWithDataPoints(ArrayList<DataPoint> dataPoints, int tvIndex, boolean dataSetChanged){
+        if(dataPoints.size() == 1 && dataSetChanged){
+            graph.removeAllSeries();
             DataPoint dataPoint = dataPoints.get(0);
             PointsGraphSeries<DataPoint> seriesSingle = new PointsGraphSeries<DataPoint>(new DataPoint[] {
                     dataPoint
@@ -246,7 +248,7 @@ public class GraphCardioFragment extends Fragment {
     }
 
 
-    /* todo just change the x min and x max for times */
+    /* todo CHANGE SIDEBARS TO GO OUT TO2 decimals*/
     private void createGraph(){
         graph.setTitle("Cardio Results");
         graph.getGridLabelRenderer().setLabelFormatter(new DateAsXAxisLabelFormatter(this.getContext()));
@@ -271,6 +273,7 @@ public class GraphCardioFragment extends Fragment {
 
                 viewport.setMinY(dataPoint.getY()-10);
                 viewport.setMaxY(dataPoint.getY() + 10);
+
 
             }else{
                 Viewport viewport = graph.getViewport();

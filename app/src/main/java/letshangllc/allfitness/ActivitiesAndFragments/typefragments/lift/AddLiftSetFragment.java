@@ -144,13 +144,13 @@ public class AddLiftSetFragment extends Fragment {
 
         addRep.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                int rep = Integer.parseInt(repCount.getText().toString());
+                int rep = Integer.parseInt(repCount.getText().toString().trim());
                 repCount.setText(rep+1 +"");
             }
         });
         subRep.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                int rep = Integer.parseInt(repCount.getText().toString());
+                int rep = Integer.parseInt(repCount.getText().toString().trim());
                 if(rep !=0){
                     repCount.setText(rep - 1 + "");
                 }
@@ -158,13 +158,13 @@ public class AddLiftSetFragment extends Fragment {
         });
         addWeight.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                double weight = Double.parseDouble(weightCount.getText().toString());
+                double weight = Double.parseDouble(weightCount.getText().toString().trim());
                 weightCount.setText(String.format(Locale.US, "%.1f", weight+5));
             }
         });
         subWeight.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                double weight = Double.parseDouble(weightCount.getText().toString());
+                double weight = Double.parseDouble(weightCount.getText().toString().trim());
                 if(weight >= 5){
                     weightCount.setText(String.format(Locale.US, "%.1f", weight-5));
                 }

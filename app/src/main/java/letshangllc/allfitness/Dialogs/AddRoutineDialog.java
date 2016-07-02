@@ -43,7 +43,7 @@ public class AddRoutineDialog extends DialogFragment {
                 .setPositiveButton(R.string.add, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int id) {
-                        String name = et_item_name.getText().toString();
+                        String name = et_item_name.getText().toString().trim();
                         mListener.onDialogPositiveClick(name);
                     }
                 })

@@ -36,6 +36,8 @@ public class ExerciseActivity extends AppCompatActivity implements AddLiftSetFra
 {
     private final static String TAG  = ExerciseActivity.class.getSimpleName();
 
+    private ViewPagerAdapter adapter;
+
     /* Bundle to pass to each of the fragments */
     Bundle args;
 
@@ -78,7 +80,7 @@ public class ExerciseActivity extends AppCompatActivity implements AddLiftSetFra
 
 
     private void setupViewPager(ViewPager viewPager, int typeId) {
-        ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager());
+        adapter = new ViewPagerAdapter(getSupportFragmentManager());
         switch (typeId) {
             case 0: // BODYWEIGHT
                 Fragment frag1Bw = new AddBodyWeightSetFragment();
@@ -123,11 +125,11 @@ public class ExerciseActivity extends AppCompatActivity implements AddLiftSetFra
     /* Lift Set Listeners */
     @Override
     public void addNewLiftSet(LiftSet liftSet) {
-        PastLiftsFragment pastLiftsFragment = (PastLiftsFragment)getSupportFragmentManager().getFragments().get(0);
+        PastLiftsFragment pastLiftsFragment = (PastLiftsFragment) adapter.getItem(1);
 
         /* Get update the graph if it has already been created */
         try{
-            GraphLiftFragment graphLiftFragment = (GraphLiftFragment) getSupportFragmentManager().getFragments().get(2);
+            GraphLiftFragment graphLiftFragment = (GraphLiftFragment) adapter.getItem(2);
             graphLiftFragment.updateNewLiftSet();
         } catch (Exception e) {
             e.printStackTrace();
@@ -138,11 +140,11 @@ public class ExerciseActivity extends AppCompatActivity implements AddLiftSetFra
 
     @Override
     public void deleteNewLiftSet(LiftSet liftSet) {
-        PastLiftsFragment pastLiftsFragment = (PastLiftsFragment)getSupportFragmentManager().getFragments().get(0);
+        PastLiftsFragment pastLiftsFragment = (PastLiftsFragment) adapter.getItem(1);
 
         /* Get update the graph if it has already been created */
         try{
-            GraphLiftFragment graphLiftFragment = (GraphLiftFragment) getSupportFragmentManager().getFragments().get(2);
+            GraphLiftFragment graphLiftFragment = (GraphLiftFragment) adapter.getItem(2);
             graphLiftFragment.updateNewLiftSet();
         } catch (Exception e) {
             e.printStackTrace();
@@ -154,11 +156,11 @@ public class ExerciseActivity extends AppCompatActivity implements AddLiftSetFra
     @Override
     public void editNewLiftSet(LiftSet liftSet) {
         Log.e(TAG, "FRAGMENTS: "+ 0);
-        PastLiftsFragment pastLiftsFragment = (PastLiftsFragment)getSupportFragmentManager().getFragments().get(0);
+        PastLiftsFragment pastLiftsFragment = (PastLiftsFragment) adapter.getItem(1);
 
         /* Get update the graph if it has already been created */
         try{
-            GraphLiftFragment graphLiftFragment = (GraphLiftFragment) getSupportFragmentManager().getFragments().get(2);
+            GraphLiftFragment graphLiftFragment = (GraphLiftFragment) adapter.getItem(2);
             graphLiftFragment.updateNewLiftSet();
         } catch (Exception e) {
             e.printStackTrace();
@@ -169,11 +171,11 @@ public class ExerciseActivity extends AppCompatActivity implements AddLiftSetFra
 
     @Override
     public void addCardioSet(CardioSet cardioSet) {
-        PastCardioFragment pastCardioFragment = (PastCardioFragment) getSupportFragmentManager().getFragments().get(0);
+        PastCardioFragment pastCardioFragment = (PastCardioFragment) adapter.getItem(1);
 
                 /* Get update the graph if it has already been created */
         try{
-            GraphCardioFragment graphCardioFragment = (GraphCardioFragment) getSupportFragmentManager().getFragments().get(2);
+            GraphCardioFragment graphCardioFragment = (GraphCardioFragment) adapter.getItem(2);
             graphCardioFragment.updateCardioSet();
         } catch (Exception e) {
             e.printStackTrace();
@@ -184,11 +186,11 @@ public class ExerciseActivity extends AppCompatActivity implements AddLiftSetFra
 
     @Override
     public void deleteCardioSet(CardioSet cardioSet) {
-        PastCardioFragment pastCardioFragment = (PastCardioFragment) getSupportFragmentManager().getFragments().get(0);
+        PastCardioFragment pastCardioFragment = (PastCardioFragment) adapter.getItem(1);
 
                 /* Get update the graph if it has already been created */
         try{
-            GraphCardioFragment graphCardioFragment = (GraphCardioFragment) getSupportFragmentManager().getFragments().get(2);
+            GraphCardioFragment graphCardioFragment = (GraphCardioFragment) adapter.getItem(2);
             graphCardioFragment.updateCardioSet();
         } catch (Exception e) {
             e.printStackTrace();
@@ -199,11 +201,11 @@ public class ExerciseActivity extends AppCompatActivity implements AddLiftSetFra
 
     @Override
     public void editCardioSet(CardioSet cardioSet) {
-        PastCardioFragment pastCardioFragment = (PastCardioFragment) getSupportFragmentManager().getFragments().get(0);
+        PastCardioFragment pastCardioFragment = (PastCardioFragment) adapter.getItem(1);
 
                 /* Get update the graph if it has already been created */
         try{
-            GraphCardioFragment graphCardioFragment = (GraphCardioFragment) getSupportFragmentManager().getFragments().get(2);
+            GraphCardioFragment graphCardioFragment = (GraphCardioFragment) adapter.getItem(2);
             graphCardioFragment.updateCardioSet();
         } catch (Exception e) {
             e.printStackTrace();
@@ -214,10 +216,10 @@ public class ExerciseActivity extends AppCompatActivity implements AddLiftSetFra
 
     @Override
     public void addBwSet(BodyWeightSet bodyWeightSet) {
-        PastBodyWeightFragment pastBodyWeightFragment = (PastBodyWeightFragment) getSupportFragmentManager().getFragments().get(0);
+        PastBodyWeightFragment pastBodyWeightFragment = (PastBodyWeightFragment) adapter.getItem(1);
         /* Get update the graph if it has already been created */
         try{
-            GraphBodyWeightFragment graphBodyWeightFragment = (GraphBodyWeightFragment) getSupportFragmentManager().getFragments().get(2);
+            GraphBodyWeightFragment graphBodyWeightFragment = (GraphBodyWeightFragment) adapter.getItem(2);
             graphBodyWeightFragment.updateCardioSet();
         } catch (Exception e) {
             e.printStackTrace();
@@ -228,10 +230,10 @@ public class ExerciseActivity extends AppCompatActivity implements AddLiftSetFra
 
     @Override
     public void deleteBwSet(BodyWeightSet bodyWeightSet) {
-        PastBodyWeightFragment pastBodyWeightFragment = (PastBodyWeightFragment) getSupportFragmentManager().getFragments().get(0);
+        PastBodyWeightFragment pastBodyWeightFragment = (PastBodyWeightFragment) adapter.getItem(1);
         /* Get update the graph if it has already been created */
         try{
-            GraphBodyWeightFragment graphBodyWeightFragment = (GraphBodyWeightFragment) getSupportFragmentManager().getFragments().get(2);
+            GraphBodyWeightFragment graphBodyWeightFragment = (GraphBodyWeightFragment) adapter.getItem(2);
             graphBodyWeightFragment.updateCardioSet();
         } catch (Exception e) {
             e.printStackTrace();
@@ -242,10 +244,10 @@ public class ExerciseActivity extends AppCompatActivity implements AddLiftSetFra
 
     @Override
     public void editBwSet(BodyWeightSet bodyWeightSet) {
-        PastBodyWeightFragment pastBodyWeightFragment = (PastBodyWeightFragment) getSupportFragmentManager().getFragments().get(0);
+        PastBodyWeightFragment pastBodyWeightFragment = (PastBodyWeightFragment) adapter.getItem(1);
         /* Get update the graph if it has already been created */
         try{
-            GraphBodyWeightFragment graphBodyWeightFragment = (GraphBodyWeightFragment) getSupportFragmentManager().getFragments().get(2);
+            GraphBodyWeightFragment graphBodyWeightFragment = (GraphBodyWeightFragment) adapter.getItem(2);
             graphBodyWeightFragment.updateCardioSet();
         } catch (Exception e) {
             e.printStackTrace();

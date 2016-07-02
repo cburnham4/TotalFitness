@@ -137,7 +137,7 @@ public class GraphBodyWeightFragment extends Fragment {
                 }else{
                     graph.setVisibility(View.VISIBLE);
                     tvNoData.setVisibility(View.GONE);
-                    updateGraphWithDataPoints(presentedDataPoints, 4);
+                    updateGraphWithDataPoints(presentedDataPoints, 4, true);
                 }
             }
 
@@ -197,13 +197,14 @@ public class GraphBodyWeightFragment extends Fragment {
                     dataPointsLocal.add(dataPoint);
                 }
             }
-            updateGraphWithDataPoints(dataPointsLocal, tvIndex);
+            updateGraphWithDataPoints(dataPointsLocal, tvIndex, false);
 
         }
     }
 
-    private void updateGraphWithDataPoints(ArrayList<DataPoint> dataPoints, int tvIndex){
-        if(dataPoints.size() == 1){
+    private void updateGraphWithDataPoints(ArrayList<DataPoint> dataPoints, int tvIndex, boolean dataSetChanged){
+        if(dataPoints.size() == 1 && dataSetChanged){
+            graph.removeAllSeries();
             DataPoint dataPoint = dataPoints.get(0);
             PointsGraphSeries<DataPoint> seriesSingle = new PointsGraphSeries<DataPoint>(new DataPoint[] {
                     dataPoint
@@ -226,9 +227,14 @@ public class GraphBodyWeightFragment extends Fragment {
             viewport.setMaxX(lineGraphSeries.getHighestValueX()+5*24*60*60*1000);
             viewport.setMinY(lineGraphSeries.getLowestValueY()-5);
             viewport.setMaxY(lineGraphSeries.getHighestValueY()+5);
-
+        /* Set all points textviews to null bg */
+            for (TextView tv: tvDateSelections){
+                tv.setBackgroundColor(0);
+            }
+        /* set background for selected item */
+            tvDateSelections[tvIndex].setBackgroundColor(getResources().getColor(R.color.divider));
         }
-                /* Set all points textviews to null bg */
+
         for (TextView tv: tvDateSelections){
             tv.setBackgroundColor(0);
         }

@@ -97,7 +97,7 @@ public class AddExerciseDialog  extends DialogFragment {
                     @Override
                     public void onClick(DialogInterface dialog, int id) {
                         /* Get Dialog items and send back to Exercise Fragment */
-                        String name = et_item_name.getText().toString();
+                        String name = et_item_name.getText().toString().trim();
                         String type = spin_type.getSelectedItem().toString();
                         MuscleGroup muscleGroup = (MuscleGroup) spin_muscle.getSelectedItem();
 
