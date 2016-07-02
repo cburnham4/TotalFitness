@@ -13,8 +13,9 @@
         android:id="@+id/lv_muscle_exercises"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/toolbar"/>
+        android:layout_below="@+id/toolbar"
+        android:layout_above="@+id/ad_layout"/>
 
-
+    <include layout="@layout/ad_layout"/>
 </RelativeLayout>
 

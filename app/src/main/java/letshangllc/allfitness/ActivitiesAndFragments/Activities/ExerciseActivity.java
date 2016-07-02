@@ -13,6 +13,8 @@ import android.view.View;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import letshangllc.allfitness.ActivitiesAndFragments.typefragments.bodyweight.AddBodyWeightSetFragment;
 import letshangllc.allfitness.ActivitiesAndFragments.typefragments.bodyweight.GraphBodyWeightFragment;
@@ -23,6 +25,7 @@ import letshangllc.allfitness.ActivitiesAndFragments.typefragments.cardio.PastCa
 import letshangllc.allfitness.ActivitiesAndFragments.typefragments.lift.AddLiftSetFragment;
 import letshangllc.allfitness.ActivitiesAndFragments.typefragments.lift.GraphLiftFragment;
 import letshangllc.allfitness.ActivitiesAndFragments.typefragments.lift.PastLiftsFragment;
+import letshangllc.allfitness.AdsHelper;
 import letshangllc.allfitness.ClassObjects.bodyweight.BodyWeightSet;
 import letshangllc.allfitness.ClassObjects.cardio.CardioSet;
 import letshangllc.allfitness.ClassObjects.lift.LiftSet;
@@ -76,6 +79,8 @@ public class ExerciseActivity extends AppCompatActivity implements AddLiftSetFra
 
         TabLayout tabLayout = (TabLayout) findViewById(R.id.tl_main_activity);
         tabLayout.setupWithViewPager(viewPager);
+
+        this.runAds();
     }
 
 
@@ -285,5 +290,20 @@ public class ExerciseActivity extends AppCompatActivity implements AddLiftSetFra
         public CharSequence getPageTitle(int position) {
             return mFragmentTitleList.get(position);
         }
+    }
+
+    private AdsHelper adsHelper;
+    public void runAds(){
+        adsHelper =  new AdsHelper(getWindow().getDecorView(), getResources().getString(R.string.admob_ad_exercise), this);
+
+        adsHelper.setUpAds();
+        int delay = 1000; // delay for 1 sec.
+        int period = getResources().getInteger(R.integer.ad_refresh_rate);
+        Timer timer = new Timer();
+        timer.scheduleAtFixedRate(new TimerTask() {
+            public void run() {
+                adsHelper.refreshAd();  // display the data
+            }
+        }, delay, period);
     }
 }

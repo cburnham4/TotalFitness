@@ -16,7 +16,10 @@ import android.widget.ListView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
+import java.util.Timer;
+import java.util.TimerTask;
 
+import letshangllc.allfitness.AdsHelper;
 import letshangllc.allfitness.ClassObjects.ExerciseItem;
 import letshangllc.allfitness.ClassObjects.ExerciseType;
 
@@ -84,6 +87,8 @@ public class RoutineActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+
+        this.runAds();
     }
 
     /* Get Existing Data */
@@ -111,6 +116,21 @@ public class RoutineActivity extends AppCompatActivity {
         c.close();
         db.close();
 
+    }
+
+    private AdsHelper adsHelper;
+    public void runAds(){
+        adsHelper =  new AdsHelper(getWindow().getDecorView(), getResources().getString(R.string.admob_ad_routine), this);
+
+        adsHelper.setUpAds();
+        int delay = 1000; // delay for 1 sec.
+        int period = getResources().getInteger(R.integer.ad_refresh_rate);
+        Timer timer = new Timer();
+        timer.scheduleAtFixedRate(new TimerTask() {
+            public void run() {
+                adsHelper.refreshAd();  // display the data
+            }
+        }, delay, period);
     }
 
     /* find and initialize views with listeners */

@@ -12,7 +12,10 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 
 import java.util.ArrayList;
+import java.util.Timer;
+import java.util.TimerTask;
 
+import letshangllc.allfitness.AdsHelper;
 import letshangllc.allfitness.ClassObjects.ExerciseItem;
 import letshangllc.allfitness.ClassObjects.ExerciseType;
 import letshangllc.allfitness.database.DatabaseHelper;
@@ -59,6 +62,8 @@ public class MuscleGroupActivity extends AppCompatActivity {
         exerciseListAdapter = new ExerciseListAdapter(this, exerciseItems);
         lv_muscleGroupExercises.setAdapter(exerciseListAdapter);
         registerForContextMenu(lv_muscleGroupExercises);
+
+        this.runAds();
     }
 
     /* find and initialize views with listeners */
@@ -138,5 +143,20 @@ public class MuscleGroupActivity extends AppCompatActivity {
         db.close();
         /* Return item */
         return exerciseItem;
+    }
+
+    private AdsHelper adsHelper;
+    public void runAds(){
+        adsHelper =  new AdsHelper(getWindow().getDecorView(), getResources().getString(R.string.admob_ad_muscle_group), this);
+
+        adsHelper.setUpAds();
+        int delay = 1000; // delay for 1 sec.
+        int period = getResources().getInteger(R.integer.ad_refresh_rate);
+        Timer timer = new Timer();
+        timer.scheduleAtFixedRate(new TimerTask() {
+            public void run() {
+                adsHelper.refreshAd();  // display the data
+            }
+        }, delay, period);
     }
 }

@@ -83,7 +83,7 @@ public class MainTabbedActivity extends AppCompatActivity {
             return mFragmentTitleList.get(position);
         }
     }
-git ad
+
     private AdsHelper adsHelper;
 
     public void runAds(){
