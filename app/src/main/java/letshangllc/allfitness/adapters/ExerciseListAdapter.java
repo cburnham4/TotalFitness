@@ -70,7 +70,7 @@ public class ExerciseListAdapter extends ArrayAdapter<ExerciseItem>{
                     viewHolder.img_category.setImageDrawable(resources.getDrawable(R.drawable.dumbbell_50, theme));
                     break;
                 case BODYWEIGHT:
-                    viewHolder.img_category.setImageDrawable(resources.getDrawable(R.drawable.pilates_50, theme));
+                    viewHolder.img_category.setImageDrawable(resources.getDrawable(R.drawable.pushup_50, theme));
                     break;
                 //case TIMED:
                   //  viewHolder.img_category.setImageDrawable(resources.getDrawable(R.drawable.watch_50, theme));
