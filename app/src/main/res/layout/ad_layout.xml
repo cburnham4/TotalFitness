@@ -7,5 +7,5 @@
     android:layout_alignParentBottom="true"
     android:gravity="center_horizontal"
     android:id="@+id/ad_layout"
-    android:background="@color/colorPrimary">
+    android:background="@color/primary">
 </LinearLayout>
