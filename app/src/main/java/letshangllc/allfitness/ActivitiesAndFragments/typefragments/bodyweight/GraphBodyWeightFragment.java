@@ -378,7 +378,7 @@ public class GraphBodyWeightFragment extends Fragment {
                     TableConstants.BODY_WEIGHT_SECONDS};
 
             c = db.query(TableConstants.BODY_WEIGHT_TABLE_NAME, projection2, TableConstants.DayId +" = "+ dayId,
-                    null, null, null, null);
+                    null, null, null, TableConstants.DayId + " ASC");
             c.moveToFirst();
 
             ArrayList<BodyWeightSet> bodyWeightSets = new ArrayList<>();

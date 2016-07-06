@@ -254,6 +254,7 @@ public class GraphCardioFragment extends Fragment {
 
     }
 
+    /*Todo: fix speed */
 
     /* todo CHANGE SIDEBARS TO GO OUT TO2 decimals*/
     private void createGraph(){
@@ -362,7 +363,8 @@ public class GraphCardioFragment extends Fragment {
 
         /* Query the exercise table based on the exercise id to get all the associated exercises */
         Cursor c = db.query(TableConstants.DayTableName, projection,
-                TableConstants.ExerciseId + " = " + exerciseId, null, null, null, null);
+                TableConstants.ExerciseId + " = " + exerciseId, null, null,
+                null, TableConstants.DayId + " ASC");
 
         c.moveToFirst();
 
