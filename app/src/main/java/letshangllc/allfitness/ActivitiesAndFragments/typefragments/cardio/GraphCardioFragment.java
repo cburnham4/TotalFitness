@@ -376,13 +376,14 @@ public class GraphCardioFragment extends Fragment {
         }
 
 
-        Log.e(TAG, "Daysize = " + dayIds.size());
+
 
         db = databaseHelper.getReadableDatabase();
 
         /* Get the sets for each day */
         int i = 0;
         for (Integer dayId : dayIds) {
+            Log.e(TAG, "DayId = " + dayId);
             /* Query the sets table based on dayId */
             String[] projection2 = {TableConstants.CARDIO_SETS_ID, TableConstants.CARDIO_SET_DISTANCE,
                     TableConstants.CARDIO_SET_TIME, TableConstants.CARDIO_SET_HOURS, TableConstants.CARDIO_SET_MINUTES,
@@ -402,7 +403,8 @@ public class GraphCardioFragment extends Fragment {
             }
 
             /* Add the list and date to past sets */
-            pastCardioItems.add(0, new PastCardioItem(cardioSets, dates.get(i++)));
+            pastCardioItems.add(new PastCardioItem(cardioSets, dates.get(i++)));
+
 
             c.close();
         }

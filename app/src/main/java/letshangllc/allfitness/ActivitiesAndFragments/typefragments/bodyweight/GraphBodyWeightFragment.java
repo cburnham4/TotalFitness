@@ -390,7 +390,7 @@ public class GraphBodyWeightFragment extends Fragment {
             }
 
             /* Add the list and date to past sets */
-            pastBodyWeightItems.add(0, new PastBodyWeightItem(bodyWeightSets, dates.get(i++)));
+            pastBodyWeightItems.add(new PastBodyWeightItem(bodyWeightSets, dates.get(i++)));
 
             c.close();
         }
