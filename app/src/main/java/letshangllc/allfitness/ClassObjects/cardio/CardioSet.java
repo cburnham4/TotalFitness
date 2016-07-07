@@ -1,5 +1,7 @@
 package letshangllc.allfitness.ClassObjects.cardio;
 
+import android.util.Log;
+
 /**
  * Created by cvburnha on 6/5/2016.
  */
@@ -23,8 +25,12 @@ public class CardioSet {
     }
 
     public double getMPH(){
+        if(distance == 0 || elapsedTime ==0){
+            return 0;
+        }
         double hours  = elapsedTime/3600.0;
         double mph = distance/hours;
+        Log.i("CARDIOSET: " , "MPH: " +mph );
         return mph;
     }
 }
