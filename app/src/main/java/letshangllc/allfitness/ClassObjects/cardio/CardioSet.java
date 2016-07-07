@@ -30,7 +30,6 @@ public class CardioSet {
         }
         double hours  = elapsedTime/3600.0;
         double mph = distance/hours;
-        Log.i("CARDIOSET: " , "MPH: " +mph );
         return mph;
     }
 

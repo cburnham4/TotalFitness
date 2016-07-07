@@ -51,9 +51,14 @@ public class PastCardioItem {
     public double getFastestMile(){
         double mileTime = 999999;
         for(CardioSet cardioSet: cardioSets){
-            if(cardioSet.getMileTime() >= 0 && mileTime > cardioSet.getMileTime()){
-                mileTime = cardioSet.getMileTime();
+            double currentTime = cardioSet.getMileTime();
+            /* Mile time must be higher than 3minutes because duh */
+            if(currentTime  >3 && mileTime > currentTime ){
+                mileTime = currentTime;
             }
+        }
+        if(mileTime == 999999){
+            return 0;
         }
         return  mileTime;
     }

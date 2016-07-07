@@ -312,6 +312,7 @@ public class GraphCardioFragment extends Fragment {
 
     /* Parse datapoints from the data obtained from getExistingData */
     public void setupDatapoints() throws ParseException {
+        Log.i(TAG, "Setup Datapoints");
         dataPointsDistance = new ArrayList<>();
         dataPointsTime = new ArrayList<>();
         dataPointsSpeed = new ArrayList<>();
@@ -336,8 +337,11 @@ public class GraphCardioFragment extends Fragment {
             if(pastCardioItem.getMaxSpeed() != 0){
                 dataPointsSpeed.add(new DataPoint(date, pastCardioItem.getMaxSpeed()));
             }
-            if(pastCardioItem.getFastestMile() != 0){
-                dataPointsMileTime.add(new DataPoint(date, pastCardioItem.getFastestMile()));
+            Log.i(TAG, "Get fast mile");
+            double fastestMile = pastCardioItem.getFastestMile();
+            Log.i(TAG, "Mile time "+ fastestMile);
+            if(fastestMile != 0){
+                dataPointsMileTime.add(new DataPoint(date, fastestMile));
             }
         }
 
@@ -345,6 +349,7 @@ public class GraphCardioFragment extends Fragment {
         Log.e(TAG, "# Distance Datapoints = " + dataPointsDistance.size());
         Log.e(TAG, "# Datapoints Time = " + dataPointsTime.size());
         Log.e(TAG, "# Datapoints Speed = " + dataPointsSpeed.size());
+        Log.e(TAG, "# Datapoints Mile = " + dataPointsMileTime.size());
 
         if(presentedDataPoints.size() == 0){
             graph.setVisibility(View.GONE);
@@ -391,7 +396,6 @@ public class GraphCardioFragment extends Fragment {
         /* Get the sets for each day */
         int i = 0;
         for (Integer dayId : dayIds) {
-            Log.e(TAG, "DayId = " + dayId);
             /* Query the sets table based on dayId */
             String[] projection2 = {TableConstants.CARDIO_SETS_ID, TableConstants.CARDIO_SET_DISTANCE,
                     TableConstants.CARDIO_SET_TIME, TableConstants.CARDIO_SET_HOURS, TableConstants.CARDIO_SET_MINUTES,
