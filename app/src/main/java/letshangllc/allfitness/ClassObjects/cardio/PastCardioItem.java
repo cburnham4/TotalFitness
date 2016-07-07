@@ -47,4 +47,14 @@ public class PastCardioItem {
         }
         return maxDistance;
     }
+
+    public double getFastestMile(){
+        double mileTime = 999999;
+        for(CardioSet cardioSet: cardioSets){
+            if(cardioSet.getMileTime() >= 0 && mileTime > cardioSet.getMileTime()){
+                mileTime = cardioSet.getMileTime();
+            }
+        }
+        return  mileTime;
+    }
 }

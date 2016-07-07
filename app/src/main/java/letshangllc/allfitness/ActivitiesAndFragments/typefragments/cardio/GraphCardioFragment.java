@@ -55,6 +55,7 @@ public class GraphCardioFragment extends Fragment {
     private ArrayList<DataPoint> dataPointsDistance;
     private ArrayList<DataPoint> dataPointsTime;
     private ArrayList<DataPoint> dataPointsSpeed;
+    private ArrayList<DataPoint> dataPointsMileTime;
     private ArrayList<DataPoint> presentedDataPoints;
 
     /* Passed in lift variables */
@@ -142,6 +143,9 @@ public class GraphCardioFragment extends Fragment {
                     case "Speed (mph)":
                         presentedDataPoints = dataPointsSpeed;
                         Log.i(TAG, "Show sped Data");
+                        break;
+                    case "Mile Time":
+                        presentedDataPoints = dataPointsMileTime;
                         break;
                 }
                 if(presentedDataPoints.size() == 0){
@@ -311,6 +315,7 @@ public class GraphCardioFragment extends Fragment {
         dataPointsDistance = new ArrayList<>();
         dataPointsTime = new ArrayList<>();
         dataPointsSpeed = new ArrayList<>();
+        dataPointsMileTime = new ArrayList<>();
         lineGraphSeries = new LineGraphSeries<>();
 
         /* Get date formatter */
@@ -330,6 +335,9 @@ public class GraphCardioFragment extends Fragment {
             }
             if(pastCardioItem.getMaxSpeed() != 0){
                 dataPointsSpeed.add(new DataPoint(date, pastCardioItem.getMaxSpeed()));
+            }
+            if(pastCardioItem.getFastestMile() != 0){
+                dataPointsMileTime.add(new DataPoint(date, pastCardioItem.getFastestMile()));
             }
         }
 

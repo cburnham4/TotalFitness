@@ -71,6 +71,7 @@
         <item>Distance (mi)</item>
         <item>Time (min)</item>
         <item>Speed (mph)</item>
+        <item>Mile Time</item>
     </string-array>
 
     <!-- Fragment Graph Bodyweight -->

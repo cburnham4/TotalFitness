@@ -33,4 +33,15 @@ public class CardioSet {
         Log.i("CARDIOSET: " , "MPH: " +mph );
         return mph;
     }
+
+    public double getMileTime(){
+        if(distance == 0 || elapsedTime ==0){
+            return 0;
+        }
+        double minutes  = elapsedTime/60.0;
+        Log.e("CARDIO", "MINUTES: " + minutes);
+        double mileTime = minutes/distance;
+        Log.e("CARDIO", "Mile Time: " + mileTime);
+        return mileTime;
+    }
 }
