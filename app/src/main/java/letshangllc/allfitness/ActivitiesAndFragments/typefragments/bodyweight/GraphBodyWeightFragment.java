@@ -254,11 +254,12 @@ public class GraphBodyWeightFragment extends Fragment {
         graph.setTitle("Body Weight Exercises");
         graph.getGridLabelRenderer().setLabelFormatter(new DateAsXAxisLabelFormatter(this.getContext()));
         Log.i(TAG, "Create Graph");
+        graph.getGridLabelRenderer().setNumHorizontalLabels(3);
+        graph.getViewport().setXAxisBoundsManual(true);
+        graph.getViewport().setYAxisBoundsManual(true);
         if(!lineGraphSeries.isEmpty()){
             Log.i(TAG, "Creating Graph");
-            graph.getGridLabelRenderer().setNumHorizontalLabels(3);
-            graph.getViewport().setXAxisBoundsManual(true);
-            graph.getViewport().setYAxisBoundsManual(true);
+
             if(presentedDataPoints.size() == 1){
                 DataPoint dataPoint = presentedDataPoints.get(0);
                 PointsGraphSeries<DataPoint> seriesSingle = new PointsGraphSeries<DataPoint>(new DataPoint[] {
