@@ -27,10 +27,10 @@ import java.util.Date;
 import java.util.Locale;
 
 import letshangllc.allfitness.ClassObjects.bodyweight.BodyWeightSet;
-import letshangllc.allfitness.ClassObjects.cardio.CardioSet;
+
 import letshangllc.allfitness.R;
 import letshangllc.allfitness.adapters.bodyweight.BodyWeightSetAdapter;
-import letshangllc.allfitness.adapters.cardio.CardioSetAdapter;
+
 import letshangllc.allfitness.database.DatabaseHelper;
 import letshangllc.allfitness.database.TableConstants;
 
@@ -164,7 +164,7 @@ public class AddBodyWeightSetFragment extends Fragment {
                 } else { /* If editing the item then update the cardioSet */
                     editing = false;
                     btnAddSet.setText(getString(R.string.add));
-                    updateCardioSet(minutes, seconds, totalTime, reps);
+                    updateBodyWeightSet(minutes, seconds, totalTime, reps);
                 }
             }
         });
@@ -324,7 +324,7 @@ public class AddBodyWeightSetFragment extends Fragment {
     /* Get the id of the last Day Id */
     private int getMaxSetId(){
         SQLiteDatabase db = databaseHelper.getReadableDatabase();
-        String sql = "SELECT Max("+ TableConstants.CARDIO_SETS_ID +") FROM "+ TableConstants.CARDIO_SETS_TABLE_NAME;
+        String sql = "SELECT Max("+ TableConstants.BODY_WEIGHT_SET_ID+") FROM "+ TableConstants.BODY_WEIGHT_TABLE_NAME;
         Cursor c = db.rawQuery(sql, null);
         c.moveToFirst();
         int max = c.getInt(0);
@@ -381,7 +381,7 @@ public class AddBodyWeightSetFragment extends Fragment {
         editBodyWeightSet = bodyWeightSet;
     }
 
-    public void updateCardioSet(int minutes, int seconds, double totalTime, int reps){
+    public void updateBodyWeightSet(int minutes, int seconds, double totalTime, int reps){
         SQLiteDatabase db = databaseHelper.getWritableDatabase();
         ContentValues values = new ContentValues();
 
