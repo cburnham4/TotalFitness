@@ -12,6 +12,7 @@
     <string name="type">Type</string>
     <string name="muscle_group">Muscle Group</string>
     <string name="confirm_delete">Delete Item?</string>
+    <string name="confirm_remove">Remove Item?</string>
 
     <!-- Exercise Dialog -->
     <string name="add_exercise">Add New Exercise</string>

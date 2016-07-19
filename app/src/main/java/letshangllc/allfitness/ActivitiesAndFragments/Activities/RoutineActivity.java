@@ -1,10 +1,12 @@
 package letshangllc.allfitness.ActivitiesAndFragments.Activities;
 
 import android.content.ContentValues;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.support.design.widget.FloatingActionButton;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
@@ -159,7 +161,7 @@ public class RoutineActivity extends AppCompatActivity {
         });
     }
 
-    /* todo change to listview item select */
+    /* todo change to listview item select instead of dialog */
     private void openAddDialog(){
         AddExerciseToGroupDialog addExerciseToGroupDialog = new AddExerciseToGroupDialog();
         addExerciseToGroupDialog.setCallback(new AddExerciseToGroupDialog.Listener() {
@@ -220,13 +222,12 @@ public class RoutineActivity extends AppCompatActivity {
         AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
         switch(item.getItemId()){
             case R.id.remove:
-                removeFromRoutine(exerciseItems.get(info.position));
+                confirmDelete(exerciseItems.get(info.position));
                 break;
         }
         return true;
     }
 
-    /* todo add confirmation of removal */
     /* Remove the exercise passed in from the current routine */
     public void removeFromRoutine(ExerciseItem exerciseItem){
         SQLiteDatabase db = databaseHelper.getWritableDatabase();
@@ -240,6 +241,25 @@ public class RoutineActivity extends AppCompatActivity {
         /* Remove item from list and update list view */
         exerciseItems.remove(exerciseItem);
         exerciseListAdapter.notifyDataSetChanged();
+    }
+
+    public void confirmDelete(final ExerciseItem exerciseItem){
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle(getString(R.string.confirm_remove));
+
+        builder.setPositiveButton(getString(R.string.confirm), new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                removeFromRoutine(exerciseItem);
+            }
+        }).setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.cancel();
+            }
+        });
+        AlertDialog alertDialog = builder.create();
+        alertDialog.show();
     }
 
     /* Return true if the exercise already exist for this routine */
