@@ -4,6 +4,7 @@ package letshangllc.allfitness.ActivitiesAndFragments.typefragments.bodyweight;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
+import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -168,7 +169,6 @@ public class GraphBodyWeightFragment extends Fragment {
 
         Date currentDate = new Date();
 
-        final double currentTime = currentDate.getTime();
 
         /* Milliseconds in a day */
         double timeInDay = 24 * 60 * 60 * 1000;
@@ -177,7 +177,7 @@ public class GraphBodyWeightFragment extends Fragment {
         final double timeIn6Month = timeIn3Month * 2;
         final double timeInYear = timeIn6Month * 2;
 
-        /* todo check if you can break if not true */
+        /* Set the range change listeners */
         tv_1m.setOnClickListener(new OnDateRangeSelection(timeInMonth, 0));
         tv_3m.setOnClickListener(new OnDateRangeSelection(timeIn3Month, 1));
         tv_6m.setOnClickListener(new OnDateRangeSelection(timeIn6Month, 2));
@@ -248,15 +248,13 @@ public class GraphBodyWeightFragment extends Fragment {
 
     }
 
-
-    /* todo just change the x min and x max for times */
     private void createGraph(){
         graph.setTitle("Body Weight Exercises");
         graph.getGridLabelRenderer().setLabelFormatter(new DateAsXAxisLabelFormatter(this.getContext()));
-        Log.i(TAG, "Create Graph");
         graph.getGridLabelRenderer().setNumHorizontalLabels(3);
         graph.getViewport().setXAxisBoundsManual(true);
         graph.getViewport().setYAxisBoundsManual(true);
+        graph.getGridLabelRenderer().setPadding(16);
         if(!lineGraphSeries.isEmpty()){
             Log.i(TAG, "Creating Graph");
 
@@ -338,7 +336,6 @@ public class GraphBodyWeightFragment extends Fragment {
         }
     }
 
-    /* todo 1 query */
     public void getExistingData() {
         pastBodyWeightItems = new ArrayList<>();
         /* Get readable db */
@@ -363,7 +360,6 @@ public class GraphBodyWeightFragment extends Fragment {
             dates.add(c.getString(1));
             c.moveToNext();
         }
-
 
         Log.e(TAG, "Daysize = " + dayIds.size());
 
@@ -403,5 +399,35 @@ public class GraphBodyWeightFragment extends Fragment {
         setupDatapoints();
         createGraph();
     }
+
+
+
+    //* SQL CODE FOR FUTURE */
+//    Log.i(TAG, "Start SQL Query ");
+//
+//    String sql = "SELECT * FROM " +
+//            TableConstants.DayTableName + " INNER JOIN " + TableConstants.BODY_WEIGHT_TABLE_NAME +
+//            " ON " + TableConstants.DayTableName +"." + TableConstants.DayId + " = " +
+//            TableConstants.BODY_WEIGHT_TABLE_NAME +"." + TableConstants.DayId +
+//            " WHERE " + TableConstants.DayTableName +"." + TableConstants.ExerciseId + " = " +exerciseId;
+//
+//    /* Run the query */
+//    Cursor c = db.rawQuery(sql, null);
+//    c.moveToFirst();
+//
+//        /* Find out the column indexes */
+//    Log.i(TAG, "End SQL Query");
+//        /* Insert the data into an list */
+//    while(!c.isAfterLast()){
+//        String date = c.getString(c.getColumnIndex(TableConstants.DayDate));
+//        int dayId = c.getInt(c.getColumnIndex(TableConstants.DayId));
+//        int bodyWeightId = c.getInt(c.getColumnIndex(TableConstants.BODY_WEIGHT_SET_ID));
+//        double bodyWeightTime = c.getDouble(c.getColumnIndex(TableConstants.BODY_WEIGHT_TIME));
+//        int reps = c.getInt(c.getColumnIndex(TableConstants.BODY_WEIGHT_REPS));
+//        int minutes = c.getInt(c.getColumnIndex(TableConstants.BODY_WEIGHT_MINUTES));
+//        int seconds = c.getInt(c.getColumnIndex(TableConstants.BODY_WEIGHT_SECONDS));
+//    }
+//
+//    Log.i(TAG, "End SQL Query");
 
 }

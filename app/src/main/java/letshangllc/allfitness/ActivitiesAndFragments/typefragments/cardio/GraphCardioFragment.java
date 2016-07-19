@@ -257,17 +257,14 @@ public class GraphCardioFragment extends Fragment {
         tvDateSelections[tvIndex].setBackgroundColor(getResources().getColor(R.color.divider));
 
     }
-
-    /*Todo: fix speed */
-
-    /* todo CHANGE SIDEBARS TO GO OUT TO2 decimals*/
+    
     private void createGraph(){
         graph.setTitle("Cardio Results");
         graph.getGridLabelRenderer().setLabelFormatter(new DateAsXAxisLabelFormatter(this.getContext()));
-        Log.i(TAG, "Create Graph");
         graph.getGridLabelRenderer().setNumHorizontalLabels(3);
         graph.getViewport().setXAxisBoundsManual(true);
         graph.getViewport().setYAxisBoundsManual(true);
+        graph.getGridLabelRenderer().setPadding(16);
         if(!lineGraphSeries.isEmpty()){
             Log.i(TAG, "Creating Graph");
 

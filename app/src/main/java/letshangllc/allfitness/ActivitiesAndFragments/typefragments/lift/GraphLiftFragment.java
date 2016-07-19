@@ -89,7 +89,6 @@ public class GraphLiftFragment extends Fragment {
         return view;
     }
 
-    /* todo clean up code */
     public void setupDateSelections(View view){
         final TextView tv_1m = (TextView) view.findViewById(R.id.tv_1m);
         final TextView tv_3m = (TextView) view.findViewById(R.id.tv_3m);
@@ -167,14 +166,14 @@ public class GraphLiftFragment extends Fragment {
 
     }
 
-    /* todo just change the x min and x max for times */
     private void createGraph(){
         graph.setTitle("Max Weight Over Time");
         graph.getGridLabelRenderer().setLabelFormatter(new DateAsXAxisLabelFormatter(this.getContext()));
+        graph.getGridLabelRenderer().setNumHorizontalLabels(3);
+        graph.getViewport().setXAxisBoundsManual(true);
+        graph.getViewport().setYAxisBoundsManual(true);
+        graph.getGridLabelRenderer().setPadding(16);
         if(!lineGraphSeries.isEmpty()){
-            graph.getGridLabelRenderer().setNumHorizontalLabels(3);
-            graph.getViewport().setXAxisBoundsManual(true);
-            graph.getViewport().setYAxisBoundsManual(true);
             if(dataPoints.size() == 1){
                 DataPoint dataPoint = dataPoints.get(0);
                 PointsGraphSeries<DataPoint> seriesSingle = new PointsGraphSeries<DataPoint>(new DataPoint[] {
