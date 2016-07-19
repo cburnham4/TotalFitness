@@ -225,11 +225,7 @@ public class AddLiftSetFragment extends Fragment {
         values.put(TableConstants.LiftSetReps, reps);
         values.put(TableConstants.LiftSetWeight, weight);
 
-        db.insert(TableConstants.LiftSetsTableName, null,values);
-
-        /* Add new set into the listview */
-        int sid = getMaxSetId();
-        Log.e(TAG, "Insert DAYID= "+dayId);
+        int sid = (int) db.insert(TableConstants.LiftSetsTableName, null,values);
 
         LiftSet liftSet = new LiftSet(dayId, sid, reps, weight);
         liftSets.add(liftSet);
@@ -241,31 +237,6 @@ public class AddLiftSetFragment extends Fragment {
 
         /* Add recent lift to Maxes */
         inputCalculatedMAX(weight, reps, sid);
-    }
-
-
-    /* Get the id of the last Day Id */
-    private int getMaxDayId(){
-        SQLiteDatabase db = databaseHelper.getReadableDatabase();
-        String sql = "SELECT Max("+ TableConstants.DayId +") FROM "+ TableConstants.DayTableName;
-        Cursor c = db.rawQuery(sql, null);
-        c.moveToFirst();
-        int max = c.getInt(0);
-        c.close();
-        db.close();
-        return max;
-    }
-
-    /* Get the id of the last Day Id */
-    private int getMaxSetId(){
-        SQLiteDatabase db = databaseHelper.getReadableDatabase();
-        String sql = "SELECT Max("+ TableConstants.LiftSetsId +") FROM "+ TableConstants.LiftSetsTableName;
-        Cursor c = db.rawQuery(sql, null);
-        c.moveToFirst();
-        int max = c.getInt(0);
-        c.close();
-        db.close();
-        return max;
     }
 
     private void inputCalculatedMAX(double weight, int reps, int sid){
@@ -405,7 +376,6 @@ public class AddLiftSetFragment extends Fragment {
         /* Remove item from list and update list view */
         liftSets.remove(liftSet);
         liftSetAdapter.notifyDataSetChanged();
-        /* Todo add callback */
 
         deleteLiftSetListner.deleteNewLiftSet(liftSet);
     }
