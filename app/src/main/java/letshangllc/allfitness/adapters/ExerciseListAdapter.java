@@ -23,8 +23,6 @@ import letshangllc.allfitness.R;
  * Set the
  */
 
-/*todo change to resource compat
- */
 public class ExerciseListAdapter extends ArrayAdapter<ExerciseItem>{
 
     private Resources resources;

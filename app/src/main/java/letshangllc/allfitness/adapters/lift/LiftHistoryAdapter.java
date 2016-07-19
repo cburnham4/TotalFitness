@@ -60,7 +60,7 @@ public class LiftHistoryAdapter extends RecyclerView.Adapter<LiftHistoryAdapter.
         }
 
         viewHolder.tv_info_text.setText(sets);
-                /* todo get from resources */
+
         DateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy", Locale.US);
         DateFormat dateFormat1 = new SimpleDateFormat("MMM dd yyyy");
         try {

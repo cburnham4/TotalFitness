@@ -26,6 +26,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.Locale;
 
+import letshangllc.allfitness.ActivitiesAndFragments.typefragments.CommonFunctions;
 import letshangllc.allfitness.ClassObjects.bodyweight.BodyWeightSet;
 
 import letshangllc.allfitness.R;
@@ -84,7 +85,7 @@ public class AddBodyWeightSetFragment extends Fragment {
         Date date = new Date();
         currentDate = dateFormat.format(date);
 
-        dayId = addDateToDB();
+        dayId = CommonFunctions.addDateToDB(databaseHelper, currentDate, exerciseId, TAG);
 
         getExistingData();
     }
@@ -210,10 +211,7 @@ public class AddBodyWeightSetFragment extends Fragment {
         values.put(TableConstants.BODY_WEIGHT_MINUTES, minutes);
         values.put(TableConstants.BODY_WEIGHT_SECONDS, seconds);
 
-        db.insert(TableConstants.BODY_WEIGHT_TABLE_NAME, null,values);
-
-        /* Add new set into the listview */
-        int sid = getMaxSetId();
+        int sid = (int) db.insert(TableConstants.BODY_WEIGHT_TABLE_NAME, null,values);
 
         /* Add to List */
         BodyWeightSet bodyWeightSet = new BodyWeightSet(sid, totalTime, reps, minutes, seconds, dayId);
@@ -272,54 +270,7 @@ public class AddBodyWeightSetFragment extends Fragment {
         return false;
     }
 
-    /* todo refactor to common class */
-    /* Add date to db id it does not already exist */
-    public int addDateToDB(){
-        /* First check if the db row has already been created */
-        SQLiteDatabase db = databaseHelper.getReadableDatabase();
-        String[] projection = {TableConstants.DayId};
 
-        /* Query the exercise table based on the muscle id to get all the associated exercises */
-        Cursor c = db.query(TableConstants.DayTableName, projection, TableConstants.DayDate
-                + " = '" + currentDate + "' AND " + TableConstants.ExerciseId +" = "+ exerciseId, null, null, null, null);
-
-        c.moveToFirst();
-        /* If there already exists a dayId for today then return it */
-        if(!c.isAfterLast()){
-            Log.e(TAG, "Day exists");
-            int dayId = c.getInt(0);
-            c.close();
-            return dayId;
-        }
-
-        Log.e(TAG, "Day does not exist");
-
-         /* Else insert in a new day */
-        ContentValues values = new ContentValues();
-        values.put(TableConstants.ExerciseId, exerciseId);
-        values.put(TableConstants.DayDate, currentDate);
-
-         /* Insert values into db */
-        db.insert(TableConstants.DayTableName, null, values);
-        db.close();
-
-        /* Return the max Day id which will be the most recently inserted dayId */
-        return getMaxDayId();
-
-    }
-
-    /* todo move to common */
-    /* Get the id of the last Day Id */
-    private int getMaxDayId(){
-        SQLiteDatabase db = databaseHelper.getReadableDatabase();
-        String sql = "SELECT Max("+ TableConstants.DayId +") FROM "+ TableConstants.DayTableName;
-        Cursor c = db.rawQuery(sql, null);
-        c.moveToFirst();
-        int max = c.getInt(0);
-        c.close();
-        db.close();
-        return max;
-    }
 
     /* Get the id of the last Day Id */
     private int getMaxSetId(){
