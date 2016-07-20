@@ -76,6 +76,52 @@ public class EditExerciseDialog extends DialogFragment {
         /* Set selected to that exercise's type */
         spin_type.setSelection(exerciseTypes.indexOf(exerciseItem.getExerciseType()));
 
+
+        MuscleGroupAdapterSelection muscleGroupAdapterSelection = getMuscleGroupArrayAdapter();
+        spin_muscle.setAdapter(muscleGroupAdapterSelection.muscleAdapter);
+
+        if(muscleGroupAdapterSelection.currentMuscleIndex != -1){
+            spin_muscle.setSelection(muscleGroupAdapterSelection.currentMuscleIndex );
+        }
+
+        builder.setView(view)
+                // Add action buttons
+                .setPositiveButton(R.string.add, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int id) {
+                        /* Get Dialog items and send back to Exercise Fragment */
+                        String name = et_item_name.getText().toString().trim();
+                        ExerciseType type = (ExerciseType) spin_type.getSelectedItem();
+                        MuscleGroup muscleGroup = (MuscleGroup) spin_muscle.getSelectedItem();
+
+                        mListener.onDialogPositiveClick(name, type, muscleGroup);
+                    }
+                })
+                .setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        EditExerciseDialog.this.getDialog().cancel();
+                    }
+                });
+        return builder.create();
+    }
+
+    /* Get the exercise types and put them into an array adapter */
+    private ArrayAdapter<String> getExerciseArrayAdapter(){
+        /* Get an array of the exercise types */
+        ArrayList<String> exerciseTypes = new ArrayList<>();
+        for(ExerciseType exerciseType: ExerciseType.values()){
+            exerciseTypes.add(exerciseType.getExerciseTypeName());
+        }
+
+        /* Create an array adapter for the exercise types */
+        ArrayAdapter<String> adapterType = new ArrayAdapter<String>(getContext(),
+                android.R.layout.simple_spinner_dropdown_item, exerciseTypes);
+        adapterType.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        return adapterType;
+    }
+
+    /* Pull the Muscle groups from DB and insert them into array adapter */
+    private MuscleGroupAdapterSelection getMuscleGroupArrayAdapter(){
         DatabaseHelper databaseHelper = new DatabaseHelper(getContext());
         SQLiteDatabase db = databaseHelper.getReadableDatabase();
 
@@ -108,35 +154,21 @@ public class EditExerciseDialog extends DialogFragment {
                 android.R.layout.simple_spinner_dropdown_item, muscleGroups);
 
         adapterMuscle.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        spin_muscle.setAdapter(adapterMuscle);
 
         /* If the exercise has a muscle group then set the spinner to that muscle */
-        if(currentMuscleIndex != -1){
-            spin_muscle.setSelection(currentMuscleIndex);
-        }
-
-
         c.close();
         db.close();
 
-        builder.setView(view)
-                // Add action buttons
-                .setPositiveButton(R.string.add, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int id) {
-                        /* Get Dialog items and send back to Exercise Fragment */
-                        String name = et_item_name.getText().toString().trim();
-                        ExerciseType type = (ExerciseType) spin_type.getSelectedItem();
-                        MuscleGroup muscleGroup = (MuscleGroup) spin_muscle.getSelectedItem();
+        return new MuscleGroupAdapterSelection(adapterMuscle, currentMuscleIndex);
+    }
 
-                        mListener.onDialogPositiveClick(name, type, muscleGroup);
-                    }
-                })
-                .setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int id) {
-                        EditExerciseDialog.this.getDialog().cancel();
-                    }
-                });
-        return builder.create();
+    private class MuscleGroupAdapterSelection{
+        public ArrayAdapter<MuscleGroup> muscleAdapter;
+        public int currentMuscleIndex;
+
+        public MuscleGroupAdapterSelection(ArrayAdapter<MuscleGroup> muscleAdapter, int currentMuscleIndex) {
+            this.muscleAdapter = muscleAdapter;
+            this.currentMuscleIndex = currentMuscleIndex;
+        }
     }
 }

@@ -13,6 +13,7 @@ import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.Spinner;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 
 import letshangllc.allfitness.ClassObjects.ExerciseType;
@@ -50,10 +51,37 @@ public class AddExerciseDialog  extends DialogFragment {
         // Pass null as the parent view because its going in the dialog layout
         View view = inflater.inflate(R.layout.dialog_add_exercise, null);
 
+        /* Find Views */
         final EditText et_item_name = (EditText) view.findViewById(R.id.et_newExercise);
         final Spinner spin_type = (Spinner) view.findViewById(R.id.spin_exerciseType);
         final Spinner spin_muscle = (Spinner) view.findViewById(R.id.spin_muscleGroup);
 
+        /* Set the spin adapters */
+        spin_type.setAdapter(getExerciseArrayAdapter());
+        spin_muscle.setAdapter(getMuscleGroupArrayAdapter());
+
+        builder.setView(view)
+                // Add action buttons
+                .setPositiveButton(R.string.add, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int id) {
+                        /* Get Dialog items and send back to Exercise Fragment */
+                        String name = et_item_name.getText().toString().trim();
+                        String type = spin_type.getSelectedItem().toString();
+                        MuscleGroup muscleGroup = (MuscleGroup) spin_muscle.getSelectedItem();
+                        mListener.onDialogPositiveClick(name, type, muscleGroup);
+                    }
+                })
+                .setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        AddExerciseDialog.this.getDialog().cancel();
+                    }
+                });
+        return builder.create();
+    }
+
+    /* Get the exercise types and put them into an array adapter */
+    private ArrayAdapter<String> getExerciseArrayAdapter(){
         /* Get an array of the exercise types */
         ArrayList<String> exerciseTypes = new ArrayList<>();
         for(ExerciseType exerciseType: ExerciseType.values()){
@@ -63,11 +91,12 @@ public class AddExerciseDialog  extends DialogFragment {
         /* Create an array adapter for the exercise types */
         ArrayAdapter<String> adapterType = new ArrayAdapter<String>(getContext(),
                 android.R.layout.simple_spinner_dropdown_item, exerciseTypes);
-        // Specify the layout to use when the list of choices appears
         adapterType.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        // Apply the adapter to the spinner
-        spin_type.setAdapter(adapterType);
+        return adapterType;
+    }
 
+    /* Pull the Muscle groups from DB and insert them into array adapter */
+    private ArrayAdapter<MuscleGroup> getMuscleGroupArrayAdapter(){
         DatabaseHelper databaseHelper = new DatabaseHelper(getContext());
         SQLiteDatabase db = databaseHelper.getReadableDatabase();
 
@@ -85,34 +114,11 @@ public class AddExerciseDialog  extends DialogFragment {
             c.moveToNext();
         }
 
-
-
-
         // Create an ArrayAdapter using the string array and a default spinner layout
         ArrayAdapter<MuscleGroup> adapterMuscle = new ArrayAdapter<MuscleGroup>(getContext(),
                 android.R.layout.simple_spinner_dropdown_item, muscleGroups);
 
         adapterMuscle.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        spin_muscle.setAdapter(adapterMuscle);
-
-        builder.setView(view)
-                // Add action buttons
-                .setPositiveButton(R.string.add, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int id) {
-                        /* Get Dialog items and send back to Exercise Fragment */
-                        String name = et_item_name.getText().toString().trim();
-                        String type = spin_type.getSelectedItem().toString();
-                        MuscleGroup muscleGroup = (MuscleGroup) spin_muscle.getSelectedItem();
-
-                        mListener.onDialogPositiveClick(name, type, muscleGroup);
-                    }
-                })
-                .setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int id) {
-                        AddExerciseDialog.this.getDialog().cancel();
-                    }
-                });
-        return builder.create();
+        return adapterMuscle;
     }
 }
