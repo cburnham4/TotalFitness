@@ -25,6 +25,8 @@ import letshangllc.allfitness.R;
 /**
  * A simple {@link Fragment} subclass.
  */
+
+/* TODO: remove empty days */
 public class PastLiftsFragment extends Fragment {
     private String TAG = PastLiftsFragment.class.getSimpleName();
 
@@ -79,7 +81,6 @@ public class PastLiftsFragment extends Fragment {
         return view;
     }
 
-    /* todo change to sql for 1 query */
     public void getExistingData() {
         /* Get readable db */
         SQLiteDatabase db = databaseHelper.getReadableDatabase();

@@ -109,7 +109,6 @@ public class GraphLiftFragment extends Fragment {
         final double timeIn6Month = timeIn3Month * 2;
         final double timeInYear = timeIn6Month * 2;
 
-        /* todo check if you can break if not true */
         tv_1m.setOnClickListener(new OnDateRangeSelection(timeInMonth, 0));
         tv_3m.setOnClickListener(new OnDateRangeSelection(timeIn3Month, 1));
         tv_6m.setOnClickListener(new OnDateRangeSelection(timeIn6Month, 2));
@@ -118,6 +117,7 @@ public class GraphLiftFragment extends Fragment {
 
     }
 
+    /* TODO: Add additional spinner items  to lift */
     public class OnDateRangeSelection implements View.OnClickListener{
         private double timeLimit;
         private int tvIndex;

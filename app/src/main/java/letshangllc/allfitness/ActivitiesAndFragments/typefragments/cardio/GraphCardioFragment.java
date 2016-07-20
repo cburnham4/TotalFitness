@@ -186,7 +186,6 @@ public class GraphCardioFragment extends Fragment {
         final double timeIn6Month = timeIn3Month * 2;
         final double timeInYear = timeIn6Month * 2;
 
-        /* todo check if you can break if not true */
         tv_1m.setOnClickListener(new OnDateRangeSelection(timeInMonth, 0));
         tv_3m.setOnClickListener(new OnDateRangeSelection(timeIn3Month, 1));
         tv_6m.setOnClickListener(new OnDateRangeSelection(timeIn6Month, 2));
@@ -257,7 +256,7 @@ public class GraphCardioFragment extends Fragment {
         tvDateSelections[tvIndex].setBackgroundColor(getResources().getColor(R.color.divider));
 
     }
-    
+
     private void createGraph(){
         graph.setTitle("Cardio Results");
         graph.getGridLabelRenderer().setLabelFormatter(new DateAsXAxisLabelFormatter(this.getContext()));
@@ -358,7 +357,6 @@ public class GraphCardioFragment extends Fragment {
         }
     }
 
-    /* todo Change to one query */
     public void getExistingData() {
         pastCardioItems = new ArrayList<>();
 
