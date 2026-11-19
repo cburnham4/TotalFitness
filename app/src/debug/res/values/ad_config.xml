@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
     DEBUG BUILD: Google official test AdMob IDs.
-    Production placeholders live in app/src/main/res/values/ad_config.xml.
+    Production IDs live in app/src/main/res/values/ad_config.xml.
 -->
 <resources>
     <string name="admob_app_id" translatable="false">ca-app-pub-3940256099942544~3347511713</string>
