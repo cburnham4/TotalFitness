@@ -4,7 +4,8 @@ package letshangllc.allfitness.ActivitiesAndFragments.typefragments.cardio;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
+import androidx.core.content.ContextCompat;
+import androidx.fragment.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -253,7 +254,7 @@ public class GraphCardioFragment extends Fragment {
             tv.setBackgroundColor(0);
         }
         /* set background for selected item */
-        tvDateSelections[tvIndex].setBackgroundColor(getResources().getColor(R.color.divider));
+        tvDateSelections[tvIndex].setBackgroundColor(ContextCompat.getColor(requireContext(), R.color.divider));
 
     }
 

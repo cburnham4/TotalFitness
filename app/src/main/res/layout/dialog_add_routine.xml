@@ -21,7 +21,7 @@
             />
 
         <!-- Editext for Search -->
-        <android.support.design.widget.TextInputLayout
+        <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/input_layout_newRoutine"
             android:layout_width="match_parent"
             android:layout_marginBottom="@dimen/dialog_margin_between_items"
@@ -33,7 +33,7 @@
                 android:layout_height="wrap_content"
                 android:hint="@string/routine_dialog_hint" />
 
-        </android.support.design.widget.TextInputLayout>
+        </com.google.android.material.textfield.TextInputLayout>
 
     </LinearLayout>
 

@@ -3,10 +3,10 @@ package letshangllc.allfitness.ActivitiesAndFragments.Activities;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
-import android.support.design.widget.FloatingActionButton;
-import android.support.v7.app.AppCompatActivity;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
-import android.support.v7.widget.Toolbar;
+import androidx.appcompat.widget.Toolbar;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
@@ -16,6 +16,7 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 import letshangllc.allfitness.AdsHelper;
+import letshangllc.allfitness.EdgeToEdgeHelper;
 import letshangllc.allfitness.ClassObjects.ExerciseItem;
 import letshangllc.allfitness.ClassObjects.ExerciseType;
 import letshangllc.allfitness.database.DatabaseHelper;
@@ -44,6 +45,7 @@ public class MuscleGroupActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_muscle_group);
+        EdgeToEdgeHelper.apply(this, findViewById(android.R.id.content));
 
         this.findViews();
         /* Retrieve values from caller intent */
@@ -146,17 +148,47 @@ public class MuscleGroupActivity extends AppCompatActivity {
     }
 
     private AdsHelper adsHelper;
+    private Timer adRefreshTimer;
+
     public void runAds(){
         adsHelper =  new AdsHelper(getWindow().getDecorView(), getResources().getString(R.string.admob_ad_muscle_group), this);
 
         adsHelper.setUpAds();
         int delay = 1000; // delay for 1 sec.
         int period = getResources().getInteger(R.integer.ad_refresh_rate);
-        Timer timer = new Timer();
-        timer.scheduleAtFixedRate(new TimerTask() {
+        adRefreshTimer = new Timer();
+        adRefreshTimer.scheduleAtFixedRate(new TimerTask() {
             public void run() {
                 adsHelper.refreshAd();  // display the data
             }
         }, delay, period);
+    }
+
+    @Override
+    protected void onPause() {
+        if (adsHelper != null) {
+            adsHelper.onPause();
+        }
+        super.onPause();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if (adsHelper != null) {
+            adsHelper.onResume();
+        }
+    }
+
+    @Override
+    protected void onDestroy() {
+        if (adRefreshTimer != null) {
+            adRefreshTimer.cancel();
+            adRefreshTimer = null;
+        }
+        if (adsHelper != null) {
+            adsHelper.onDestroy();
+        }
+        super.onDestroy();
     }
 }

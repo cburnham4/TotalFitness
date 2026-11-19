@@ -1,13 +1,13 @@
 package letshangllc.allfitness.ActivitiesAndFragments.Activities;
 
 
-import android.support.design.widget.TabLayout;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentPagerAdapter;
-import android.support.v4.view.ViewPager;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
+import com.google.android.material.tabs.TabLayout;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentPagerAdapter;
+import androidx.viewpager.widget.ViewPager;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 import android.os.Bundle;
 
 import java.util.ArrayList;
@@ -16,6 +16,7 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 import letshangllc.allfitness.AdsHelper;
+import letshangllc.allfitness.EdgeToEdgeHelper;
 import letshangllc.allfitness.R;
 import letshangllc.allfitness.ActivitiesAndFragments.MainFragments.MuscleGroupFragment;
 import letshangllc.allfitness.ActivitiesAndFragments.MainFragments.ExercisesFragment;
@@ -23,10 +24,14 @@ import letshangllc.allfitness.ActivitiesAndFragments.MainFragments.RoutinesFragm
 
 public class MainTabbedActivity extends AppCompatActivity {
 
+    private AdsHelper adsHelper;
+    private Timer adRefreshTimer;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main_tabbed);
+        EdgeToEdgeHelper.apply(this, findViewById(android.R.id.content));
 
         Toolbar toolbar;
         TabLayout tabLayout;
@@ -34,8 +39,6 @@ public class MainTabbedActivity extends AppCompatActivity {
 
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-
-        //getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         viewPager = (ViewPager) findViewById(R.id.vp_main_activity);
         setupViewPager(viewPager);
@@ -60,7 +63,7 @@ public class MainTabbedActivity extends AppCompatActivity {
         private final List<String> mFragmentTitleList = new ArrayList<>();
 
         public ViewPagerAdapter(FragmentManager manager) {
-            super(manager);
+            super(manager, BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT);
         }
 
         @Override
@@ -84,19 +87,45 @@ public class MainTabbedActivity extends AppCompatActivity {
         }
     }
 
-    private AdsHelper adsHelper;
-
     public void runAds(){
         adsHelper =  new AdsHelper(getWindow().getDecorView(), getResources().getString(R.string.admob_ad_main), this);
 
         adsHelper.setUpAds();
         int delay = 1000; // delay for 1 sec.
         int period = getResources().getInteger(R.integer.ad_refresh_rate);
-        Timer timer = new Timer();
-        timer.scheduleAtFixedRate(new TimerTask() {
+        adRefreshTimer = new Timer();
+        adRefreshTimer.scheduleAtFixedRate(new TimerTask() {
             public void run() {
                 adsHelper.refreshAd();  // display the data
             }
         }, delay, period);
+    }
+
+    @Override
+    protected void onPause() {
+        if (adsHelper != null) {
+            adsHelper.onPause();
+        }
+        super.onPause();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if (adsHelper != null) {
+            adsHelper.onResume();
+        }
+    }
+
+    @Override
+    protected void onDestroy() {
+        if (adRefreshTimer != null) {
+            adRefreshTimer.cancel();
+            adRefreshTimer = null;
+        }
+        if (adsHelper != null) {
+            adsHelper.onDestroy();
+        }
+        super.onDestroy();
     }
 }

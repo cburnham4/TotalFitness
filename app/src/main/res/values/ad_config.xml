@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    PRODUCTION AdMob configuration for Complete Fitness (letshangllc.allfitness).
+    Publisher ID: ca-app-pub-8223005482588566
+    App ID and unit IDs from AdMob console export (CSV).
+
+    Screen mapping:
+    ================
+    Resource                | AdMob unit name       | Screen
+    admob_ad_main           | Banner Main Tabbed    | MainTabbedActivity
+    admob_ad_exercise       | Banner Exercise       | ExerciseActivity
+    admob_ad_muscle_group   | Banner Muslce Group   | MuscleGroupActivity
+    admob_ad_routine        | Banner Routine        | RoutineActivity
+
+    Debug builds overlay Google official test IDs via
+    app/src/debug/res/values/ad_config.xml.
+-->
+<resources>
+    <string name="admob_app_id" translatable="false">ca-app-pub-8223005482588566~9776452339</string>
+
+    <string name="admob_ad_main" translatable="false">ca-app-pub-8223005482588566/2253185534</string>
+    <string name="admob_ad_exercise" translatable="false">ca-app-pub-8223005482588566/5067051133</string>
+    <string name="admob_ad_muscle_group" translatable="false">ca-app-pub-8223005482588566/3590317932</string>
+    <string name="admob_ad_routine" translatable="false">ca-app-pub-8223005482588566/2113584738</string>
+
+    <!-- Banner refresh interval (ms). Was previously in gitignored keys.xml. -->
+    <integer name="ad_refresh_rate">60000</integer>
+</resources>

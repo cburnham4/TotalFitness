@@ -4,8 +4,9 @@ package letshangllc.allfitness.ActivitiesAndFragments.typefragments.bodyweight;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
-import android.support.design.widget.TabLayout;
-import android.support.v4.app.Fragment;
+import androidx.core.content.ContextCompat;
+import com.google.android.material.tabs.TabLayout;
+import androidx.fragment.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -244,7 +245,7 @@ public class GraphBodyWeightFragment extends Fragment {
             tv.setBackgroundColor(0);
         }
         /* set background for selected item */
-        tvDateSelections[tvIndex].setBackgroundColor(getResources().getColor(R.color.divider));
+        tvDateSelections[tvIndex].setBackgroundColor(ContextCompat.getColor(requireContext(), R.color.divider));
 
     }
 
